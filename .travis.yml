@@ -1,3 +1,9 @@
 language: java
+install: true
+
 jdk:
   - oraclejdk11
+
+script:
+  - ./gradlew build
+  - ./gradlew test
