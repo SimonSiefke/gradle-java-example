@@ -7,6 +7,7 @@ jdk:
 script:
   - ./gradlew build
   - ./gradlew test
+  - sonar-scanner
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -16,3 +17,9 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+addons:
+  sonarcloud:
+    organization: 'simonsiefke-github' # the key of the org you chose at step #3
+    token:
+      secure: 0b22dcf5af9eef5ab92d7f7115b6d794b8246b44 # encrypted value of your token
