@@ -13,8 +13,8 @@ See https://gradle.org/install
 Ubuntu:
 
 ```bash
-git  &&
-cd  &&
+git clone https://github.com/SimonSiefke/gradle-java-example &&
+cd gradle-java-example &&
 ./gradlew build
 ```
 
