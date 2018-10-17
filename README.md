@@ -1,3 +1,5 @@
+<p align="center"><img src="https://travis-ci.com/SimonSiefke/gradle-java-example.svg?branch=master" alt="Build Status"></p>
+
 # Java & Gradle Example Project
 
 > testing out java with gradle 🙄
