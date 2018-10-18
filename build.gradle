@@ -16,17 +16,26 @@ plugins {
     id 'jacoco'
 
     id  'checkstyle'
+
+    // TODO figure this out
+    // id 'io.franzbecker.gradle-lombok' version '1.14'
+
+    // TODO figure this out
+    // id "com.github.spotbugs" version "1.6.5"
 }
 
 // Define the main class for the application
 mainClassName = 'App'
 
 dependencies {
-    // This dependency is found on compile classpath of this component and consumers.
-    compile 'com.google.guava:guava:23.0'
-
     // Use JUnit test framework
-    testCompile 'junit:junit:4.12'
+    // testCompile 'junit:junit:4.12'
+     testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.1.0'
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
 }
 
 // In this section you declare where to find the dependencies of your project
