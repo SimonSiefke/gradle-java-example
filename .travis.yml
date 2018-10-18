@@ -5,7 +5,7 @@ jdk:
   - oraclejdk11
 
 script:
-  - ./gradlew build
+  - ./gradlew build check
   - ./gradlew test
 
 before_cache:
@@ -16,3 +16,6 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
