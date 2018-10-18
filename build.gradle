@@ -12,6 +12,8 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
+
+    id 'jacoco'
 }
 
 // Define the main class for the application
@@ -31,3 +33,31 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+
+jacoco {
+    toolVersion = "0.8.2"
+}
+
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.3
+            }
+        }
+    }
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        xml.enabled true
+        csv.enabled true
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+check.dependsOn jacocoTestReport
+
+test.finalizedBy jacocoTestReport
