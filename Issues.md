@@ -1,2 +1,2 @@
-1. Setup code coverage
+1. Setup checkstyle
 1. performance tests?
