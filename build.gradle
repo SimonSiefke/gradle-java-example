@@ -9,7 +9,6 @@
 plugins {
     // necessary plugins
     id 'java'
-    id 'application'
 
     // error checking plugins
     id 'checkstyle'
