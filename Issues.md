@@ -1,2 +1,1 @@
-1. JUnit 5
-1. performance tests?
+1. make jacoco html

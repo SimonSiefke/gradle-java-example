@@ -11,5 +11,5 @@ public interface DistanceStrategy {
    * @param pointB the second point
    * @return the distance between the two points
    */
-  public double distance(double[] pointA, double[] pointB);
+  double distance(double[] pointA, double[] pointB);
 }
