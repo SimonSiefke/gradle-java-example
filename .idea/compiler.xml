@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="gradle-example2_jmh" target="11" />
+      <module name="gradle-example2_main" target="11" />
+      <module name="gradle-example2_test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

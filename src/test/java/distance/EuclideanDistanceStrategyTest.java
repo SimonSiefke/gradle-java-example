@@ -6,11 +6,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class EuclideanDistanceStrategyTest {
-  private DistanceContext distanceContext;
+  private static DistanceContext distanceContext;
 
   @BeforeAll
-  public void initializeDistanceContext() {
-    this.distanceContext = new DistanceContext();
+  public static void initializeDistanceContext() {
+    EuclideanDistanceStrategyTest.distanceContext = new DistanceContext();
     distanceContext.setDistanceStrategy(new EuclideanDistanceStrategy());
   }
 
