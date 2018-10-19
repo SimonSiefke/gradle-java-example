@@ -1,4 +1,5 @@
 language: java
+sudo: false # faster builds
 install: true
 
 jdk:
@@ -6,7 +7,6 @@ jdk:
 
 script:
   - ./gradlew build check
-  - ./gradlew test
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
