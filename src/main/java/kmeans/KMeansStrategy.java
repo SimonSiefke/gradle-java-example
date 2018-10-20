@@ -3,6 +3,6 @@ package kmeans;
 /**
  * Interface for KMeans Strategies.
  */
-public interface KMeansStrategy {
+interface KMeansStrategy {
   void kMeans();
 }
