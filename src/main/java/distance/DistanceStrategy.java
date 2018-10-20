@@ -3,7 +3,7 @@ package distance;
 /**
  * Interface for Distance Strategies.
  */
-public interface DistanceStrategy {
+interface DistanceStrategy {
   /**
    * computes a distance between the two points.
    *

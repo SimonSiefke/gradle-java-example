@@ -3,7 +3,7 @@ package distance;
 /**
  * Euclidean Distance Strategy.
  */
-public class EuclideanDistanceStrategy implements DistanceStrategy {
+class EuclideanDistanceStrategy implements DistanceStrategy {
   @Override
   public double distance(double[] pointA, double[] pointB) {
     double squaredSum = 0;

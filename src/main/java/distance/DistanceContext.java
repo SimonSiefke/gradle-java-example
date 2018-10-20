@@ -1,15 +1,11 @@
 package distance;
 
+import context.Context;
+
 /**
  * Distance Context for choosing different strategies.
  */
-public class DistanceContext {
-  private DistanceStrategy strategy;
-
-  public void setDistanceStrategy(DistanceStrategy strategy) {
-    this.strategy = strategy;
-  }
-
+public class DistanceContext extends Context<DistanceStrategy> {
   public double getDistance(double[] pointA, double[] pointB) {
     return strategy.distance(pointA, pointB);
   }
