@@ -1,4 +1,4 @@
-package kmeans;
+package util;
 
 /**
  * Validator for validating all kinds of stuff.
