@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.Test;
 
+import util.Point;
+
 public class PointTest {
   @Test
   public void testPoint() {

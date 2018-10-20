@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/gradle-example2.iml" filepath="$PROJECT_DIR$/gradle-example2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gradle-example2_jmh.iml" filepath="$PROJECT_DIR$/.idea/modules/gradle-example2_jmh.iml" group="gradle-example2" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gradle-example2_main.iml" filepath="$PROJECT_DIR$/.idea/modules/gradle-example2_main.iml" group="gradle-example2" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gradle-example2_test.iml" filepath="$PROJECT_DIR$/.idea/modules/gradle-example2_test.iml" group="gradle-example2" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-analytics.iml" filepath="$PROJECT_DIR$/.idea/modules/data-analytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-analytics_jmh.iml" filepath="$PROJECT_DIR$/.idea/modules/data-analytics_jmh.iml" group="data-analytics" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-analytics_main.iml" filepath="$PROJECT_DIR$/.idea/modules/data-analytics_main.iml" group="data-analytics" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/data-analytics_test.iml" filepath="$PROJECT_DIR$/.idea/modules/data-analytics_test.iml" group="data-analytics" />
     </modules>
   </component>
 </project>

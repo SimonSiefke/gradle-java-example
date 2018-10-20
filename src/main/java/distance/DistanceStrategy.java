@@ -1,5 +1,7 @@
 package distance;
 
+import javax.annotation.Nonnull;
+
 /**
  * Interface for Distance Strategies.
  */
@@ -11,5 +13,5 @@ interface DistanceStrategy {
    * @param pointB the second point
    * @return the distance between the two points
    */
-  double distance(double[] pointA, double[] pointB);
+  double distance(@Nonnull double[] pointA, @Nonnull double[] pointB);
 }

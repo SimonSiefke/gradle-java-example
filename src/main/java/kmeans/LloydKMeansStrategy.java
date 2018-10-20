@@ -3,9 +3,9 @@ package kmeans;
 /**
  * Lloyd KMeans Strategy.
  */
-public class LloydKMeansStrategy implements KMeansStrategy {
+class LloydKMeansStrategy implements KMeansStrategy {
   @Override
-  public void kMeans() {
+  public void kMeans(int numberOfIterations, double[][] dataPoints) {
     // TODO
   }
 }

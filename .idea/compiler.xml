@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="data-analytics_jmh" target="11" />
+      <module name="data-analytics_main" target="11" />
+      <module name="data-analytics_test" target="11" />
       <module name="gradle-example2_jmh" target="11" />
       <module name="gradle-example2_main" target="11" />
       <module name="gradle-example2_test" target="11" />
