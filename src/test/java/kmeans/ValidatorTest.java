@@ -39,38 +39,4 @@ public class ValidatorTest {
   public void testCorrectDimensionsDataset() {
     Validator.validateDataPoints(new double[][] { { 0 }, { 0 } });
   }
-
-  // @ParameterizedTest
-  // @CsvSource({ "{1,2}, 5", "JUnit 5, 7", "'Hello, JUnit 5!', 15" })
-  // public void testWrongDimensionsDataset(Object x) {
-  // System.out.println(x);
-  // assertThrows(IllegalArgumentException.class, () ->
-  // Validator.validateDataPoints(new double[][] {}));
-  // }
-
-  // @ParameterizedTest
-  // @CsvSource({ "0, 0, 0", "1, 0, 1", "1.414, 1, 1" })
-  // void testPointNorm(double norm, @AggregateWith(PointAggregator.class) Point
-  // point) {
-  // }
-
-  // static class PointAggregator implements ArgumentsAggregator {
-
-  // @Override
-  // public Object aggregateArguments(ArgumentsAccessor arguments,
-  // ParameterContext context)
-  // throws ArgumentsAggregationException {
-
-  // // step 1: convert Object[] to Double[]
-  // Double[] coordinates =
-  // arguments.toList().stream().map(Object::toString).map(Double::parseDouble)
-  // .toArray(Double[]::new);
-
-  // // step 2: convert Double[] to double[]
-  // double[] doubleCoordinates =
-  // Stream.of(coordinates).mapToDouble(Double::doubleValue).toArray();
-
-  // return new Point(doubleCoordinates);
-  // }
-  // }
 }
