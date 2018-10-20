@@ -11,7 +11,7 @@ public class EuclideanDistanceStrategyTest {
   @BeforeAll
   public static void initializeDistanceContext() {
     EuclideanDistanceStrategyTest.distanceContext = new DistanceContext();
-    distanceContext.setDistanceStrategy(new EuclideanDistanceStrategy());
+    distanceContext.setStrategy(DistanceStrategies.EUCLIDEAN);
   }
 
   @Test
