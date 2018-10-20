@@ -5,7 +5,7 @@ package kmeans;
  */
 class ElkanKMeansStrategy implements KMeansStrategy {
   @Override
-  public void kMeans() {
+  public void kMeans(int numberOfIterations, double[][] dataPoints) {
     // TODO
   }
 }

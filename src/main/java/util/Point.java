@@ -1,3 +1,4 @@
+package util;
 
 public class Point {
   public final double[] coordinates;
