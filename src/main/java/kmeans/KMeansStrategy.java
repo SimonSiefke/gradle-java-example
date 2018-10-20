@@ -3,6 +3,6 @@ package kmeans;
 /**
  * Interface for KMeans Strategies.
  */
-interface KMeansStrategy {
-  void kMeans(int numberOfIterations, double[][] dataPoints);
+public interface KMeansStrategy {
+  void cluster(int numberOfIterations, double[][] dataPoints);
 }

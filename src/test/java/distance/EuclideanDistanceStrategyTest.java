@@ -2,27 +2,18 @@ package distance;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class EuclideanDistanceStrategyTest {
-  private static DistanceContext distanceContext;
-
-  @BeforeAll
-  public static void initializeDistanceContext() {
-    EuclideanDistanceStrategyTest.distanceContext = new DistanceContext();
-    distanceContext.setStrategy(DistanceStrategies.EUCLIDEAN);
-  }
-
   @Test
   public void testSamePoint() {
-    var distance = distanceContext.getDistance(new double[] { 1, 1 }, new double[] { 1, 1 });
+    var distance = Distance.EUCLIDEAN.distance(new double[] { 1, 1 }, new double[] { 1, 1 });
     assertEquals(0, distance);
   }
 
   @Test
   public void testDifferentPoints() {
-    var distance = distanceContext.getDistance(new double[] { 0, 0 }, new double[] { 1, 1 });
+    var distance = Distance.EUCLIDEAN.distance(new double[] { 0, 0 }, new double[] { 1, 1 });
     assertEquals(Math.sqrt(2), distance);
   }
 }
