@@ -2,12 +2,17 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="benchmark_jmh" target="11" />
+      <module name="benchmark_main" target="11" />
+      <module name="benchmark_test" target="11" />
       <module name="data-analytics_jmh" target="11" />
       <module name="data-analytics_main" target="11" />
       <module name="data-analytics_test" target="11" />
       <module name="gradle-example2_jmh" target="11" />
       <module name="gradle-example2_main" target="11" />
       <module name="gradle-example2_test" target="11" />
+      <module name="kmeans_main" target="11" />
+      <module name="kmeans_test" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

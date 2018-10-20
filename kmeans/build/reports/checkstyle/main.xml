@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.13">
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/distance/Distance.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/distance/DistanceStrategy.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/distance/EuclideanDistanceStrategy.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/kmeans/KMeans.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/kmeans/KMeansStrategy.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/kmeans/elkan/ElkanKMeansStrategy.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/kmeans/lloyd/LloydKMeansStrategy.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/util/Point.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/util/Validator.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/util/dataloader/DataLoader.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/util/dataloader/DataLoaderStrategy.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/main/java/util/dataloader/TextDataLoaderStrategy.java">
+</file>
+</checkstyle>

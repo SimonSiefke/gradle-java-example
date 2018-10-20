@@ -6,126 +6,60 @@ plugins {
     id 'checkstyle'
     id 'pmd'
     id "com.github.spotbugs" version "1.6.5"
-    id 'jacoco'
 
     // benchmark plugins
-    id "me.champeau.gradle.jmh" version "0.4.6"
-    id "io.morethan.jmhreport" version "0.9.0"
-
-    // TODO figure this out
-    // id 'io.franzbecker.gradle-lombok' version '1.14'
+    // id "me.champeau.gradle.jmh" version "0.4.6"
+    // id "io.morethan.jmhreport" version "0.9.0"
 }
 
-dependencies {
-    compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    // test dependencies
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
-    testCompile "org.junit.jupiter:junit-jupiter-params:${junitJupiterVersion}"
+allprojects{
+   // necessary plugins
+    apply plugin: 'java'
+
+    // error checking plugins
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
+    apply plugin: "com.github.spotbugs"
+    apply plugin: 'jacoco'
+
+  dependencies {
+      compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+  }
+
+  repositories {
+      jcenter()
+  }
+
+
+  /*******************************/
+  /* Error Checking Configuration */
+  /********************************/
+
+  pmd {
+      toolVersion = '6.8.0'
+      ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
+      ruleSets = []
+  }
+
+  checkstyle {
+      toolVersion = '8.13'
+      configFile = file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+  }
+
+  [checkstyleMain, checkstyleTest].each { task ->
+      task.logging.setLevel(LogLevel.LIFECYCLE)
+  }
+
+  spotbugs {
+      toolVersion = '3.1.7'
+      effort = 'max'
+      reportLevel = 'medium'
+  }
+
+  tasks.withType(com.github.spotbugs.SpotBugsTask) {
+      reports {
+          xml.enabled = false
+          html.enabled = true
+      }
+  }
 }
-
-repositories {
-    jcenter()
-}
-
-
-/**********************/
-/* Test Configuration */
-/**********************/
-
-test {
-    useJUnitPlatform()
-    failFast = true
-    testLogging {
-        events 'PASSED', 'FAILED', 'SKIPPED'
-    }
-    afterSuite { desc, result ->
-        if (!desc.parent) {
-            println "\nTest result: ${result.resultType}"
-            println "Test summary: ${result.testCount} tests, " +
-                    "${result.successfulTestCount} succeeded, " +
-                    "${result.failedTestCount} failed, " +
-                    "${result.skippedTestCount} skipped"
-        }
-    }
-}
-
-
-/*******************************/
-/* Error Checking Configuration */
-/********************************/
-
-pmd {
-    toolVersion = '6.8.0'
-    ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
-    ruleSets = []
-}
-
-checkstyle {
-    toolVersion = '8.13'
-    configFile = file("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
-}
-
-[checkstyleMain, checkstyleTest].each { task ->
-    task.logging.setLevel(LogLevel.LIFECYCLE)
-}
-
-spotbugs {
-    toolVersion = '3.1.7'
-    effort = 'max'
-    reportLevel = 'medium'
-}
-
-tasks.withType(com.github.spotbugs.SpotBugsTask) {
-    reports {
-        xml.enabled = false
-        html.enabled = true
-    }
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        csv.enabled false
-        html.enabled true
-    }
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.7
-            }
-            failOnViolation true
-        }
-    }
-}
-
-jacoco {
-    toolVersion = "0.8.2"
-}
-
-jacocoTestCoverageVerification.dependsOn jacocoTestReport
-check.dependsOn jacocoTestCoverageVerification
-
-
-/***************************/
-/* Benchmark Configuration */
-/***************************/
-
-apply plugin: 'me.champeau.gradle.jmh'
-
-jmh {
- include = 'benchmark\\.HelloBenchmark.*'
-    warmupIterations = 1
-    iterations = 1
-    resultFormat = 'JSON'
-}
-
-jmhReport {
-    jmhResultPath = project.file('build/reports/jmh/results.json')
-    jmhReportOutput = project.file('build/reports/jmh')
-}
-
-tasks.jmh.finalizedBy tasks.jmhReport
