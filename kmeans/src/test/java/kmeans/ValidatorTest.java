@@ -31,8 +31,7 @@ public class ValidatorTest {
 
   @Test
   public void testWrongDimensionsAndNullDataset() {
-    assertThrows(IllegalArgumentException.class,
-        () -> Validator.validateDataPoints(new double[][] { { 1 }, null, { 2, 3 } }));
+    assertThrows(IllegalArgumentException.class, () -> Validator.validateDataPoints(new double[][] { null, { 2, 3 } }));
   }
 
   @Test
@@ -46,8 +45,24 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testWrongClusterCenters() {
+  public void testNullClusterCenters() {
+    assertThrows(IllegalArgumentException.class, () -> Validator.validateClusterCenters(null));
+  }
+
+  @Test
+  public void testWrongClusterCenters1() {
     assertThrows(IllegalArgumentException.class,
         () -> Validator.validateClusterCenters(new double[][] { { 1 }, { 2, 3 } }));
+  }
+
+  @Test
+  public void testWrongClusterCenters2() {
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterCenters(new double[][] { null, { 2, 3 } }));
+  }
+
+  @Test
+  public void testWrongNumberOfIterations() {
+    assertThrows(IllegalArgumentException.class, () -> Validator.validateNumberOfIterations(-1));
   }
 }

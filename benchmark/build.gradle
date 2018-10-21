@@ -2,15 +2,24 @@ plugins {
     // benchmark plugins
     id "me.champeau.gradle.jmh" version "0.4.6"
     id "io.morethan.jmhreport" version "0.9.0"
+    id "application"
 }
 
 dependencies {
     compile project(':kmeans')
 }
 
+/*************************/
+/* Runtime Configuration */
+/*************************/
+
+mainClassName = "Main"
+
+
 /***************************/
 /* Benchmark Configuration */
 /***************************/
+
 
 apply plugin: 'me.champeau.gradle.jmh'
 
