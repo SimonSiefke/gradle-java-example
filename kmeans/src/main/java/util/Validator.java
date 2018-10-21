@@ -4,12 +4,24 @@ package util;
  * Validator for validating all kinds of stuff.
  */
 public final class Validator {
-
-  private Validator() {
-    // private constructor to prevent creating objects of this class.
+  public static void validateClusterDataPointsAndClusterCenters(double[][] dataPoints, double[][] clusterCenters) {
+    Validator.validateDataPoints(dataPoints);
+    Validator.validateClusterCenters(clusterCenters);
+    if (dataPoints.length < clusterCenters.length) {
+      throw new IllegalArgumentException("there are more cluster centers than data points");
+    }
+    if (dataPoints[0].length != clusterCenters[0].length) {
+      throw new IllegalArgumentException("data points and cluster centers must have the same dimension");
+    }
   }
 
-  public static void validateDataPoints(double[][] dataPoints) {
+  public static void validateNumberOfIterations(int numberOfIterations) {
+    if (numberOfIterations <= 0) {
+      throw new IllegalArgumentException("number of iterations must be greater than 0");
+    }
+  }
+
+  private static void validateDataPoints(double[][] dataPoints) {
     if (dataPoints == null) {
       throw new IllegalArgumentException("Data set is null.");
     } else if (dataPoints.length == 0) {
@@ -25,7 +37,7 @@ public final class Validator {
     }
   }
 
-  public static void validateClusterCenters(double[][] clusterCenters) {
+  private static void validateClusterCenters(double[][] clusterCenters) {
     if (clusterCenters == null) {
       throw new IllegalArgumentException("initial cluster centers are null.");
     } else if (clusterCenters.length == 0) {
@@ -41,9 +53,7 @@ public final class Validator {
     }
   }
 
-  public static void validateNumberOfIterations(int numberOfIterations) {
-    if (numberOfIterations <= 0) {
-      throw new IllegalArgumentException("number of iterations must be greater than 0");
-    }
+  private Validator() {
+    // private constructor to prevent creating objects of this class.
   }
 }

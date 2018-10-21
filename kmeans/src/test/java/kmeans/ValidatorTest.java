@@ -10,55 +10,55 @@ public class ValidatorTest {
 
   @Test
   public void testNullDataset() {
-    assertThrows(IllegalArgumentException.class, () -> Validator.validateDataPoints(null));
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterDataPointsAndClusterCenters(null, new double[][] { { 1 } }));
   }
 
   @Test
   public void testEmptyDataset() {
-    assertThrows(IllegalArgumentException.class, () -> Validator.validateDataPoints(new double[][] {}));
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterDataPointsAndClusterCenters(new double[][] {}, new double[][] {}));
   }
 
   @Test
   public void testWrongDimensionsDataset1() {
-    assertThrows(IllegalArgumentException.class, () -> Validator.validateDataPoints(new double[][] { { 1 }, {} }));
+    assertThrows(IllegalArgumentException.class, () -> Validator
+        .validateClusterDataPointsAndClusterCenters(new double[][] { { 1 }, {} }, new double[][] { { 2 } }));
   }
 
   @Test
   public void testWrongDimensionsDataset2() {
-    assertThrows(IllegalArgumentException.class,
-        () -> Validator.validateDataPoints(new double[][] { { 1 }, { 2, 3 } }));
+    assertThrows(IllegalArgumentException.class, () -> Validator
+        .validateClusterDataPointsAndClusterCenters(new double[][] { { 1 }, { 2 } }, new double[][] { { 3, 4 } }));
   }
 
   @Test
   public void testWrongDimensionsAndNullDataset() {
-    assertThrows(IllegalArgumentException.class, () -> Validator.validateDataPoints(new double[][] { null, { 2, 3 } }));
+    assertThrows(IllegalArgumentException.class, () -> Validator
+        .validateClusterDataPointsAndClusterCenters(new double[][] { null, { 2, 3 } }, new double[][] { { 4, 5 } }));
   }
 
   @Test
   public void testCorrectDimensionsDataset() {
-    Validator.validateDataPoints(new double[][] { { 0 }, { 0 } });
+    Validator.validateClusterDataPointsAndClusterCenters(new double[][] { { 0 } }, new double[][] { { 1 } });
   }
 
   @Test
   public void testEmptyClusterCenters() {
-    assertThrows(IllegalArgumentException.class, () -> Validator.validateClusterCenters(new double[][] {}));
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterDataPointsAndClusterCenters(new double[][] {}, new double[][] {}));
   }
 
   @Test
   public void testNullClusterCenters() {
-    assertThrows(IllegalArgumentException.class, () -> Validator.validateClusterCenters(null));
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterDataPointsAndClusterCenters(null, new double[][] { { 1 } }));
   }
 
   @Test
   public void testWrongClusterCenters1() {
-    assertThrows(IllegalArgumentException.class,
-        () -> Validator.validateClusterCenters(new double[][] { { 1 }, { 2, 3 } }));
-  }
-
-  @Test
-  public void testWrongClusterCenters2() {
-    assertThrows(IllegalArgumentException.class,
-        () -> Validator.validateClusterCenters(new double[][] { null, { 2, 3 } }));
+    assertThrows(IllegalArgumentException.class, () -> Validator
+        .validateClusterDataPointsAndClusterCenters(new double[][] { { 1 } }, new double[][] { { 2 }, { 3, 4 } }));
   }
 
   @Test
