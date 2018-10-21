@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import distance.Distance;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Validator;
 
 /**
  * Lloyd KMeans Strategy.
@@ -47,10 +46,6 @@ public class LloydKMeansStrategy implements KMeansStrategy {
   @Override
   public Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
       @Nonnull int maxNumberOfIterations) {
-    Validator.validateDataPoints(dataPoints);
-    Validator.validateClusterCenters(initialClusterCenters);
-    Validator.validateNumberOfIterations(maxNumberOfIterations);
-
     int numberOfIterations = 0;
     boolean hasChanged = true;
 
