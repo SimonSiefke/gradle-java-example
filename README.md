@@ -2,7 +2,8 @@
 <a href="https://travis-ci.com/SimonSiefke/gradle-java-example"><img src="https://travis-ci.com/SimonSiefke/gradle-java-example.svg?branch=master" alt="Build Status"></a>
 <a href="https://codecov.io/gh/SimonSiefke/gradle-java-example">
 <img src="https://codecov.io/gh/SimonSiefke/gradle-java-example/branch/master/graph/badge.svg" alt="Coverage Status"></a>
-<a href="https://raw.githubusercontent.com/SimonSiefke/gradle-java-example/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a></p>
+<a href="https://raw.githubusercontent.com/SimonSiefke/gradle-java-example/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+<a href="https://github.com/SimonSiefke/gradle-java-example/issues"><img src="https://img.shields.io/github/issues/SimonSiefke/gradle-java-example.svg"></a></p>
 
 # Java & Gradle Example Project
 
