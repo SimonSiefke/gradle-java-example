@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="distance.EuclideanDistanceStrategyTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-10-21T08:41:11" hostname="xiaomi-air-2018" time="0.005">
-  <properties/>
-  <testcase name="testDifferentPoints()" classname="distance.EuclideanDistanceStrategyTest" time="0.003"/>
-  <testcase name="testSamePoint()" classname="distance.EuclideanDistanceStrategyTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
