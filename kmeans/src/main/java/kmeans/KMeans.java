@@ -12,15 +12,13 @@ public final class KMeans {
   private static final KMeansStrategy ELKAN = new ElkanKMeansStrategy();
 
   public static Cluster[] LLOYD(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations) {
-    Validator.validateDataPoints(dataPoints);
-    Validator.validateClusterCenters(initialClusterCenters);
+    Validator.validateClusterDataPointsAndClusterCenters(dataPoints, initialClusterCenters);
     Validator.validateNumberOfIterations(maxNumberOfIterations);
     return LLOYD.cluster(dataPoints, initialClusterCenters, maxNumberOfIterations);
   }
 
   public static Cluster[] ELKAN(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations) {
-    Validator.validateDataPoints(dataPoints);
-    Validator.validateClusterCenters(initialClusterCenters);
+    Validator.validateClusterDataPointsAndClusterCenters(dataPoints, initialClusterCenters);
     Validator.validateNumberOfIterations(maxNumberOfIterations);
     return ELKAN.cluster(dataPoints, initialClusterCenters, maxNumberOfIterations);
   }
