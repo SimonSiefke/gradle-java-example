@@ -57,7 +57,8 @@ public class LloydKMeansStrategy implements KMeansStrategy {
     final Cluster[] clusters = Arrays.stream(initialClusterCenters).map(Cluster::new).toArray(Cluster[]::new);
 
     while (numberOfIterations < maxNumberOfIterations && hasChanged) {
-      // step 0: clean up points in each cluster because they are recalculated in step 1
+      // step 0: clean up points in each cluster because they are recalculated in step
+      // 1
       for (var cluster : clusters) {
         cluster.closestPoints.clear();
       }
@@ -77,6 +78,7 @@ public class LloydKMeansStrategy implements KMeansStrategy {
         }
         cluster.center = average(cluster.closestPoints);
       }
+      numberOfIterations++;
     }
     return clusters;
   }

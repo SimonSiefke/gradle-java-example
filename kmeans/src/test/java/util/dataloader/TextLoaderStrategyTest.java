@@ -8,16 +8,16 @@ public class TextLoaderStrategyTest {
 
   @Test
   public void testFile() {
-    DataLoader.TEXT.load("src/test/java/util/dataloader/data.txt");
+    DataLoader.TEXT("../kmeans/src/test/java/util/dataloader/data.txt");
   }
 
   @Test
   public void testFileWithOtherFormat() {
-    DataLoader.TEXT.load("src/test/java/util/dataloader/data_with_other_format.txt");
+    DataLoader.TEXT("../kmeans/src/test/java/util/dataloader/data_with_other_format.txt");
   }
 
   @Test
   public void testNonExistingFile() {
-    assertThrows(Exception.class, () -> DataLoader.TEXT.load("this path does not exist"));
+    assertThrows(Exception.class, () -> DataLoader.TEXT("this path does not exist"));
   }
 }
