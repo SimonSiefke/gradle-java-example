@@ -4,7 +4,11 @@
  * Facade for all the Distance Strategies that are available.
  */
 public final class Distance {
-<span class="fc" id="L7">  public static final DistanceStrategy EUCLIDEAN = new EuclideanDistanceStrategy();</span>
+<span class="fc" id="L7">  private static final DistanceStrategy EUCLIDEAN = new EuclideanDistanceStrategy();</span>
+
+  public static double EUCLIDEAN(double[] pointA, double[] pointB) {
+<span class="fc" id="L10">    return EUCLIDEAN.distance(pointA, pointB);</span>
+  }
 
   private Distance() {
     // private constructor to prevent creating objects of this class.

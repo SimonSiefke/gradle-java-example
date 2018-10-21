@@ -39,4 +39,15 @@ public class ValidatorTest {
   public void testCorrectDimensionsDataset() {
     Validator.validateDataPoints(new double[][] { { 0 }, { 0 } });
   }
+
+  @Test
+  public void testEmptyClusterCenters() {
+    assertThrows(IllegalArgumentException.class, () -> Validator.validateClusterCenters(new double[][] {}));
+  }
+
+  @Test
+  public void testWrongClusterCenters() {
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterCenters(new double[][] { { 1 }, { 2, 3 } }));
+  }
 }

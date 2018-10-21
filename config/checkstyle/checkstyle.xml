@@ -54,7 +54,7 @@
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
     <module name="MemberName"/>
-    <module name="MethodName"/>
+    <!-- <module name="MethodName"/> -->
     <!--<module name="PackageName"/>-->
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
@@ -194,6 +194,8 @@
         <module name="EmptyLineSeparator">
             <property name="allowNoEmptyLineBetweenFields" value="true"/>
         </module>
+
+
         <module name="SeparatorWrap">
             <property name="tokens" value="DOT"/>
             <property name="option" value="nl"/>
@@ -221,6 +223,7 @@
             <message key="name.invalidPattern"
                      value="Parameter name ''{0}'' must match pattern ''{1}''."/>
         </module>
+
         <module name="LocalVariableName">
             <property name="tokens" value="VARIABLE_DEF"/>
             <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
@@ -232,11 +235,12 @@
             <message key="name.invalidPattern"
                      value="Class type name ''{0}'' must match pattern ''{1}''."/>
         </module>
-        <module name="MethodTypeParameterName">
-            <property name="format" value="(^[A-Z][0-9]?)$|([A-Z][a-zA-Z0-9]*[T]$)"/>
-            <message key="name.invalidPattern"
-                     value="Method type name ''{0}'' must match pattern ''{1}''."/>
-        </module>
+<module name="MethodName">
+   <property name="format" value="^[a-zA-Z][a-zA-Z0-9]*$"/>
+</module>
+
+
+
         <module name="NoFinalizer"/>
         <module name="GenericWhitespace">
             <message key="ws.followed"
@@ -248,10 +252,7 @@
             <message key="ws.notPreceded"
                      value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
         </module>
-        <module name="AbbreviationAsWordInName">
-            <property name="ignoreFinal" value="false"/>
-            <property name="allowedAbbreviationLength" value="1"/>
-        </module>
+
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="VariableDeclarationUsageDistance"/>
         <module name="MethodParamPad"/>
@@ -265,11 +266,6 @@
         <module name="AnnotationLocation">
             <property name="tokens" value="VARIABLE_DEF"/>
             <property name="allowSamelineMultipleAnnotations" value="true"/>
-        </module>
-        <module name="MethodName">
-            <property name="format" value="^[a-z][a-z0-9]*[a-zA-Z0-9_]*$"/>
-            <message key="name.invalidPattern"
-                     value="Method name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="EmptyCatchBlock">
             <property name="exceptionVariableName" value="expected"/>

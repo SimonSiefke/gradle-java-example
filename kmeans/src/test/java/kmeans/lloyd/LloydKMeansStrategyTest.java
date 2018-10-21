@@ -1,4 +1,4 @@
-package kmeans;
+package kmeans.lloyd;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

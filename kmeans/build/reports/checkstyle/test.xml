@@ -4,11 +4,11 @@
 </file>
 <file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/distance/EuclideanDistanceStrategyTest.java">
 </file>
-<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/kmeans/ElkanKMeansStrategyTest.java">
-</file>
-<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/kmeans/LloydKMeansStrategyTest.java">
-</file>
 <file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/kmeans/ValidatorTest.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/kmeans/elkan/ElkanKMeansStrategyTest.java">
+</file>
+<file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/kmeans/lloyd/LloydKMeansStrategyTest.java">
 </file>
 <file name="/home/simon/Documents/uni/data analytics/gradle-java-example-original/kmeans/src/test/java/util/dataloader/TextLoaderStrategyTest.java">
 </file>

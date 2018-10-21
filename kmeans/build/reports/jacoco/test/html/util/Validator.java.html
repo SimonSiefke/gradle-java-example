@@ -17,13 +17,34 @@ public final class Validator {
 <span class="pc bpc" id="L17" title="1 of 2 branches missed.">    } else if (dataPoints[0] == null) {</span>
 <span class="nc" id="L18">      throw new IllegalArgumentException(&quot;Bad data set format.&quot;);</span>
     }
-<span class="fc" id="L20">    int dimension = dataPoints[0].length;</span>
-<span class="fc" id="L21">    int length = dataPoints.length;</span>
-<span class="fc bfc" id="L22" title="All 2 branches covered.">    for (int i = 1; i &lt; length; i++) {</span>
-<span class="fc bfc" id="L23" title="All 4 branches covered.">      if (dataPoints[i] == null || dataPoints[i].length != dimension) {</span>
-<span class="fc" id="L24">        throw new IllegalArgumentException(&quot;Bad data set format.&quot;);</span>
+<span class="fc" id="L20">    final int dimension = dataPoints[0].length;</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">    for (var point : dataPoints) {</span>
+<span class="fc bfc" id="L22" title="All 4 branches covered.">      if (point == null || point.length != dimension) {</span>
+<span class="fc" id="L23">        throw new IllegalArgumentException(&quot;Bad data set format.&quot;);</span>
       }
     }
-<span class="fc" id="L27">  }</span>
+<span class="fc" id="L26">  }</span>
+
+  public static void validateClusterCenters(double[][] clusterCenters) {
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">    if (clusterCenters == null) {</span>
+<span class="nc" id="L30">      throw new IllegalArgumentException(&quot;initial cluster centers are null.&quot;);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">    } else if (clusterCenters.length == 0) {</span>
+<span class="fc" id="L32">      throw new IllegalArgumentException(&quot;there are no initial cluster centers&quot;);</span>
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">    } else if (clusterCenters[0] == null) {</span>
+<span class="nc" id="L34">      throw new IllegalArgumentException(&quot;Bad initial cluster centers format.&quot;);</span>
+    }
+<span class="fc" id="L36">    final int dimension = clusterCenters[0].length;</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">    for (var clusterCenter : clusterCenters) {</span>
+<span class="pc bpc" id="L38" title="1 of 4 branches missed.">      if (clusterCenter == null || clusterCenter.length != dimension) {</span>
+<span class="fc" id="L39">        throw new IllegalArgumentException(&quot;Bad initial cluster centers format.&quot;);</span>
+      }
+    }
+<span class="nc" id="L42">  }</span>
+
+  public static void validateNumberOfIterations(int numberOfIterations) {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">    if (numberOfIterations &lt;= 0) {</span>
+<span class="nc" id="L46">      throw new IllegalArgumentException(&quot;number of iterations must be greater than 0&quot;);</span>
+    }
+<span class="nc" id="L48">  }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -21,6 +21,7 @@
 
     <rule ref="category/java/codestyle.xml">
         <exclude name="ShortVariable"/>
+        <exclude name="MethodNamingConventions"/>
         <exclude name="LocalVariableCouldBeFinal"/>
         <exclude name="OnlyOneReturn"/>
         <exclude name="AtLeastOneConstructor"/>
