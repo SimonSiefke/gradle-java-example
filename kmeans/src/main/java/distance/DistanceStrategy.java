@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 /**
  * Interface for Distance Strategies.
  */
-interface DistanceStrategy {
+public interface DistanceStrategy {
   /**
    * computes a distance between the two points.
    *

@@ -1,5 +1,6 @@
 package kmeans.elkan;
 
+import kmeans.Cluster;
 import kmeans.KMeansStrategy;
 
 /**
@@ -7,7 +8,8 @@ import kmeans.KMeansStrategy;
  */
 public class ElkanKMeansStrategy implements KMeansStrategy {
   @Override
-  public void cluster(int numberOfIterations, double[][] dataPoints) {
+  public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations) {
+    return new Cluster[] {};
     // TODO
   }
 }

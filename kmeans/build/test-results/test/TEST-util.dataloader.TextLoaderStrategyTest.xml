@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="util.dataloader.TextLoaderStrategyTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-10-20T22:16:43" hostname="xiaomi-air-2018" time="0.066">
-  <properties/>
-  <testcase name="testFile()" classname="util.dataloader.TextLoaderStrategyTest" time="0.032"/>
-  <testcase name="testNonExistingFile()" classname="util.dataloader.TextLoaderStrategyTest" time="0.01"/>
-  <testcase name="testFileWithOtherFormat()" classname="util.dataloader.TextLoaderStrategyTest" time="0.004"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
