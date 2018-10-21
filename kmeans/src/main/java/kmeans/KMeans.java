@@ -4,11 +4,19 @@ import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 
 /**
- * Facade for all the Distance Strategies that are available.
+ * Facade for all the KMeans Strategies that are available.
  */
 public final class KMeans {
-  public static final KMeansStrategy LLOYD = new LloydKMeansStrategy();
-  public static final KMeansStrategy ELKAN = new ElkanKMeansStrategy();
+  private static final KMeansStrategy LLOYD = new LloydKMeansStrategy();
+  private static final KMeansStrategy ELKAN = new ElkanKMeansStrategy();
+
+  public static Cluster[] LLOYD(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations) {
+    return LLOYD.cluster(dataPoints, initialClusterCenters, maxNumberOfIterations);
+  }
+
+  public static Cluster[] ELKAN(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations) {
+    return ELKAN.cluster(dataPoints, initialClusterCenters, maxNumberOfIterations);
+  }
 
   private KMeans() {
     // private constructor to prevent creating objects of this class.
