@@ -17,11 +17,13 @@ public class LloydKMeansStrategy implements KMeansStrategy {
   public Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
       @Nonnull int maxNumberOfIterations) {
     int numberOfIterations = 0;
-    boolean hasChanged = true;
+    boolean hasChanged = true;// TODO implement condition
 
     final Cluster[] clusters = Arrays.stream(initialClusterCenters).map(Cluster::new).toArray(Cluster[]::new);
 
-    while (numberOfIterations < maxNumberOfIterations && hasChanged) {
+    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
+      hasChanged = false;
+
       // step 0: clean up points in each cluster
       // because they are recalculated in step 1
       for (var cluster : clusters) {
@@ -39,13 +41,26 @@ public class LloydKMeansStrategy implements KMeansStrategy {
         if (cluster.closestPoints.size() == 0) {
           continue;
         }
-        cluster.center = Util.averageOfPoints(cluster.closestPoints);
+        var currentCenter = cluster.center;
+        var newCenter = Util.averageOfPoints(cluster.closestPoints);
+        cluster.center = newCenter;
+        if (Distance.EUCLIDEAN(currentCenter, newCenter) > 0) {
+          hasChanged = true;
+          System.out.println("change lloyd");
+        }
       }
       numberOfIterations++;
     }
     return clusters;
   }
 
+  /**
+   * computes the cluster that is closest to a given point.
+   *
+   * @param point    the point for which we want the closest cluster
+   * @param clusters all the clusters
+   * @return the closest cluster
+   */
   private Cluster closestCluster(@Nonnull double[] point, @Nonnull Cluster[] clusters) {
     Cluster closestCluster = null;
     double minDistance = Double.MAX_VALUE;

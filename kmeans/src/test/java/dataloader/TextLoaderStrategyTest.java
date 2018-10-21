@@ -1,4 +1,4 @@
-package util.dataloader;
+package dataloader;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -8,12 +8,12 @@ public class TextLoaderStrategyTest {
 
   @Test
   public void testFile() {
-    DataLoader.TEXT("../kmeans/src/test/java/util/dataloader/data.txt");
+    DataLoader.TEXT("../kmeans/src/test/java/dataloader/data.txt");
   }
 
   @Test
   public void testFileWithOtherFormat() {
-    DataLoader.TEXT("../kmeans/src/test/java/util/dataloader/data_with_other_format.txt");
+    DataLoader.TEXT("../kmeans/src/test/java/dataloader/data_with_other_format.txt");
   }
 
   @Test

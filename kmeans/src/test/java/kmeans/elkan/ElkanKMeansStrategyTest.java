@@ -1,12 +1,12 @@
 package kmeans.elkan;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import kmeans.KMeansTestBase;
 
-import org.junit.jupiter.api.Test;
+public class ElkanKMeansStrategyTest extends KMeansTestBase<ElkanKMeansStrategy> {
 
-public class ElkanKMeansStrategyTest {
-  @Test
-  public void testDifferentPoints() {
-    assertEquals(1, 1);
+  @Override
+  protected ElkanKMeansStrategy createInstance() {
+    return new ElkanKMeansStrategy();
   }
+
 }
