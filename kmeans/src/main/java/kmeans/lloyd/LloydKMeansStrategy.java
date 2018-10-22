@@ -46,7 +46,6 @@ public class LloydKMeansStrategy implements KMeansStrategy {
         cluster.center = newCenter;
         if (Distance.EUCLIDEAN(currentCenter, newCenter) > 0) {
           hasChanged = true;
-          System.out.println("change lloyd");
         }
       }
       numberOfIterations++;

@@ -40,9 +40,10 @@ public abstract class KMeansTestBase<T extends KMeansStrategy> {
   public void testThreePoints() {
     var inputData = new double[][] { { 0, 0 }, { 2, 2 }, { 6, 6 } };
     var initialClusterCenters = new double[][] { { 0, 0 }, { 2, 2 } };
-    Cluster[] clusters = instance.cluster(inputData, initialClusterCenters, 1);
+    Cluster[] clusters = instance.cluster(inputData, initialClusterCenters, 10);
+    Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
     assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
-    assertArrayEquals(new double[] { 5, 5 }, clusters[0].center);
+    assertArrayEquals(new double[] { 6, 6 }, clusters[1].center);
   }
 
   @Test
@@ -51,7 +52,7 @@ public abstract class KMeansTestBase<T extends KMeansStrategy> {
     var initialClusterCenters = new double[][] { { 0, 0 }, { 4, 4 } };
     Cluster[] clusters = instance.cluster(inputData, initialClusterCenters, 1);
     assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
-    assertArrayEquals(new double[] { 5, 5 }, clusters[0].center);
+    assertArrayEquals(new double[] { 5, 5 }, clusters[1].center);
   }
 
   @Test

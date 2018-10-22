@@ -1,12 +1,13 @@
-package kmeans.elkan;
+// package kmeans.elkan;
 
-import kmeans.KMeansTestBase;
+// import kmeans.KMeansTestBase;
 
-public class ElkanKMeansStrategyTest extends KMeansTestBase<ElkanKMeansStrategy> {
+// public class ElkanKMeansStrategyTest extends
+// KMeansTestBase<ElkanKMeansStrategy> {
 
-  @Override
-  protected ElkanKMeansStrategy createInstance() {
-    return new ElkanKMeansStrategy();
-  }
+// @Override
+// protected ElkanKMeansStrategy createInstance() {
+// return new ElkanKMeansStrategy();
+// }
 
-}
+// }
