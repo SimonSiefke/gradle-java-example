@@ -44,7 +44,7 @@ public class LloydKMeansStrategy implements KMeansStrategy {
         var currentCenter = cluster.center;
         var newCenter = Util.averageOfPoints(cluster.closestPoints);
         cluster.center = newCenter;
-        if (Distance.EUCLIDEAN(currentCenter, newCenter) > 0) {
+        if (Distance.DEFAULT(currentCenter, newCenter) > 0) {
           hasChanged = true;
         }
       }
@@ -64,7 +64,7 @@ public class LloydKMeansStrategy implements KMeansStrategy {
     Cluster closestCluster = null;
     double minDistance = Double.MAX_VALUE;
     for (var cluster : clusters) {
-      var currentDistance = Distance.EUCLIDEAN(point, cluster.center);
+      var currentDistance = Distance.DEFAULT(point, cluster.center);
       if (currentDistance < minDistance) {
         minDistance = currentDistance;
         closestCluster = cluster;

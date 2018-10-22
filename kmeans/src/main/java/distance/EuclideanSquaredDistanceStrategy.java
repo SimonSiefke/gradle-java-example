@@ -9,7 +9,7 @@ class EuclideanSquaredDistanceStrategy implements DistanceStrategy {
     double squaredSum = 0;
 
     for (int i = 0; i < pointA.length; i++) {
-      squaredSum += (pointA[i] - pointB[i]) * (pointA[i] - pointB[i]);
+      squaredSum += Math.pow((pointA[i] - pointB[i]), 2);
     }
 
     return squaredSum;

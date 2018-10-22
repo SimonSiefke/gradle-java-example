@@ -20,6 +20,9 @@ public abstract class KMeansTestBase<T extends KMeansStrategy> {
     instance = createInstance();
   }
 
+  // TODO remove useless and redundant tests
+  // TODO add test where initial cluster centers have no close points
+
   @Test
   public void testOnePoint() {
     var inputData = new double[][] { { 0, 0 } };
@@ -44,6 +47,16 @@ public abstract class KMeansTestBase<T extends KMeansStrategy> {
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
     assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
     assertArrayEquals(new double[] { 6, 6 }, clusters[1].center);
+  }
+
+  @Test
+  public void testAnotherThreePoints() {
+    var inputData = new double[][] { { 3, 4 }, { 0, 6 }, { 0, 0 } };
+    var initialClusterCenters = new double[][] { { 3, 4 }, { 0, 6 } };
+    Cluster[] clusters = instance.cluster(inputData, initialClusterCenters, 10);
+    Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
+    assertArrayEquals(new double[] { 0, 6 }, clusters[0].center);
+    assertArrayEquals(new double[] { 1.5, 2 }, clusters[1].center);
   }
 
   @Test

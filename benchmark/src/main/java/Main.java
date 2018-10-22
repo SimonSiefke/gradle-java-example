@@ -11,21 +11,52 @@ public final class Main {
   }
 
   public static void main(String[] args) {
-    int nums = 1;
+    var its = 7;
+    // var inputData = new double[][] { { 0, 2 }, { 0, 8 } };
+    // var initialClusterCenters = new double[][] { { 0, 0 }, { 0, 1 } };
     var inputData = DataLoader.TEXT("../benchmark/data/A1.txt");
     var initialClusterCenters = new double[][] { inputData[0], inputData[1] };
-    Cluster[] clusters = new LloydKMeansStrategy().cluster(inputData, initialClusterCenters, nums);
-    Cluster[] clusters2 = new ElkanKMeansStrategy().cluster(inputData, initialClusterCenters, nums);
+    Cluster[] clusters = new LloydKMeansStrategy().cluster(inputData, initialClusterCenters, its);
+    Cluster[] clusters2 = new ElkanKMeansStrategy().cluster(inputData, initialClusterCenters, its);
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
     Arrays.sort(clusters2, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 
-    System.out.println("lloyd");
+    System.out.println("Lloyd");
     System.out.println(Arrays.toString(clusters[0].center));
     System.out.println(Arrays.toString(clusters[1].center));
     System.out.println('\n');
     System.out.println("elkan");
     System.out.println(Arrays.toString(clusters2[0].center));
     System.out.println(Arrays.toString(clusters2[1].center));
+
+    // var inputData = new double[][] { { 0, 0 }, { 2, 2 }, { 6, 6 } };
+    // var initialClusterCenters = new double[][] { { 0, 0 }, { 2, 2 } };
+    // Cluster[] clusters = new LloydKMeansStrategy().cluster(inputData,
+    // initialClusterCenters, 1);
+    // Arrays.sort(clusters, (clusterA, clusterB) ->
+    // Double.compare(clusterA.center[0], clusterB.center[0]));
+
+    // int nums = 1;
+
+    // var inputData = new double[][] { { 3, 4 }, { 0, 6 }, { 0, 0 } };
+    // var initialClusterCenters = new double[][] { { 3, 4 }, { 0, 6 } };
+    // Cluster[] clusters = new LloydKMeansStrategy().cluster(inputData,
+    // initialClusterCenters, nums);
+    // Cluster[] clusters2 = new ElkanKMeansStrategy().cluster(inputData,
+    // initialClusterCenters, nums);
+    // // Arrays.sort(clusters, (clusterA, clusterB) ->
+    // // Double.compare(clusterA.center[0], clusterB.center[0]));
+    // Arrays.sort(clusters2, (clusterA, clusterB) ->
+    // Double.compare(clusterA.center[0], clusterB.center[0]));
+
+    // // System.out.println("lloyd");
+    // // System.out.println(Arrays.toString(clusters[0].center));
+    // // System.out.println(Arrays.toString(clusters[1].center));
+    // // // System.out.println(Arrays.toString(clusters[2].center));
+    // System.out.println('\n');
+    // System.out.println("elkan");
+    // System.out.println(Arrays.toString(clusters2[0].center));
+    // System.out.println(Arrays.toString(clusters2[1].center));
     // var inputData = DataLoader.TEXT("../benchmark/data/A1.txt");
     // var initialClusterCenters = new double[][] { inputData[0], inputData[1] };
     // Cluster[] clusters = new ElkanKMeansStrategy().cluster(inputData,
