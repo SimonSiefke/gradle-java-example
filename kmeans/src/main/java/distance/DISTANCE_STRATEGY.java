@@ -1,0 +1,5 @@
+package distance;
+
+public enum DISTANCE_STRATEGY {
+  DEFAULT, EUCLIDEAN, EUCLIDEAN_SQUARED;
+}

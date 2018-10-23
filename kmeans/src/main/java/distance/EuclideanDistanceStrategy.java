@@ -1,11 +1,15 @@
 package distance;
 
+import java.util.function.ToDoubleBiFunction;
+
 /**
  * Euclidean Distance Strategy.
  */
-class EuclideanDistanceStrategy implements DistanceStrategy {
+public class EuclideanDistanceStrategy implements DistanceStrategy {
+  private final EuclideanSquaredDistanceStrategy euclideanSquaredDistanceStrategy = new EuclideanSquaredDistanceStrategy();
+
   @Override
-  public double distance(double[] pointA, double[] pointB) {
-    return Math.sqrt(new EuclideanSquaredDistanceStrategy().distance(pointA, pointB));
+  public double compute(double[] pointA, double[] pointB) {
+    return Math.sqrt(this.euclideanSquaredDistanceStrategy.compute(pointA, pointB));
   }
 }

@@ -1,10 +1,11 @@
 package kmeans.lloyd;
 
 import java.util.Arrays;
+import java.util.function.ToDoubleBiFunction;
 
 import javax.annotation.Nonnull;
 
-import distance.Distance;
+import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
 import util.Util;
@@ -13,9 +14,12 @@ import util.Util;
  * Lloyd KMeans Strategy.
  */
 public class LloydKMeansStrategy implements KMeansStrategy {
+  private DistanceStrategy distance;
+
   @Override
   public Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
-      @Nonnull int maxNumberOfIterations) {
+      @Nonnull int maxNumberOfIterations, @Nonnull DistanceStrategy distance) {
+    this.distance = distance;
     int numberOfIterations = 0;
     boolean hasChanged = true;// TODO implement condition
 
@@ -44,7 +48,7 @@ public class LloydKMeansStrategy implements KMeansStrategy {
         var currentCenter = cluster.center;
         var newCenter = Util.averageOfPoints(cluster.closestPoints);
         cluster.center = newCenter;
-        if (Distance.DEFAULT(currentCenter, newCenter) > 0) {
+        if (this.distance.compute(currentCenter, newCenter) > 0) {
           hasChanged = true;
         }
       }
@@ -54,7 +58,7 @@ public class LloydKMeansStrategy implements KMeansStrategy {
   }
 
   /**
-   * computes the cluster that is closest to a given point.
+   * Computes the cluster that is closest to a given point.
    *
    * @param point    the point for which we want the closest cluster
    * @param clusters all the clusters
@@ -64,7 +68,7 @@ public class LloydKMeansStrategy implements KMeansStrategy {
     Cluster closestCluster = null;
     double minDistance = Double.MAX_VALUE;
     for (var cluster : clusters) {
-      var currentDistance = Distance.DEFAULT(point, cluster.center);
+      var currentDistance = this.distance.compute(point, cluster.center);
       if (currentDistance < minDistance) {
         minDistance = currentDistance;
         closestCluster = cluster;

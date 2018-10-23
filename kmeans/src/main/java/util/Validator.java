@@ -1,9 +1,14 @@
 package util;
 
+import clusterCenterInitialization.ClusterCenterInitializationStrategy;
+import kmeans.KMeansStrategy;
+
 /**
  * Validator for validating all kinds of stuff.
  */
 public final class Validator {
+  // TODO sort aplhabetically and add more tests
+
   public static void validateClusterDataPointsAndClusterCenters(double[][] dataPoints, double[][] clusterCenters) {
     Validator.validateDataPoints(dataPoints);
     Validator.validateClusterCenters(clusterCenters);
@@ -50,6 +55,19 @@ public final class Validator {
       if (clusterCenter == null || clusterCenter.length != dimension) {
         throw new IllegalArgumentException("Bad initial cluster centers format.");
       }
+    }
+  }
+
+  public static void validateKMeansStrategy(KMeansStrategy kMeansStrategy) {
+    if (kMeansStrategy == null) {
+      throw new IllegalArgumentException("k means strategy is null.");
+    }
+  }
+
+  public static void validateInitialClusterCentersAndNumberOfClusters(double[][] initialClusterCenters,
+      ClusterCenterInitializationStrategy clusterCenterInitializationStrategy, int numberOfClusters) {
+    if (initialClusterCenters == null && (numberOfClusters <= 0 || clusterCenterInitializationStrategy == null)) {
+      throw new IllegalArgumentException("initial clusters are invalid or can't be computed.");
     }
   }
 

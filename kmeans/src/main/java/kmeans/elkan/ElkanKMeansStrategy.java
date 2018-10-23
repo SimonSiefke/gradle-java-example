@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import distance.Distance;
+import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
 import util.Util;
@@ -13,8 +13,12 @@ import util.Util;
  * Elkan KMeans Strategy.
  */
 public class ElkanKMeansStrategy implements KMeansStrategy {
+  private DistanceStrategy distance;
+
   @Override
-  public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations) {
+  public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
+      DistanceStrategy distance) {
+    this.distance = distance;
     // TODO see
     // https://www.programcreek.com/java-api-examples/index.php?source_dir=JSAT-master/JSAT/src/jsat/clustering/kmeans/ElkanKernelKMeans.java
     // TODO see
@@ -59,7 +63,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
         if (skip[k]) {
           continue;
         }
-        var currentDistance = Distance.DEFAULT(dataPoints[n], clusters[k].center);
+        var currentDistance = this.distance.compute(dataPoints[n], clusters[k].center);
         lowerBounds[n][k] = currentDistance;
         if (currentDistance < minDistance) {
           minDistance = currentDistance;
@@ -91,7 +95,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
       for (int k = 0; k < K; k++) {
         double minDistance = Double.MAX_VALUE;
         for (int l = 0; l < K; l++) {
-          var currentDistance = Distance.DEFAULT(clusters[k].center, clusters[l].center);
+          var currentDistance = this.distance.compute(clusters[k].center, clusters[l].center);
           interClusterDistances[k][l] = currentDistance;
           if (k != l && currentDistance < minDistance) {
             minDistance = currentDistance;
@@ -108,8 +112,13 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
       // step 2
       for (int n = 0; n < N; n++) {
         System.out.println("step 2");
+        System.out.println("point" + Arrays.toString(dataPoints[n]));
+        System.out.println("upper bound " + upperBounds[n]);
+        System.out.println("sc " + sC[clusterAssignments[n]]);
         System.out.println(upperBounds[n] <= sC[clusterAssignments[n]]);
         if (upperBounds[n] <= sC[clusterAssignments[n]]) {
+          System.out.println("continue " + n);
+          System.out.println('\n');
           continue;
         }
 
@@ -118,7 +127,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
         // step 3
         for (int k = 0; k < K; k++) {
           System.out.println(Arrays.toString(clusters[k].center));
-          System.out.println(Distance.DEFAULT(dataPoints[n], clusters[clusterAssignments[n]].center));
+          System.out.println(this.distance.compute(dataPoints[n], clusters[clusterAssignments[n]].center));
           System.out.println('\n');
           System.out.println("ITERATION: k= " + k + "  n= " + n);
           if (k != clusterAssignments[n] && upperBounds[n] > lowerBounds[n][k]
@@ -128,7 +137,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
             double minDistance;
             if (r[n]) {
               System.out.println("no upper bound");
-              minDistance = Distance.DEFAULT(dataPoints[n], clusters[clusterAssignments[n]].center);
+              minDistance = this.distance.compute(dataPoints[n], clusters[clusterAssignments[n]].center);
               System.out.println("point " + Arrays.toString(dataPoints[n]) + " is assigned to cluster "
                   + Arrays.toString(clusters[clusterAssignments[n]].center));
               System.out.println("current distance " + minDistance);
@@ -138,10 +147,13 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
               minDistance = upperBounds[n];
             }
 
+            System.out.println("lower bound " + lowerBounds[n][k]);
+
             // step 3b
             if (minDistance > lowerBounds[n][k]
                 || minDistance > 0.5 * interClusterDistances[clusterAssignments[n]][k]) {
-              double newDistance = Distance.DEFAULT(dataPoints[n], clusters[k].center);
+              double newDistance = this.distance.compute(dataPoints[n], clusters[k].center);
+              // lowerBounds[n][k] = minDistance;
               System.out.println("step 3b");
               if (newDistance < minDistance) {
                 System.out.println("current distance" + minDistance);
@@ -185,7 +197,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
 
         var newCenter = Util.averageOfPoints(clusters[k].closestPoints);
         newClusterCenters[k] = newCenter;
-        if (Distance.DEFAULT(currentCenter, newCenter) > 0) {
+        if (this.distance.compute(currentCenter, newCenter) > 0) {
           hasChanged = true;
         }
       }
@@ -200,7 +212,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
           // System.out.println(k);
           System.out.println(newClusterCenters[k]);
           // System.out.println(clusters[k].center);
-          lowerBound[k] = Math.max(lowerBound[k] - Distance.DEFAULT(clusters[k].center, newClusterCenters[k]), 0);
+          lowerBound[k] = Math.max(lowerBound[k] - this.distance.compute(clusters[k].center, newClusterCenters[k]), 0);
         }
       }
 
@@ -211,7 +223,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
 
       // step 6
       for (int n = 0; n < N; n++) {
-        upperBounds[n] += Distance.DEFAULT(newClusterCenters[clusterAssignments[n]],
+        upperBounds[n] += this.distance.compute(newClusterCenters[clusterAssignments[n]],
             clusters[clusterAssignments[n]].center);
         r[n] = true;
       }
@@ -230,7 +242,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
         System.out.println(Arrays.toString(clusters[k].center));
         System.out.println(Arrays.toString(newClusterCenters[k]));
         System.out.println('\n');
-        if (Distance.DEFAULT(currentCenter, newCenter) > 0) {
+        if (this.distance.compute(currentCenter, newCenter) > 0) {
           hasChanged = true;
           System.out.println("change elkan");
         }

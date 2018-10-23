@@ -1,9 +1,12 @@
 import java.util.Arrays;
 
 import kmeans.Cluster;
+import kmeans.KMEANS_STRATEGY;
+import kmeans.KMeansBuilder;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 import dataloader.DataLoader;
+import distance.DISTANCE_STRATEGY;
 
 public final class Main {
   private Main() {
@@ -11,13 +14,20 @@ public final class Main {
   }
 
   public static void main(String[] args) {
-    var its = 7;
-    // var inputData = new double[][] { { 0, 2 }, { 0, 8 } };
-    // var initialClusterCenters = new double[][] { { 0, 0 }, { 0, 1 } };
-    var inputData = DataLoader.TEXT("../benchmark/data/A1.txt");
-    var initialClusterCenters = new double[][] { inputData[0], inputData[1] };
-    Cluster[] clusters = new LloydKMeansStrategy().cluster(inputData, initialClusterCenters, its);
-    Cluster[] clusters2 = new ElkanKMeansStrategy().cluster(inputData, initialClusterCenters, its);
+    var its = 2;
+    var dataPoints = new double[][] { { 0, 2 }, { 0, 8 } };
+    var initialClusterCenters = new double[][] { { 0, 0 }, { 0, 1 } };
+    var kmeans = new KMeansBuilder().withDataPoints(dataPoints).withInitialClusterCenters(initialClusterCenters)
+        .withMaxNumberOfIterations(its);
+    var clusters = kmeans.withStrategy(KMEANS_STRATEGY.LLOYD).cluster();
+    var clusters2 = kmeans.withStrategy(KMEANS_STRATEGY.ELKAN).cluster();
+
+    // var inputData = DataLoader.TEXT("../benchmark/data/sample.txt");
+    // var initialClusterCenters = new double[][] { inputData[0], inputData[1] };
+    // Cluster[] clusters = new LloydKMeansStrategy().cluster(inputData,
+    // initialClusterCenters, its);
+    // Cluster[] clusters2 = new ElkanKMeansStrategy().cluster(inputData,
+    // initialClusterCenters, its);
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
     Arrays.sort(clusters2, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 
