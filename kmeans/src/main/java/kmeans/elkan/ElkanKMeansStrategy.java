@@ -41,8 +41,6 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     int numberOfIterations = 0;
     boolean hasChanged = true;
 
-    // TODO compute interclusterdistances?
-
     // step -1: assign each point to its nearest cluster using Lemma 1
     final boolean[] skip = new boolean[K];
     for (int n = 0; n < N; n++) {
@@ -104,7 +102,6 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
             double minDistance;
             if (r[n]) {
               minDistance = this.distance.compute(dataPoints[n], clusters[clusterAssignments[n]].center);
-              upperBounds[n] = minDistance;
               r[n] = false;
             } else {
               minDistance = upperBounds[n];
