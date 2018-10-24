@@ -41,6 +41,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     int numberOfIterations = 0;
     boolean hasChanged = true;
 
+    // TODO make this easier
     // step -1: assign each point to its nearest cluster using Lemma 1
     final boolean[] skip = new boolean[K];
     for (int n = 0; n < N; n++) {
@@ -120,6 +121,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
         }
       }
 
+      // TODO make this easier
       // step 4
       for (var cluster : clusters) {
         cluster.closestPoints.clear();
