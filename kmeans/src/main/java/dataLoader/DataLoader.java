@@ -1,4 +1,4 @@
-package dataloader;
+package dataLoader;
 
 /**
  * Facade for all the Data Loader Strategies that are available.

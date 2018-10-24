@@ -1,4 +1,6 @@
-package dataloader;
+package dataLoader;
+
+import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.Scanner;
  */
 class TextDataLoaderStrategy implements DataLoaderStrategy {
   @Override
-  public double[][] load(String path) {
+  public double[][] load(@Nonnull String path) {
     try {
       Scanner scanner = new Scanner(new File(path), "UTF-8");
       List<double[]> doubles = new ArrayList<>();

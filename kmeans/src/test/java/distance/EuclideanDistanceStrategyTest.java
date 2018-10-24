@@ -4,16 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class EuclideanDistanceStrategyTest {
-  @Test
-  public void testSamePoint() {
-    var distance = EuclideanDistanceStrategy.distance.compute(new double[] { 1, 1 }, new double[] { 1, 1 });
-    assertEquals(0, distance);
+public class EuclideanDistanceStrategyTest extends DistanceStrategyTestBase<EuclideanDistanceStrategy> {
+  @Override
+  protected EuclideanDistanceStrategy createInstance() {
+    return new EuclideanDistanceStrategy();
   }
 
   @Test
   public void testDifferentPoints() {
-    var distance = EuclideanDistanceStrategy.distance.compute(new double[] { 0, 0 }, new double[] { 1, 1 });
+    var distance = new EuclideanDistanceStrategy().compute(new double[] { 0, 0 }, new double[] { 1, 1 });
     assertEquals(Math.sqrt(2), distance);
   }
 }

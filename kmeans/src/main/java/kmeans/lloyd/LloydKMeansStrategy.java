@@ -18,10 +18,10 @@ public class LloydKMeansStrategy implements KMeansStrategy {
 
   @Override
   public Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
-      @Nonnull int maxNumberOfIterations, @Nonnull DistanceStrategy distance) {
+       int maxNumberOfIterations, @Nonnull DistanceStrategy distance) {
     this.distance = distance;
     int numberOfIterations = 0;
-    boolean hasChanged = true;// TODO implement condition
+    boolean hasChanged = true;
 
     final Cluster[] clusters = Arrays.stream(initialClusterCenters).map(Cluster::new).toArray(Cluster[]::new);
 

@@ -14,6 +14,8 @@ import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 import util.Validator;
 
+import javax.annotation.Nonnull;
+
 /**
  * Builder for all the KMeans Strategies that are available.
  */
@@ -38,7 +40,7 @@ public final class KMeansBuilder {
    *
    * @param original the original
    */
-  private KMeansBuilder(KMeansBuilder original) {
+  private KMeansBuilder(@Nonnull KMeansBuilder original) {
     // TODO test if copy is deep
     this.clusterCenterInitializationStrategy = original.clusterCenterInitializationStrategy;
     if (original.dataPoints != null) {
@@ -132,7 +134,7 @@ public final class KMeansBuilder {
    *
    * @param initialClusterCenters the initial cluster centers to set
    */
-  public KMeansBuilder withInitialClusterCenters(double[][] initialClusterCenters) {
+  public KMeansBuilder withInitialClusterCenters( @Nonnull double[][] initialClusterCenters) {
     this.initialClusterCenters = initialClusterCenters;
     return new KMeansBuilder(this);
   }
@@ -179,7 +181,7 @@ public final class KMeansBuilder {
         this.clusterCenterInitializationStrategy, this.numberOfClusters);
     if (this.initialClusterCenters == null) {
       this.initialClusterCenters = this.clusterCenterInitializationStrategy.initialize(this.dataPoints,
-          this.numberOfClusters);
+          this.numberOfClusters, this.distanceStrategy);
     }
     Validator.validateClusterDataPointsAndClusterCenters(this.dataPoints, this.initialClusterCenters);
     Validator.validateNumberOfIterations(this.maxNumberOfIterations);

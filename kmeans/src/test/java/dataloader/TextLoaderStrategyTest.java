@@ -4,16 +4,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import dataLoader.DataLoader;
+
 public class TextLoaderStrategyTest {
 
   @Test
   public void testFile() {
-    DataLoader.TEXT("../kmeans/src/test/java/dataloader/data.txt");
+    DataLoader.TEXT("../kmeans/src/test/data/test_data_loader.txt");
   }
 
   @Test
   public void testFileWithOtherFormat() {
-    DataLoader.TEXT("../kmeans/src/test/java/dataloader/data_with_other_format.txt");
+    DataLoader.TEXT("../kmeans/src/test/data/test_data_loader_with_other_format.txt");
   }
 
   @Test
