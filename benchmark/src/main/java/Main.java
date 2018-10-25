@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
 import dataLoader.DataLoader;
+import distance.DISTANCE_STRATEGY;
 import distance.EuclideanDistanceStrategy;
 import distance.EuclideanSquaredDistanceStrategy;
 import kmeans.KMEANS_STRATEGY;
@@ -19,7 +20,8 @@ public final class Main {
     var clusters = new ElkanKMeansStrategy().cluster(dataPoints, initialClusterCenters, 60,
         new EuclideanSquaredDistanceStrategy());
     var clusters2 = new KMeansBuilder().withDataPoints(dataPoints).withStrategy(KMEANS_STRATEGY.ELKAN)
-        .withInitialClusterCenters(initialClusterCenters).withMaxNumberOfIterations(60).cluster();
+        .withInitialClusterCenters(initialClusterCenters).withMaxNumberOfIterations(60)
+        .withDistance(DISTANCE_STRATEGY.EUCLIDEAN_SQUARED).cluster();
 
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
     System.out.println(Arrays.toString(clusters[0].center));

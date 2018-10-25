@@ -23,16 +23,6 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
     instance = createInstance();
   }
 
-  // TODO remove useless and redundant tests
-  // TODO add test where initial cluster centers have no close points
-  // TODO
-  // definitly test those
-  // 2
-  // 4
-  // 3
-  // 0
-  // 1
-
   @Test
   public void testOnePoint() {
     var dataPoints = new double[][] { { 0, 0 } };
@@ -83,12 +73,21 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   }
 
   @Test
-  void testFullDataset() {
+  public void testFivePoints() {
+    var dataPoints = new double[][] { { 2 }, { 4 }, { 3 }, { 0 }, { 1 } };
+    var initialClusterCenters = new double[][] { { 2 }, { 4 } };
+    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, 1, new EuclideanSquaredDistanceStrategy());
+    assertArrayEquals(new double[] { 1.5 }, clusters[0].center);
+    assertArrayEquals(new double[] { 4 }, clusters[1].center);
+  }
+
+  @Test
+  void testFullDatasetWithEuclideanDifference() {
     var dataPoints = DataLoader.TEXT("../benchmark/data/A1.txt");
     var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1] };
-    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, 100,
-        new EuclideanSquaredDistanceStrategy());
+    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, 100, new EuclideanDistanceStrategy());
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
+
     assertArrayEquals(new double[] { 21263.194, 54735.200 }, clusters[0].center, 0.001);
     assertArrayEquals(new double[] { 50126.475, 46599.611 }, clusters[1].center, 0.001);
   }

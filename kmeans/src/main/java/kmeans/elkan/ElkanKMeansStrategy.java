@@ -46,15 +46,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     this.N = dataPoints.length;
 
     this.clusterAssignments = new int[N]; // maps data point indices to cluster indices
-
-    // this.clusterCenters =
-    // Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
-    this.clusterCenters = new double[initialClusterCenters.length][];
-    if (initialClusterCenters.length > 0) {
-      for (var x = 0; x < initialClusterCenters.length; x++) {
-        this.clusterCenters[x] = Arrays.copyOf(initialClusterCenters[x], initialClusterCenters[0].length);
-      }
-    }
+    this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.dataPoints = dataPoints;
     this.distance = distance;
 
@@ -111,7 +103,6 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
       clusterAssignments[n] = closestClusterIndex;
       upperBounds[n] = minDistance;
     }
-
   }
 
   private void updateClusterCenterAssignments() {

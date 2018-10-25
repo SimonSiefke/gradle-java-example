@@ -84,9 +84,9 @@ public final class KMeansBuilder {
   public KMeansBuilder withDistance(DISTANCE_STRATEGY distanceMethod) {
     switch (distanceMethod) {
     case EUCLIDEAN:
-    case DEFAULT:
       this.distanceStrategy = new EuclideanDistanceStrategy();
       break;
+    case DEFAULT:
     case EUCLIDEAN_SQUARED:
       this.distanceStrategy = new EuclideanSquaredDistanceStrategy();
     default:

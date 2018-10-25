@@ -41,9 +41,7 @@ public final class Util {
       if (numberOfPointsInClusters[k] > 0) {
         for (int d = 0; d < D; d++) {
           double newClusterCenterCoordinate = clusterSums[k][d] / numberOfPointsInClusters[k];
-          if (originalClusterCenters[k][d] != newClusterCenterCoordinate) {
-            hasChanged = true;
-          }
+          hasChanged = originalClusterCenters[k][d] != newClusterCenterCoordinate;
           copyToClusterCenters[k][d] = newClusterCenterCoordinate;
         }
       } else {
