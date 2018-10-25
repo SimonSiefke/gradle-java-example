@@ -1,4 +1,4 @@
-package dataLoader;
+package dataloader;
 
 import javax.annotation.Nonnull;
 

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import dataLoader.DataLoader;
+import dataloader.DataLoader;
 import distance.EuclideanDistanceStrategy;
 import distance.EuclideanSquaredDistanceStrategy;
 

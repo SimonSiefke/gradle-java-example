@@ -1,6 +1,6 @@
 package util;
 
-import clusterCenterInitialization.ClusterCenterInitializationStrategy;
+import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import kmeans.KMeansStrategy;
 
 /**

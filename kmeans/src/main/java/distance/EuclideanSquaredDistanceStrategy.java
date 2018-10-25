@@ -13,5 +13,5 @@ public class EuclideanSquaredDistanceStrategy implements DistanceStrategy {
       squaredSum += Math.pow((pointA[i] - pointB[i]), 2);
     }
     return squaredSum;
-  };
+  }
 }

@@ -3,7 +3,7 @@ package distance;
 import javax.annotation.Nonnull;
 
 /**
- * Distance method interface;
+ * Distance method interface.
  */
 public interface DistanceStrategy {
   /**

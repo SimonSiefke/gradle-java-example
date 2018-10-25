@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
@@ -175,8 +173,6 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     Arrays.fill(r, true);
 
     // step 7
-    for (int k = 0; k < K; k++) {
-      clusterCenters[k] = newClusterCenters[k];
-    }
+    clusterCenters = newClusterCenters;
   }
 }

@@ -1,15 +1,12 @@
 package util;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Utility class for KMeans methods.
  */
 public final class Util {
   /**
    * updates the cluster centers to the mean of the points that are assigned to
-   * each cluster
+   * each cluster.
    *
    * @param originalClusterCenters the original cluster centers
    * @param copyToClusterCenters   the cluster centers that will be updated based

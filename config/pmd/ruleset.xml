@@ -21,6 +21,9 @@
     </rule>
 
     <rule ref="category/java/codestyle.xml">
+        <exclude name="FieldNamingConventions"/>
+        <exclude name="UselessParentheses"/>
+        <exclude name="FormalParameterNamingConventions"/>
         <exclude name="LocalVariableNamingConventions"/>
         <exclude name="ShortVariable"/>
         <exclude name="ShortClassName" minimum="4"/>
@@ -41,6 +44,7 @@
     </rule>
 
     <rule ref="category/java/design.xml">
+        <exclude name="SingularField"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="NcssCount"/>
         <exclude name="DataClass"/>
@@ -57,6 +61,7 @@
 
     <rule ref="category/java/documentation.xml">
         <exclude name="CommentRequired"/>
+        <exclude name="CommentSize"/>
     </rule>
 
     <rule ref="category/java/errorprone.xml">

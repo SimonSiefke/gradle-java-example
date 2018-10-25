@@ -1,7 +1,6 @@
 package kmeans.lloyd;
 
 import java.util.Arrays;
-import java.util.function.ToDoubleBiFunction;
 
 import javax.annotation.Nonnull;
 

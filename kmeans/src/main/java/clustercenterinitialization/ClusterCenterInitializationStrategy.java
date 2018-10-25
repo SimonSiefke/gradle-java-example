@@ -1,4 +1,4 @@
-package clusterCenterInitialization;
+package clustercenterinitialization;
 
 import javax.annotation.Nonnull;
 
@@ -16,5 +16,5 @@ public interface ClusterCenterInitializationStrategy {
    * @param distance   the distance strategy
    * @return k initial cluster centers
    */
-  double[][] initialize(@Nonnull double[][] dataPoints,  int k, @Nonnull DistanceStrategy distance);
+  double[][] initialize(@Nonnull double[][] dataPoints, int k, @Nonnull DistanceStrategy distance);
 }

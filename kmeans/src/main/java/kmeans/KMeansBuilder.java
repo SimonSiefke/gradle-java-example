@@ -2,10 +2,11 @@ package kmeans;
 
 import java.util.Arrays;
 
-import clusterCenterInitialization.CLUSTER_CENTER_INITIALIZATION_STRATEGY;
-import clusterCenterInitialization.ClusterCenterInitializationStrategy;
-import clusterCenterInitialization.FirstKClusterCenterInitializationStrategy;
-import clusterCenterInitialization.KPlusPlusClusterCenterInitializationStrategy;
+import javax.annotation.Nonnull;
+
+import clustercenterinitialization.CLUSTER_CENTER_INITIALIZATION_STRATEGY;
+import clustercenterinitialization.ClusterCenterInitializationStrategy;
+import clustercenterinitialization.FirstKClusterCenterInitializationStrategy;
 import distance.DISTANCE_STRATEGY;
 import distance.DistanceStrategy;
 import distance.EuclideanDistanceStrategy;
@@ -13,8 +14,6 @@ import distance.EuclideanSquaredDistanceStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 import util.Validator;
-
-import javax.annotation.Nonnull;
 
 /**
  * Builder for all the KMeans Strategies that are available.
@@ -67,7 +66,7 @@ public final class KMeansBuilder {
   }
 
   /**
-   * Sets the data points that should be clustered
+   * Sets the data points that should be clustered.
    *
    * @param dataPoints the data points
    */
@@ -77,18 +76,21 @@ public final class KMeansBuilder {
   }
 
   /**
-   * Sets the distance measurement method
+   * Sets the distance measurement method.
    *
    * @param distanceMethod the distance measurement method
    */
   public KMeansBuilder withDistance(DISTANCE_STRATEGY distanceMethod) {
     switch (distanceMethod) {
+    case DEFAULT:
+      this.distanceStrategy = new EuclideanSquaredDistanceStrategy();
+      break;
     case EUCLIDEAN:
       this.distanceStrategy = new EuclideanDistanceStrategy();
       break;
-    case DEFAULT:
     case EUCLIDEAN_SQUARED:
       this.distanceStrategy = new EuclideanSquaredDistanceStrategy();
+      break;
     default:
       break;
     }
@@ -104,12 +106,11 @@ public final class KMeansBuilder {
   public KMeansBuilder withClusterCenterInitializationStrategy(
       CLUSTER_CENTER_INITIALIZATION_STRATEGY clusterCenterInitializationStrategy) {
     switch (clusterCenterInitializationStrategy) {
-    case FIRST_K:
     case DEFAULT:
       this.clusterCenterInitializationStrategy = new FirstKClusterCenterInitializationStrategy();
       break;
-    case K_PLUS_PLUS:
-      this.clusterCenterInitializationStrategy = new KPlusPlusClusterCenterInitializationStrategy();
+    case FIRST_K:
+      this.clusterCenterInitializationStrategy = new FirstKClusterCenterInitializationStrategy();
       break;
     default:
       break;
