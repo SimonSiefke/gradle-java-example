@@ -26,20 +26,20 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     // TODO see
     // https://github.com/siddheshk/Faster-Kmeans/blob/master/Code/heuristic_triangleinequality.py
 
-    final int N = dataPoints.length;
-    final int K = initialClusterCenters.length;
     final int D = dataPoints[0].length;
+    final int K = initialClusterCenters.length;
+    final int N = dataPoints.length;
 
     final int[] clusterAssignments = new int[N]; // maps data point indices to cluster indices
-    final double[][] lowerBounds = new double[N][K];
-    final double[] upperBounds = new double[N];
-    final double[][] interClusterDistances = new double[K][K];
-    final double[] s = new double[K];
-    final boolean[] r = new boolean[N];
     final Cluster[] clusters = Arrays.stream(initialClusterCenters).map(Cluster::new).toArray(Cluster[]::new);
+    final double[][] interClusterDistances = new double[K][K];
+    final double[][] lowerBounds = new double[N][K];
+    final boolean[] r = new boolean[N];
+    final double[] s = new double[K];
+    final double[] upperBounds = new double[N];
 
-    int numberOfIterations = 0;
     boolean hasChanged = true;
+    int numberOfIterations = 0;
 
     // TODO make this easier
     // step -1: assign each point to its nearest cluster using Lemma 1

@@ -134,7 +134,7 @@ public final class KMeansBuilder {
    *
    * @param initialClusterCenters the initial cluster centers to set
    */
-  public KMeansBuilder withInitialClusterCenters( @Nonnull double[][] initialClusterCenters) {
+  public KMeansBuilder withInitialClusterCenters(@Nonnull double[][] initialClusterCenters) {
     this.initialClusterCenters = initialClusterCenters;
     return new KMeansBuilder(this);
   }
@@ -186,7 +186,7 @@ public final class KMeansBuilder {
     Validator.validateClusterDataPointsAndClusterCenters(this.dataPoints, this.initialClusterCenters);
     Validator.validateNumberOfIterations(this.maxNumberOfIterations);
     Validator.validateKMeansStrategy(this.kMeansStrategy);
-    return this.kMeansStrategy.cluster(dataPoints, initialClusterCenters, this.maxNumberOfIterations,
+    return this.kMeansStrategy.cluster(this.dataPoints, this.initialClusterCenters, this.maxNumberOfIterations,
         this.distanceStrategy);
   }
 }
