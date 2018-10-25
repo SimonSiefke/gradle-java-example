@@ -46,7 +46,15 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     this.N = dataPoints.length;
 
     this.clusterAssignments = new int[N]; // maps data point indices to cluster indices
-    this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
+
+    // this.clusterCenters =
+    // Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
+    this.clusterCenters = new double[initialClusterCenters.length][];
+    if (initialClusterCenters.length > 0) {
+      for (var x = 0; x < initialClusterCenters.length; x++) {
+        this.clusterCenters[x] = Arrays.copyOf(initialClusterCenters[x], initialClusterCenters[0].length);
+      }
+    }
     this.dataPoints = dataPoints;
     this.distance = distance;
 
@@ -60,22 +68,11 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     this.numberOfIterations = 0;
 
     initialize();
-    System.out.println("initial assignments");
-    System.out.println(Arrays.toString(clusterAssignments));
-    System.out.println('\n');
 
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
-      System.out.println("start iteration" + numberOfIterations);
-      System.out.println('\n');
       updateClusterCenterAssignments();
-      System.out.println("assignments");
-      System.out.println(Arrays.toString(clusterAssignments));
-      System.out.println('\n');
       updateClusterCentersAndBounds();
-      System.out.println("cluster centers");
-      System.out.println(Arrays.deepToString(clusterCenters));
-      System.out.println("end iteration " + numberOfIterations + '\n');
       numberOfIterations++;
     }
 
@@ -139,8 +136,6 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
       }
     }
 
-    System.out.println(Arrays.toString(relevantIndices.toArray()));
-
     // step 3
     for (int k = 0; k < K; k++) {
       for (int n : relevantIndices) {
@@ -191,6 +186,5 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
     for (int k = 0; k < K; k++) {
       clusterCenters[k] = newClusterCenters[k];
     }
-    // System.out.println(Arrays.deepToString(clusterCenters));
   }
 }
