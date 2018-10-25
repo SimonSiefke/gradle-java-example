@@ -25,6 +25,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
   private DistanceStrategy distance;
   private double[][] interClusterDistances;
   private double[][] lowerBounds;
+  private double[][] newClusterCenters; // used in step 4
   private boolean[] r;
   private double[] s;
   private double[] upperBounds;
@@ -52,6 +53,7 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
 
     this.interClusterDistances = new double[K][K];
     this.lowerBounds = new double[N][K];
+    this.newClusterCenters = new double[K][D];
     this.r = new boolean[N];
     this.s = new double[K];
     this.upperBounds = new double[N];
@@ -156,7 +158,6 @@ public class ElkanKMeansStrategy implements KMeansStrategy {
 
   private void updateClusterCentersAndBounds() {
     // step 4
-    var newClusterCenters = new double[K][D];
     hasChanged = Util.updateClusterCenters(clusterCenters, newClusterCenters, clusterAssignments, dataPoints);
 
     // step 5
