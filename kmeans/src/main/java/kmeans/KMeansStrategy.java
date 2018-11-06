@@ -1,16 +1,22 @@
 package kmeans;
 
+import javax.annotation.Nonnull;
+
+import distance.DistanceStrategy;
+
 /**
- * Interface for KMeans Strategies.
+ * Interface for K-Means Strategies.
  */
 public interface KMeansStrategy {
   /**
-   * segments the input data into clusters.
+   * clusters the data points.
    *
    * @param dataPoints            the data points
    * @param initialClusterCenters the initial cluster center
    * @param maxNumberOfIterations the maximum number of iterations
+   * @param distanceStrategy      the distance measurement method
    * @return an Array of clusters
    */
-  Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations);
+  Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
+      int maxNumberOfIterations, DistanceStrategy distanceStrategy);
 }

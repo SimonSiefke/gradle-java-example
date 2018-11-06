@@ -3,7 +3,9 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/../../../benchmark/out/production/classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../benchmark/src/main" />
+    <content url="file://$MODULE_DIR$/../../../benchmark/src/main">
+      <sourceFolder url="file://$MODULE_DIR$/../../../benchmark/src/main/java" isTestSource="false" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="kmeans_main" />
