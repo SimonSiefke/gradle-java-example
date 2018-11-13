@@ -48,6 +48,8 @@ public final class Util {
     return hasChanged;
   }
 
+  // TODO cluster assignments to clusters
+
   private Util() {
     // private constructor to prevent creating objects of this class.
   }
