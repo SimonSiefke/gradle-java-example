@@ -1,14 +1,15 @@
-# Elkan's KMeans Algorithm
+# Hamerly's KMeans Algorithm
 
-> Lloyd's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
+> Hamerly's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
 
 ## Pruning techniques:
 
-<!-- TODO: -->
+<!-- TODO: svg -->
+
+- skip the assignment loop when the upper bound (maximal distance to assigned center) from the last or the current iteration is smaller than the lower bound (minimal distance to second closest center), which means that the currently assigned center stays the same.
+- skip the assignment loop when the upper bound (maximal distance to assigned center) from the last or the current iteration is smaller than half of the distance between the assigned center and its nearest neighbor.
 
 ## Variables:
-
-<!-- TODO: adjust for elkan -->
 
 | Type           | Name | Purpose                                                                        |
 | -------------- | ---- | ------------------------------------------------------------------------------ |
@@ -18,7 +19,7 @@
 | `int[N]`       | `a`  | for each data point the index of the cluster it is assigned to                 |
 | `double[K][D]` | `c`  | cluster centers                                                                |
 | `double[K][D]` | `c'` | for each cluster the vector sum of all its points                              |
-| `double[N][K]` | `l`  | for each data point a lower bound on the distance to its second closest center |
+| `double[N]`    | `l`  | for each data point a lower bound on the distance to its second closest center |
 | `int[K]`       | `q`  | for each cluster the number of its points                                      |
 | `double[K]`    | `p`  | for each cluster center the distance that it last moved                        |
 | `double[K]`    | `s`  | for each cluster center the distance to its closest other center               |
@@ -27,10 +28,8 @@
 
 ## Pseudo-code:
 
-<!-- TODO: adjust for elkan -->
-
 ```
-function elkan(x, c):
+function hamerly(x, c):
   while not converged do
     # compute the nearest cluster center for each cluster center
     for k=1 to K do

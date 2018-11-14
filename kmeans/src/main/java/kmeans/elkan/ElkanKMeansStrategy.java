@@ -10,7 +10,7 @@ import kmeans.KMeansStrategy;
 import util.Util;
 
 /**
- * Elkan KMeans Strategy.
+ * Elkan's KMeans Strategy.
  */
 public class ElkanKMeansStrategy implements KMeansStrategy {
   private int D; // number of dimensions

@@ -85,7 +85,8 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   void testFullDatasetWithEuclideanDifference() {
     var dataPoints = DataLoader.TEXT("../benchmark/data/A1.txt");
     var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1] };
-    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, 100, new EuclideanDistanceStrategy());
+    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, Integer.MAX_VALUE,
+        new EuclideanDistanceStrategy());
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 
     assertArrayEquals(new double[] { 21263.194, 54735.200 }, clusters[0].center, 0.001);
