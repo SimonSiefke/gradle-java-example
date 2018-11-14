@@ -5,7 +5,7 @@ plugins {
     // error checking plugins
     id 'checkstyle'
     id 'pmd'
-    id "com.github.spotbugs" version "1.6.5"
+    // id "com.github.spotbugs" version "1.6.5"
 
     // benchmark plugins
     // id "me.champeau.gradle.jmh" version "0.4.6"
@@ -19,7 +19,7 @@ allprojects{
     // error checking plugins
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
-    apply plugin: "com.github.spotbugs"
+    // apply plugin: "com.github.spotbugs"
     apply plugin: 'jacoco'
 
   dependencies {
@@ -50,17 +50,17 @@ allprojects{
       task.logging.setLevel(LogLevel.LIFECYCLE)
   }
 
-  spotbugs {
-      toolVersion = '3.1.7'
-      effort = 'max'
-      reportLevel = 'medium'
-        includeFilter = file("../config/spotbugs/exclude.xml")
-  }
+  // spotbugs {
+  //     toolVersion = '3.1.7'
+  //     effort = 'max'
+  //     reportLevel = 'medium'
+  //       includeFilter = file("../config/spotbugs/exclude.xml")
+  // }
 
-  tasks.withType(com.github.spotbugs.SpotBugsTask) {
-      reports {
-          xml.enabled = false
-          html.enabled = true
-      }
-  }
+  // tasks.withType(com.github.spotbugs.SpotBugsTask) {
+  //     reports {
+  //         xml.enabled = false
+  //         html.enabled = true
+  //     }
+  // }
 }
