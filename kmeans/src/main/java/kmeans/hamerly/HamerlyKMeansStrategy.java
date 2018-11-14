@@ -42,7 +42,7 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
    * stores for each cluster the sum of the points assigned to it (for each
    * dimension)
    */
-  private double[][] clusterSum;
+  private double[][] clusterSums;
   /**
    * stores for each cluster how many points are assigned to it
    */
@@ -59,6 +59,10 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
    * stores for each point how far away the second closest center is
    */
   private double[] lowerBounds;
+  /**
+   * stores for each center how far it has moved in the current iteration
+   */
+  private double[] clusterCentersDistanceMoved;
   /**
    * stores for each center half the distance to its next closest center
    */
@@ -88,10 +92,11 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
     this.clusterAssignments = new int[N]; // maps data point indices to cluster indices
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
-    this.clusterSum = new double[K][D];
+    this.clusterSums = new double[K][D];
     this.dataPoints = dataPoints;
     this.distance = distance;
     this.lowerBounds = new double[N];
+    this.clusterCentersDistanceMoved = new double[K];
     this.s = new double[K];
     this.upperBounds = new double[N];
 
@@ -118,17 +123,73 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
           upperBounds[n] = this.distance.compute(dataPoints[n], clusterCenters[clusterAssignments[n]]);
           if (upperBounds[n] > m) {
             int oldClusterAssignment = clusterAssignments[n];
-            // point all centers here
+            int closestClusterCenterIndex = -1;
+            double closestClusterCenterDistance = Double.MAX_VALUE;
+            double secondClosestClusterCenterDistance = Double.MAX_VALUE;
+            for (int k = 0; k < K; k++) {
+              double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
+              if (currentClusterCenterDistance < closestClusterCenterDistance) {
+                secondClosestClusterCenterDistance = closestClusterCenterDistance;
+                closestClusterCenterDistance = currentClusterCenterDistance;
+                closestClusterCenterIndex = k;
+              } else if (currentClusterCenterDistance < secondClosestClusterCenterDistance) {
+                secondClosestClusterCenterDistance = currentClusterCenterDistance;
+              }
+            }
+            clusterAssignments[n] = closestClusterCenterIndex;
+            upperBounds[n] = closestClusterCenterDistance;
+            lowerBounds[n] = secondClosestClusterCenterDistance;
             if (oldClusterAssignment != clusterAssignments[n]) {
-              // updateq
+              clusterSizes[oldClusterAssignment]--;
+              clusterSizes[clusterAssignments[n]]++;
+              for (int d = 0; d < D; d++) {
+                clusterSums[oldClusterAssignment][d] -= dataPoints[n][d];
+                clusterSums[clusterAssignments[n]][d] += dataPoints[n][d];
+              }
             }
           }
         }
       }
 
-      // move centers
+      // TODO update this method in utils and use in lloyd and elkan
+      // update centers
+      final double[][] newClusterCenters = new double[K][D];
+      for (int k = 0; k < K; k++) {
+        if (clusterSizes[k] > 0) {
+          for (int d = 0; d < D; d++) {
+            double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
+            hasChanged = hasChanged || clusterCenters[k][d] != newClusterCenterCoordinate;
+            newClusterCenters[k][d] = newClusterCenterCoordinate;
+          }
+          clusterCentersDistanceMoved[k] = this.distance.compute(clusterCenters[k], newClusterCenters[k]);
+        }
+      }
+      System.arraycopy(newClusterCenters, 0, clusterCenters, 0, K);
 
-      // update borders
+      // update bounds
+      int mostDistanceMovedIndex = -1;
+      double mostDistanceMoved = Double.MIN_VALUE;
+      double secondMostDistanceMoved = Double.MIN_VALUE;
+      for (int k = 0; k < K; k++) {
+        double currentDistanceMoved = clusterCentersDistanceMoved[k];
+        if (currentDistanceMoved > mostDistanceMoved) {
+          secondMostDistanceMoved = mostDistanceMoved;
+          mostDistanceMoved = currentDistanceMoved;
+          mostDistanceMovedIndex = k;
+        } else if (currentDistanceMoved > secondMostDistanceMoved) {
+          secondMostDistanceMoved = currentDistanceMoved;
+        }
+      }
+      for (int n = 0; n < N; n++) {
+        upperBounds[n] += clusterCentersDistanceMoved[clusterAssignments[n]];
+        if (mostDistanceMovedIndex == clusterAssignments[n]) {
+          lowerBounds[n] -= secondMostDistanceMoved;
+        } else {
+          lowerBounds[n] -= mostDistanceMoved;
+        }
+      }
+
+      numberOfIterations++;
     }
 
     final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
@@ -153,85 +214,15 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
           secondClosestClusterCenterDistance = currentClusterCenterDistance;
         }
       }
+
       clusterAssignments[n] = closestClusterCenterIndex;
       upperBounds[n] = closestClusterCenterDistance;
       lowerBounds[n] = secondClosestClusterCenterDistance;
 
       clusterSizes[clusterAssignments[n]]++;
       for (int d = 0; d < D; d++) {
-        clusterSum[clusterAssignments[n]][d] += dataPoints[n][d];
+        clusterSums[clusterAssignments[n]][d] += dataPoints[n][d];
       }
     }
-  }
-
-  private void updateClusterCenterAssignments() {
-    // step 1
-    for (int k = 0; k < K; k++) {
-      double minDistance = Double.MAX_VALUE;
-      for (int l = 0; l < K; l++) {
-        var currentDistance = distance.compute(clusterCenters[k], clusterCenters[l]);
-        interClusterDistances[k][l] = currentDistance;
-        if (k != l && currentDistance < minDistance) {
-          minDistance = currentDistance;
-        }
-      }
-      s[k] = 0.5 * minDistance;
-    }
-
-    // step 2
-    List<Integer> relevantIndices = new ArrayList<>();
-    for (int n = 0; n < N; n++) {
-      if (upperBounds[n] > s[clusterAssignments[n]]) {
-        relevantIndices.add(n);
-      }
-    }
-
-    // step 3
-    for (int k = 0; k < K; k++) {
-      for (int n : relevantIndices) {
-        if (k != clusterAssignments[n] && upperBounds[n] > lowerBounds[n][k]
-            && upperBounds[n] > 0.5 * interClusterDistances[clusterAssignments[n]][k]) {
-          // step 3a
-          double minDistance;
-          if (r[n]) {
-            minDistance = distance.compute(dataPoints[n], clusterCenters[clusterAssignments[n]]);
-            r[n] = false;
-          } else {
-            minDistance = upperBounds[n];
-          }
-
-          // step 3b
-          if (minDistance > lowerBounds[n][k] || minDistance > 0.5 * interClusterDistances[clusterAssignments[n]][k]) {
-            double newDistance = distance.compute(dataPoints[n], clusterCenters[k]);
-            if (newDistance < minDistance) {
-              clusterAssignments[n] = k;
-              upperBounds[n] = minDistance;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  private void updateClusterCentersAndBounds() {
-    // step 4
-    hasChanged = Util.updateClusterCenters(clusterCenters, newClusterCenters, clusterAssignments, dataPoints);
-
-    // step 5
-    for (var lowerBound : lowerBounds) {
-      for (int k = 0; k < K; k++) {
-        lowerBound[k] = Math.max(lowerBound[k] - distance.compute(clusterCenters[k], newClusterCenters[k]), 0);
-      }
-    }
-
-    // step 6
-    for (int n = 0; n < N; n++) {
-      upperBounds[n] += distance.compute(newClusterCenters[clusterAssignments[n]],
-          clusterCenters[clusterAssignments[n]]);
-    }
-    Arrays.fill(r, true);
-
-    // step 7
-    clusterCenters = newClusterCenters;
   }
 }
