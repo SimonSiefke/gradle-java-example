@@ -10,7 +10,7 @@ import kmeans.KMeansStrategy;
 import util.Util;
 
 /**
- * Lloyd KMeans Strategy.
+ * Lloyd's KMeans Strategy.
  */
 public class LloydKMeansStrategy implements KMeansStrategy {
   @Override
