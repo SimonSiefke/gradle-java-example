@@ -44,6 +44,10 @@
     </rule>
 
     <rule ref="category/java/design.xml">
+
+        <exclude name="AvoidDeeplyNestedIfStmts"/>
+        <exclude name="NPathComplexity"/>
+        <exclude name="ExcessiveMethodLength"/>
         <exclude name="SingularField"/>
         <exclude name="LawOfDemeter"/>
         <exclude name="NcssCount"/>

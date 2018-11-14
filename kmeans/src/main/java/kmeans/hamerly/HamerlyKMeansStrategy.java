@@ -1,15 +1,10 @@
 package kmeans.hamerly;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Nonnull;
 
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Hamerly KMeans Strategy.
@@ -17,58 +12,58 @@ import util.Util;
 public class HamerlyKMeansStrategy implements KMeansStrategy {
   // TODO variables in parent class
   /**
-   * stores the number of dimensions
+   * stores the number of dimensions.
    */
   private int D;
   /**
-   * stores the number of clusters
+   * stores the number of clusters.
    */
   private int K;
   /**
-   * stores the number of data points
+   * stores the number of data points.
    */
   private int N;
 
   /**
    * stores for each point (treated as index from 0 to N-1) to which cluster it is
-   * assigned
+   * assigned.
    */
   private int[] clusterAssignments;
   /**
-   * stores the cluster centers
+   * stores the cluster centers.
    */
   private double[][] clusterCenters;
   /**
    * stores for each cluster the sum of the points assigned to it (for each
-   * dimension)
+   * dimension).
    */
   private double[][] clusterSums;
   /**
-   * stores for each cluster how many points are assigned to it
+   * stores for each cluster how many points are assigned to it.
    */
   private int[] clusterSizes;
   /**
-   * stores the data points
+   * stores the data points.
    */
   private double[][] dataPoints;
   /**
-   * stores distance strategy (e.g. euclidean distance)
+   * stores distance strategy (e.g. euclidean distance).
    */
   private DistanceStrategy distance;
   /**
-   * stores for each point how far away the second closest center is
+   * stores for each point how far away the second closest center is.
    */
   private double[] lowerBounds;
   /**
-   * stores for each center how far it has moved in the current iteration
+   * stores for each center how far it has moved in the current iteration.
    */
   private double[] clusterCentersDistanceMoved;
   /**
-   * stores for each center half the distance to its next closest center
+   * stores for each center half the distance to its next closest center.
    */
   private double[] s;
   /**
-   * stores for each point how far away its closest center maximally is
+   * stores for each point how far away its closest center maximally is.
    */
   private double[] upperBounds;
   /**
@@ -77,7 +72,7 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
    */
   private boolean hasChanged;
   /**
-   * stores the number of iterations
+   * stores the number of iterations.
    */
   private int numberOfIterations;
 
@@ -122,7 +117,6 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
         if (upperBounds[n] > m) {
           upperBounds[n] = this.distance.compute(dataPoints[n], clusterCenters[clusterAssignments[n]]);
           if (upperBounds[n] > m) {
-            int oldClusterAssignment = clusterAssignments[n];
             int closestClusterCenterIndex = -1;
             double closestClusterCenterDistance = Double.MAX_VALUE;
             double secondClosestClusterCenterDistance = Double.MAX_VALUE;
@@ -136,6 +130,7 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
                 secondClosestClusterCenterDistance = currentClusterCenterDistance;
               }
             }
+            final int oldClusterAssignment = clusterAssignments[n];
             clusterAssignments[n] = closestClusterCenterIndex;
             upperBounds[n] = closestClusterCenterDistance;
             lowerBounds[n] = secondClosestClusterCenterDistance;

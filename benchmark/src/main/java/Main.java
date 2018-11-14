@@ -1,11 +1,9 @@
-import java.util.*;
-import distance.*;
-import kmeans.*;
-import kmeans.Cluster;
+import java.util.Arrays;
+
 import dataloader.DataLoader;
-import kmeans.elkan.ElkanKMeansStrategy;
+import distance.EuclideanDistanceStrategy;
+import kmeans.Cluster;
 import kmeans.hamerly.HamerlyKMeansStrategy;
-import kmeans.lloyd.LloydKMeansStrategy;
 
 public final class Main {
   private Main() {
