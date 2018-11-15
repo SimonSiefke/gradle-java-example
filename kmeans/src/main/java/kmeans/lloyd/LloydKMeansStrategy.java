@@ -30,23 +30,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
     this.hasChanged = true;
     this.numberOfIterations = 0;
 
-    // initialize
-    for (int n = 0; n < N; n++) {
-      int closestClusterCenterIndex = -1;
-      double closestClusterCenterDistance = Double.MAX_VALUE;
-      for (int k = 0; k < K; k++) {
-        double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
-        if (currentClusterCenterDistance < closestClusterCenterDistance) {
-          closestClusterCenterDistance = currentClusterCenterDistance;
-          closestClusterCenterIndex = k;
-        }
-      }
-      clusterAssignments[n] = closestClusterCenterIndex;
-      clusterSizes[clusterAssignments[n]]++;
-      for (int d = 0; d < D; d++) {
-        clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
-      }
-    }
+    initialize();
 
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
@@ -94,5 +78,24 @@ public class LloydKMeansStrategy extends KMeansStrategy {
       clusters[clusterAssignments[n]].closestPoints.add(dataPoints[n]);
     }
     return clusters;
+  }
+
+  public void initialize() {
+    for (int n = 0; n < N; n++) {
+      int closestClusterCenterIndex = -1;
+      double closestClusterCenterDistance = Double.MAX_VALUE;
+      for (int k = 0; k < K; k++) {
+        double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
+        if (currentClusterCenterDistance < closestClusterCenterDistance) {
+          closestClusterCenterDistance = currentClusterCenterDistance;
+          closestClusterCenterIndex = k;
+        }
+      }
+      clusterAssignments[n] = closestClusterCenterIndex;
+      clusterSizes[clusterAssignments[n]]++;
+      for (int d = 0; d < D; d++) {
+        clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
+      }
+    }
   }
 }
