@@ -28,6 +28,8 @@
 
 ## Pseudo-code:
 
+<!-- TODO: update bounds code -->
+
 ```
 function hamerly(x, c):
   while not converged do
