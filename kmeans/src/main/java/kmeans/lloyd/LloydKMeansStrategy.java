@@ -7,34 +7,84 @@ import javax.annotation.Nonnull;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Lloyd's KMeans Strategy.
  */
-public class LloydKMeansStrategy implements KMeansStrategy {
+public class LloydKMeansStrategy extends KMeansStrategy {
   @Override
   public Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
       int maxNumberOfIterations, @Nonnull DistanceStrategy distance) {
 
-    int N = dataPoints.length;
+    this.D = dataPoints[0].length;
+    this.K = initialClusterCenters.length;
+    this.N = dataPoints.length;
 
-    int[] clusterAssignments = new int[N]; // maps data point indices
-    double[][] clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
+    this.clusterAssignments = new int[N];
+    this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
+    this.clusterSizes = new int[K];
+    this.clusterSums = new double[K][D];
+    this.dataPoints = dataPoints;
+    this.distance = distance;
 
-    boolean hasChanged = true;
-    int numberOfIterations = 0;
+    this.hasChanged = true;
+    this.numberOfIterations = 0;
+
+    // initialize
+    for (int n = 0; n < N; n++) {
+      int closestClusterCenterIndex = -1;
+      double closestClusterCenterDistance = Double.MAX_VALUE;
+      for (int k = 0; k < K; k++) {
+        double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
+        if (currentClusterCenterDistance < closestClusterCenterDistance) {
+          closestClusterCenterDistance = currentClusterCenterDistance;
+          closestClusterCenterIndex = k;
+        }
+      }
+      clusterAssignments[n] = closestClusterCenterIndex;
+      clusterSizes[clusterAssignments[n]]++;
+      for (int d = 0; d < D; d++) {
+        clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
+      }
+    }
 
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
 
-      // step 1: assign each point to its nearest cluster
+      // update assignments
       for (int n = 0; n < N; n++) {
-        clusterAssignments[n] = closestClusterIndex(dataPoints[n], clusterCenters, distance);
+        int closestClusterCenterIndex = -1;
+        double closestClusterCenterDistance = Double.MAX_VALUE;
+        for (int k = 0; k < K; k++) {
+          double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
+          if (currentClusterCenterDistance < closestClusterCenterDistance) {
+            closestClusterCenterDistance = currentClusterCenterDistance;
+            closestClusterCenterIndex = k;
+          }
+        }
+        if (clusterAssignments[n] != closestClusterCenterIndex) {
+          clusterSizes[clusterAssignments[n]]--;
+          clusterSizes[closestClusterCenterIndex]++;
+          for (int d = 0; d < D; d++) {
+            clusterSums[clusterAssignments[n]][d] -= dataPoints[n][d];
+            clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
+          }
+          clusterAssignments[n] = closestClusterCenterIndex;
+        }
       }
 
-      // step 2: assign each cluster to the average of its points
-      hasChanged = Util.updateClusterCenters(clusterCenters, clusterCenters, clusterAssignments, dataPoints);
+      // update centers
+      for (int k = 0; k < K; k++) {
+        if (clusterSizes[k] > 0) {
+          for (int d = 0; d < D; d++) {
+            double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
+            hasChanged = hasChanged || clusterCenters[k][d] != newClusterCenterCoordinate;
+            clusterCenters[k][d] = newClusterCenterCoordinate;
+          }
+        } else {
+          throw new IllegalArgumentException("this is rare");
+        }
+      }
 
       numberOfIterations++;
     }
@@ -44,26 +94,5 @@ public class LloydKMeansStrategy implements KMeansStrategy {
       clusters[clusterAssignments[n]].closestPoints.add(dataPoints[n]);
     }
     return clusters;
-  }
-
-  /**
-   * Computes the index of the cluster that is closest to a given point.
-   *
-   * @param point          the point for which we want the closest cluster index
-   * @param clusterCenters the cluster centers
-   * @param distance       the distance strategy
-   * @return the index of the closest cluster
-   */
-  private int closestClusterIndex(@Nonnull double[] point, double[][] clusterCenters, DistanceStrategy distance) {
-    int closestClusterIndex = -1;
-    double minDistance = Double.MAX_VALUE;
-    for (int k = 0; k < clusterCenters.length; k++) {
-      var currentDistance = distance.compute(point, clusterCenters[k]);
-      if (currentDistance < minDistance) {
-        minDistance = currentDistance;
-        closestClusterIndex = k;
-      }
-    }
-    return closestClusterIndex;
   }
 }

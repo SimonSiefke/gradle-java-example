@@ -9,47 +9,8 @@ import kmeans.KMeansStrategy;
 /**
  * Hamerly's KMeans Strategy.
  */
-public class HamerlyKMeansStrategy implements KMeansStrategy {
+public class HamerlyKMeansStrategy extends KMeansStrategy {
   // TODO variables in parent class
-  /**
-   * stores the number of dimensions.
-   */
-  private int D;
-  /**
-   * stores the number of clusters.
-   */
-  private int K;
-  /**
-   * stores the number of data points.
-   */
-  private int N;
-
-  /**
-   * stores for each point (treated as index from 0 to N-1) to which cluster it is
-   * assigned.
-   */
-  private int[] clusterAssignments;
-  /**
-   * stores the cluster centers.
-   */
-  private double[][] clusterCenters;
-  /**
-   * stores for each cluster the sum of the points assigned to it (for each
-   * dimension).
-   */
-  private double[][] clusterSums;
-  /**
-   * stores for each cluster how many points are assigned to it.
-   */
-  private int[] clusterSizes;
-  /**
-   * stores the data points.
-   */
-  private double[][] dataPoints;
-  /**
-   * stores distance strategy (e.g. euclidean distance).
-   */
-  private DistanceStrategy distance;
   /**
    * stores for each point how far away the second closest center is.
    */
@@ -71,15 +32,6 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
    * stores for each point how far away its closest center maximally is.
    */
   private double[] upperBounds;
-  /**
-   * stores whether any of the centers has moved in the current iteration. If not,
-   * the algorithm has converged.
-   */
-  private boolean hasChanged;
-  /**
-   * stores the number of iterations.
-   */
-  private int numberOfIterations;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -119,6 +71,7 @@ public class HamerlyKMeansStrategy implements KMeansStrategy {
         closestClusterDistances[k] = closestClusterDistance;
       }
 
+      // update assignments
       for (int n = 0; n < N; n++) {
         double m = Math.max(closestClusterDistances[clusterAssignments[n]] / 2, lowerBounds[n]);
         if (upperBounds[n] > m) {

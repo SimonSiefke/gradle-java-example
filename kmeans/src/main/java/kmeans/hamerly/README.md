@@ -28,6 +28,8 @@
 
 ## Pseudo-code:
 
+<!-- TODO: update bounds code -->
+
 ```
 function hamerly(x, c):
   while not converged do
@@ -59,3 +61,27 @@ function hamerly(x, c):
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
       p[k] <- d(c*,c[k])                            # store the distance that the center has moved
 ```
+
+## Time & Space Complexity Overhead (compared to Lloyd)
+
+| Initialization time | Time per iteration | Memory   |
+| ------------------- | ------------------ | -------- |
+| NDK + K^2           | DK^2               | NK + K^2 |
+
+## Exact Time & Space Complexity Overhead (compared to Lloyd)
+
+### Initialization Time Overhead
+
+### Time per Iteration Overhead
+
+### Memory Overhead
+
+| Memory | Name |
+| ------ | ---- |
+| `N`    | `a`  |
+| `N`    | `l`  |
+| `K`    | `p`  |
+| `K`    | `s`  |
+| `N`    | `u`  |
+
+Total Memory Overhead: 3N + 2K = O(N)
