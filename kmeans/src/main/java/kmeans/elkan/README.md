@@ -60,3 +60,31 @@ function elkan(x, c):
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
       p[k] <- d(c*,c[k])                            # store the distance that the center has moved
 ```
+
+## Time & Space Complexity Overhead (compared to Lloyd)
+
+| Initialization time | Time per iteration | Memory   |
+| ------------------- | ------------------ | -------- |
+| NDK +K^2            | DK^2               | NK + K^2 |
+
+## Exact Time & Space Complexity
+
+### Initialization Time
+
+### Time per Iteration
+
+### Memory
+
+| Memory | Name |
+| ------ | ---- |
+| `N`    | `a`  |
+| `KD`   | `c`  |
+| `KD`   | `c'` |
+| `NK`   | `l`  |
+| `K`    | `q`  |
+| `K`    | `p`  |
+| `K`    | `s`  |
+| `N`    | `u`  |
+| `N`    | `x`  |
+
+Total: 3N +

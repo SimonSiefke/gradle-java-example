@@ -12,7 +12,7 @@ import util.Util;
 /**
  * Elkan's KMeans Strategy.
  */
-public class ElkanKMeansStrategy implements KMeansStrategy {
+public class ElkanKMeansStrategy extends KMeansStrategy {
   private int D; // number of dimensions
   private int K; // number of clusters
   private int N; // number of data points
