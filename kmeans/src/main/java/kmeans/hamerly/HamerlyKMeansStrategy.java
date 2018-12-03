@@ -16,10 +16,6 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
    */
   private double[] lowerBounds;
   /**
-   * stores the value a new cluster center when updating the cluster centers.
-   */
-  private double[] newClusterCenter;
-  /**
    * stores for each center how far it has moved in the current iteration.
    */
   private double[] clusterCentersDistanceMoved;
@@ -47,7 +43,6 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     this.dataPoints = dataPoints;
     this.distance = distance;
     this.lowerBounds = new double[N];
-    this.newClusterCenter = new double[D];
     this.clusterCentersDistanceMoved = new double[K];
     this.closestClusterDistances = new double[K];
     this.upperBounds = new double[N];
@@ -100,6 +95,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
       // update centers
       for (int k = 0; k < K; k++) {
         if (clusterSizes[k] > 0) {
+          final double[] newClusterCenter = new double[D];
           for (int d = 0; d < D; d++) {
             double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
             newClusterCenter[d] = newClusterCenterCoordinate;

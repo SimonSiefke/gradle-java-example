@@ -1,18 +1,133 @@
 package kmeans.drake;
 
+import java.util.Arrays;
+
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
+import util.Util;
 
 /**
  * Drake's KMeans Strategy.
  */
 public class DrakeKMeansStrategy extends KMeansStrategy {
+  /**
+   * stores for each point how far away the second closest center is.
+   */
+  private double[] lowerBounds;
+  /**
+   * stores for each center how far it has moved in the current iteration.
+   */
+  private double[] clusterCentersDistanceMoved;
+  /**
+   * stores for each point how far away its closest center maximally is.
+   */
+  private double[] upperBounds;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
       DistanceStrategy distance) {
-    // TODO
-    return new Cluster[0];
+
+    this.D = dataPoints[0].length;
+    this.K = initialClusterCenters.length;
+    this.N = dataPoints.length;
+
+    this.clusterAssignments = new int[N];
+    this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
+    this.clusterSizes = new int[K];
+    this.clusterSums = new double[K][D];
+    this.dataPoints = dataPoints;
+    this.distance = distance;
+    this.lowerBounds = new double[N];
+    this.clusterCentersDistanceMoved = new double[K];
+    this.upperBounds = new double[N];
+
+    this.hasChanged = true;
+    this.numberOfIterations = 0;
+
+    initialize();
+
+    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
+      hasChanged = false;
+      for (int k = 0; k < K; k++) {
+        double closestClusterDistance = Double.MAX_VALUE;
+        for (int l = 0; l < K; l++) {
+          if (k != l) {
+            closestClusterDistance = Math.min(closestClusterDistance,
+                this.distance.compute(clusterCenters[k], clusterCenters[l]));
+          }
+        }
+      }
+
+      // update centers
+      for (int k = 0; k < K; k++) {
+        if (clusterSizes[k] > 0) {
+          for (int d = 0; d < D; d++) {
+            double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
+          }
+          hasChanged = hasChanged || clusterCentersDistanceMoved[k] > 0;
+        } else {
+          throw new IllegalArgumentException("this is rare");
+        }
+      }
+
+      // update bounds
+      int mostDistanceMovedIndex = -1;
+      double mostDistanceMoved = Double.MIN_VALUE;
+      double secondMostDistanceMoved = Double.MIN_VALUE;
+      for (int k = 0; k < K; k++) {
+        double currentDistanceMoved = clusterCentersDistanceMoved[k];
+        if (currentDistanceMoved > mostDistanceMoved) {
+          secondMostDistanceMoved = mostDistanceMoved;
+          mostDistanceMoved = currentDistanceMoved;
+          mostDistanceMovedIndex = k;
+        } else if (currentDistanceMoved > secondMostDistanceMoved) {
+          secondMostDistanceMoved = currentDistanceMoved;
+        }
+      }
+      for (int n = 0; n < N; n++) {
+        upperBounds[n] += clusterCentersDistanceMoved[clusterAssignments[n]];
+        if (mostDistanceMovedIndex == clusterAssignments[n]) {
+          lowerBounds[n] -= secondMostDistanceMoved;
+        } else {
+          lowerBounds[n] -= mostDistanceMoved;
+        }
+      }
+
+      numberOfIterations++;
+    }
+
+    final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
+    for (int n = 0; n < N; n++) {
+      clusters[clusterAssignments[n]].closestPoints.add(dataPoints[n]);
+    }
+    return clusters;
+  }
+
+  private void initialize() {
+    for (int n = 0; n < N; n++) {
+      int closestClusterCenterIndex = -1;
+      double closestClusterCenterDistance = Double.MAX_VALUE;
+      double secondClosestClusterCenterDistance = Double.MAX_VALUE;
+      for (int k = 0; k < K; k++) {
+        double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
+        if (currentClusterCenterDistance < closestClusterCenterDistance) {
+          secondClosestClusterCenterDistance = closestClusterCenterDistance;
+          closestClusterCenterDistance = currentClusterCenterDistance;
+          closestClusterCenterIndex = k;
+        } else if (currentClusterCenterDistance < secondClosestClusterCenterDistance) {
+          secondClosestClusterCenterDistance = currentClusterCenterDistance;
+        }
+      }
+
+      clusterAssignments[n] = closestClusterCenterIndex;
+      upperBounds[n] = closestClusterCenterDistance;
+      lowerBounds[n] = secondClosestClusterCenterDistance;
+
+      clusterSizes[clusterAssignments[n]]++;
+      for (int d = 0; d < D; d++) {
+        clusterSums[clusterAssignments[n]][d] += dataPoints[n][d];
+      }
+    }
   }
 }
