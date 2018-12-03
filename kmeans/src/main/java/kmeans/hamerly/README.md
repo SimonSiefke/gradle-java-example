@@ -86,6 +86,5 @@ function hamerly(x, c):
 | `N`    | `u`  | ✅                           |
 | `ND`   | `x`  | ❌                           |
 
-Total Memory: 3N + ND + 3K + 2KD = O(ND)
-
-Total Memory Overhead: 2N + 2K
+Total Memory: `3N + ND + 3K + 2KD = O(ND)`\
+Total Memory Overhead: `2N + 2K`

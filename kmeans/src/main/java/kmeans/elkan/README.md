@@ -8,8 +8,6 @@
 
 ## Variables:
 
-<!-- TODO: adjust for elkan -->
-
 | Type           | Name | Purpose                                                                                                   |
 | -------------- | ---- | --------------------------------------------------------------------------------------------------------- |
 | `int`          | `D`  | number of dimensions                                                                                      |
@@ -18,7 +16,7 @@
 | `int[N]`       | `a`  | for each data point the index of the cluster it is assigned to                                            |
 | `double[K][D]` | `c`  | cluster centers                                                                                           |
 | `double[K][D]` | `c'` | for each cluster the vector sum of all its points                                                         |
-| `double[K][D]` | `i'` | for each cluster the distance to all the other clusters                                                   |
+| `double[K][K]` | `i'` | for each cluster the distance to all the other clusters                                                   |
 | `double[N][K]` | `l`  | for each data point and each cluster a lower bound on the distance between the data point and the cluster |
 | `int[K]`       | `q`  | for each cluster the number of its points                                                                 |
 | `double[K]`    | `s`  | for each cluster center the distance to its closest other center                                          |
@@ -34,9 +32,9 @@ function elkan(x, c):
   while not converged do
     # compute the nearest cluster center for each cluster center
     for k=1 to K do
-      s[k] <- min_(k'!=k) d(c[k], c[k'])
+      s[k] <- 0.5 * min_(k'!=k) d(c[k], c[k'])
       for k'=1 to K do
-        i[k'][k] d(c[k'], c[k])
+        i[k'][k] <- d(c[k'], c[k])
 
     # compute the nearest cluster for each point
     for n=1 to N do
@@ -85,13 +83,17 @@ function elkan(x, c):
 
 ### Memory
 
-| Memory | Name |
-| ------ | ---- |
-| `N`    | `a`  |
-| `NK`   | `l`  |
-| `K`    | `q`  |
-| `K`    | `p`  |
-| `K`    | `s`  |
-| `N`    | `u`  |
+| Memory | Name | Overhead (compared to Lloyd) |
+| ------ | ---- | ---------------------------- |
+| `N`    | `a`  | ❌                           |
+| `KD`   | `c`  | ❌                           |
+| `KD`   | `c'` | ❌                           |
+| `K^2`  | `i'` | ✅                           |
+| `NK`   | `l`  | ✅                           |
+| `K`    | `q`  | ❌                           |
+| `K`    | `s`  | ✅                           |
+| `N`    | `u`  | ✅                           |
+| `ND`   | `x`  | ❌                           |
 
-Total: 2N +
+Total Memory: `2N + NK + ND + K^2 + 2KD + 2K = O(NK)`\
+Total Memory Overhead: `N + NK + K^2 + K`

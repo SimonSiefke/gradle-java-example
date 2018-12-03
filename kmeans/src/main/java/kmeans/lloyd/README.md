@@ -73,5 +73,5 @@ Total Time Per Iteration Overhead: `0`
 | `K`    | `q`  | ❌                           |
 | `ND`   | `x`  | ❌                           |
 
-Total Memory: `N + ND + K + 2KD = O(ND)`\
+Total Memory: `N + ND + 2KD + K + = O(ND)`\
 Total Memory Overhead: `0`
