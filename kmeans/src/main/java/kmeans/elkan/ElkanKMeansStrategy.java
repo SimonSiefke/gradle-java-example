@@ -173,7 +173,6 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
 
   private void updateClusterCentersAndBounds() {
     // step 4
-    System.out.println(Arrays.toString(clusterSizes));
     for (int k = 0; k < K; k++) {
       if (clusterSizes[k] > 0) {
         for (int d = 0; d < D; d++) {
