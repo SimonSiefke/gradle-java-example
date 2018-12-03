@@ -37,14 +37,41 @@ function lloyd(x, c):
 
     # assign each cluster center to the average of its points
     for k=1 to K do
-      c* <- c[k]                                    # store old center for later
       for d=1 to D do
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
-      p[k] <- d(c*,c[k])                            # store the distance that the center has moved
 ```
 
-## Time & Space Complexity Overhead (compared to Lloyd)
+## Time & Space Complexity
 
-| Initialization time | Time per iteration | Memory |
-| ------------------- | ------------------ | ------ |
-| -                   | -                  | -      |
+| Initialization time | Time per iteration | Memory             |
+| ------------------- | ------------------ | ------------------ |
+| -                   | `NKD + KD`         | `N + ND + K + 2KD` |
+
+### Initialization Time
+
+| Initialization Time | Why                                                   | Overhead (compared to Lloyd) |
+| ------------------- | ----------------------------------------------------- | ---------------------------- |
+| `NKD`               | loop that computes the nearest cluster for each point | ❌                           |
+
+### Time Per Iteration
+
+| Time Per Iteration | Why                                                         | Overhead (compared to Lloyd) |
+| ------------------ | ----------------------------------------------------------- | ---------------------------- |
+| `NKD`              | loop that computes the nearest cluster for each point       | ❌                           |
+| `KD`               | loop that assigns each cluster to the average of its points | ❌                           |
+
+Total Time Per Iteration: `NKD + KD = O(NKD)`\
+Total Time Per Iteration Overhead: `0`
+
+### Memory
+
+| Memory | Name | Overhead (compared to Lloyd) |
+| ------ | ---- | ---------------------------- |
+| `N`    | `a`  | ❌                           |
+| `KD`   | `c`  | ❌                           |
+| `KD`   | `c'` | ❌                           |
+| `K`    | `q`  | ❌                           |
+| `ND`   | `x`  | ❌                           |
+
+Total Memory: `N + ND + K + 2KD = O(ND)`\
+Total Memory Overhead: `0`

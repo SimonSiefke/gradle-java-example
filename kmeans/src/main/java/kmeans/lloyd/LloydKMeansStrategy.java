@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
+import util.Util;
 
 /**
  * Lloyd's KMeans Strategy.
@@ -38,23 +39,16 @@ public class LloydKMeansStrategy extends KMeansStrategy {
       // update assignments
       for (int n = 0; n < N; n++) {
         int closestClusterCenterIndex = -1;
-        double closestClusterCenterDistance = Double.MAX_VALUE;
+        double newClusterCenterDistance = Double.MAX_VALUE;
         for (int k = 0; k < K; k++) {
-          double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
-          if (currentClusterCenterDistance < closestClusterCenterDistance) {
-            closestClusterCenterDistance = currentClusterCenterDistance;
+          double closestClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
+          if (closestClusterCenterDistance < newClusterCenterDistance) {
+            newClusterCenterDistance = closestClusterCenterDistance;
             closestClusterCenterIndex = k;
           }
         }
-        if (clusterAssignments[n] != closestClusterCenterIndex) {
-          clusterSizes[clusterAssignments[n]]--;
-          clusterSizes[closestClusterCenterIndex]++;
-          for (int d = 0; d < D; d++) {
-            clusterSums[clusterAssignments[n]][d] -= dataPoints[n][d];
-            clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
-          }
-          clusterAssignments[n] = closestClusterCenterIndex;
-        }
+        Util.assignPointToCluster(clusterAssignments, n, closestClusterCenterIndex, clusterSizes, clusterSums, D,
+            dataPoints);
       }
 
       // update centers

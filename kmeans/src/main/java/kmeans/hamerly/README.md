@@ -62,26 +62,30 @@ function hamerly(x, c):
       p[k] <- d(c*,c[k])                            # store the distance that the center has moved
 ```
 
-## Time & Space Complexity Overhead (compared to Lloyd)
+## Time & Space Complexity
 
 | Initialization time | Time per iteration | Memory   |
 | ------------------- | ------------------ | -------- |
 | NDK + K^2           | DK^2               | NK + K^2 |
 
-## Exact Time & Space Complexity Overhead (compared to Lloyd)
+## Exact Time & Space Complexity
 
-### Initialization Time Overhead
+### Initialization Time
 
-### Time per Iteration Overhead
+### Memory
 
-### Memory Overhead
+| Memory | Name | Overhead (compared to Lloyd) |
+| ------ | ---- | ---------------------------- |
+| `N`    | `a`  | ❌                           |
+| `KD`   | `c`  | ❌                           |
+| `KD`   | `c'` | ❌                           |
+| `N`    | `l`  | ✅                           |
+| `K`    | `q`  | ❌                           |
+| `K`    | `p`  | ✅                           |
+| `K`    | `s`  | ✅                           |
+| `N`    | `u`  | ✅                           |
+| `ND`   | `x`  | ❌                           |
 
-| Memory | Name |
-| ------ | ---- |
-| `N`    | `a`  |
-| `N`    | `l`  |
-| `K`    | `p`  |
-| `K`    | `s`  |
-| `N`    | `u`  |
+Total Memory: 3N + ND + 3K + 2KD = O(ND)
 
-Total Memory Overhead: 3N + 2K = O(N)
+Total Memory Overhead: 2N + 2K

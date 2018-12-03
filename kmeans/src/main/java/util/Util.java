@@ -48,6 +48,19 @@ public final class Util {
     return hasChanged;
   }
 
+  public static void assignPointToCluster(int[] clusterAssignments, int n, int newClusterAssignment, int[] clusterSizes,
+      double[][] clusterSums, int D, double[][] dataPoints) {
+    if (clusterAssignments[n] != newClusterAssignment) {
+      clusterSizes[clusterAssignments[n]]--;
+      clusterSizes[newClusterAssignment]++;
+      for (int d = 0; d < D; d++) {
+        clusterSums[clusterAssignments[n]][d] -= dataPoints[n][d];
+        clusterSums[newClusterAssignment][d] += dataPoints[n][d];
+      }
+      clusterAssignments[n] = newClusterAssignment;
+    }
+  }
+
   // TODO cluster assignments to clusters
 
   private Util() {

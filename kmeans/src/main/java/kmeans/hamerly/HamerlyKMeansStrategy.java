@@ -5,6 +5,7 @@ import java.util.Arrays;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
+import util.Util;
 
 /**
  * Hamerly's KMeans Strategy.
@@ -90,18 +91,10 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
                 secondClosestClusterCenterDistance = currentClusterCenterDistance;
               }
             }
-            final int oldClusterAssignment = clusterAssignments[n];
-            clusterAssignments[n] = closestClusterCenterIndex;
             upperBounds[n] = closestClusterCenterDistance;
             lowerBounds[n] = secondClosestClusterCenterDistance;
-            if (oldClusterAssignment != clusterAssignments[n]) {
-              clusterSizes[oldClusterAssignment]--;
-              clusterSizes[clusterAssignments[n]]++;
-              for (int d = 0; d < D; d++) {
-                clusterSums[oldClusterAssignment][d] -= dataPoints[n][d];
-                clusterSums[clusterAssignments[n]][d] += dataPoints[n][d];
-              }
-            }
+            Util.assignPointToCluster(clusterAssignments, n, closestClusterCenterIndex, clusterSizes, clusterSums, D,
+                dataPoints);
           }
         }
       }

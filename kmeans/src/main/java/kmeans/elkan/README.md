@@ -75,7 +75,7 @@ function elkan(x, c):
 
 | Initialization time | Time per iteration | Memory   |
 | ------------------- | ------------------ | -------- |
-| NDK +K^2            | DK^2               | NK + K^2 |
+| NDK + DK^2          | DK^2               | NK + K^2 |
 
 ## Exact Time & Space Complexity
 
@@ -88,13 +88,10 @@ function elkan(x, c):
 | Memory | Name |
 | ------ | ---- |
 | `N`    | `a`  |
-| `KD`   | `c`  |
-| `KD`   | `c'` |
 | `NK`   | `l`  |
 | `K`    | `q`  |
 | `K`    | `p`  |
 | `K`    | `s`  |
 | `N`    | `u`  |
-| `N`    | `x`  |
 
-Total: 3N +
+Total: 2N +
