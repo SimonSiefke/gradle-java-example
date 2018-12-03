@@ -46,6 +46,8 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
 
     this.clusterAssignments = new int[N]; // maps data point indices to cluster indices
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
+    this.clusterSizes = new int[K];
+    this.clusterSums = new double[K][D];
     this.dataPoints = dataPoints;
     this.distance = distance;
 
@@ -101,7 +103,11 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
         }
       }
       clusterAssignments[n] = closestClusterIndex;
+      clusterSizes[clusterAssignments[n]]++;
       upperBounds[n] = minDistance;
+      for (int d = 0; d < D; d++) {
+        clusterSums[clusterAssignments[n]][d] += dataPoints[n][d];
+      }
     }
   }
 
@@ -128,6 +134,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     }
 
     // step 3
+    // TODO cluster sum
     for (int k = 0; k < K; k++) {
       for (int n : relevantIndices) {
         if (k != clusterAssignments[n] && upperBounds[n] > lowerBounds[n][k]
@@ -136,6 +143,8 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
           double minDistance;
           if (r[n]) {
             minDistance = distance.compute(dataPoints[n], clusterCenters[clusterAssignments[n]]);
+            // upperBounds[n] = minDistance;
+            // lowerBounds[n][clusterAssignments[n]] = minDistance;
             r[n] = false;
           } else {
             minDistance = upperBounds[n];
@@ -144,9 +153,17 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
           // step 3b
           if (minDistance > lowerBounds[n][k] || minDistance > 0.5 * interClusterDistances[clusterAssignments[n]][k]) {
             double newDistance = distance.compute(dataPoints[n], clusterCenters[k]);
+            // lowerBounds[n][k] = newDistance;
             if (newDistance < minDistance) {
+              int oldClusterAssignment = clusterAssignments[n];
+              clusterSizes[oldClusterAssignment]--;
               clusterAssignments[n] = k;
-              upperBounds[n] = minDistance;
+              clusterSizes[clusterAssignments[n]]++;
+              upperBounds[n] = newDistance;
+              for (int d = 0; d < D; d++) {
+                clusterSums[oldClusterAssignment][d] -= dataPoints[n][d];
+                clusterSums[clusterAssignments[n]][d] += dataPoints[n][d];
+              }
             }
           }
         }
@@ -156,7 +173,18 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
 
   private void updateClusterCentersAndBounds() {
     // step 4
-    hasChanged = Util.updateClusterCenters(clusterCenters, newClusterCenters, clusterAssignments, dataPoints);
+    System.out.println(Arrays.toString(clusterSizes));
+    for (int k = 0; k < K; k++) {
+      if (clusterSizes[k] > 0) {
+        for (int d = 0; d < D; d++) {
+          double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
+          hasChanged = hasChanged || newClusterCenterCoordinate != clusterCenters[k][d];
+          newClusterCenters[k][d] = newClusterCenterCoordinate;
+        }
+      } else {
+        throw new IllegalArgumentException("this is rare");
+      }
+    }
 
     // step 5
     for (var lowerBound : lowerBounds) {

@@ -106,7 +106,6 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
         }
       }
 
-      // TODO update this method in utils and use in lloyd and elkan
       // update centers
       for (int k = 0; k < K; k++) {
         if (clusterSizes[k] > 0) {

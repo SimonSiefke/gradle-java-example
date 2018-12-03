@@ -10,20 +10,20 @@
 
 <!-- TODO: adjust for elkan -->
 
-| Type           | Name | Purpose                                                                        |
-| -------------- | ---- | ------------------------------------------------------------------------------ |
-| `int`          | `D`  | number of dimensions                                                           |
-| `int`          | `K`  | number of clusters (and cluster centers)                                       |
-| `int`          | `N`  | number of data points                                                          |
-| `int[N]`       | `a`  | for each data point the index of the cluster it is assigned to                 |
-| `double[K][D]` | `c`  | cluster centers                                                                |
-| `double[K][D]` | `c'` | for each cluster the vector sum of all its points                              |
-| `double[N][K]` | `l`  | for each data point a lower bound on the distance to its second closest center |
-| `int[K]`       | `q`  | for each cluster the number of its points                                      |
-| `double[K]`    | `p`  | for each cluster center the distance that it last moved                        |
-| `double[K]`    | `s`  | for each cluster center the distance to its closest other center               |
-| `double[N]`    | `u`  | for each point an upper bound on the distance to its closest center            |
-| `double[N][D]` | `x`  | data points                                                                    |
+| Type           | Name | Purpose                                                                                                   |
+| -------------- | ---- | --------------------------------------------------------------------------------------------------------- |
+| `int`          | `D`  | number of dimensions                                                                                      |
+| `int`          | `K`  | number of clusters (and cluster centers)                                                                  |
+| `int`          | `N`  | number of data points                                                                                     |
+| `int[N]`       | `a`  | for each data point the index of the cluster it is assigned to                                            |
+| `double[K][D]` | `c`  | cluster centers                                                                                           |
+| `double[K][D]` | `c'` | for each cluster the vector sum of all its points                                                         |
+| `double[K][D]` | `i'` | for each cluster the distance to all the other clusters                                                   |
+| `double[N][K]` | `l`  | for each data point and each cluster a lower bound on the distance between the data point and the cluster |
+| `int[K]`       | `q`  | for each cluster the number of its points                                                                 |
+| `double[K]`    | `s`  | for each cluster center the distance to its closest other center                                          |
+| `double[N]`    | `u`  | for each point an upper bound on the distance to its closest center                                       |
+| `double[N][D]` | `x`  | data points                                                                                               |
 
 ## Pseudo-code:
 
@@ -35,23 +35,33 @@ function elkan(x, c):
     # compute the nearest cluster center for each cluster center
     for k=1 to K do
       s[k] <- min_(k'!=k) d(c[k], c[k'])
+      for k'=1 to K do
+        i[k'][k] d(c[k'], c[k])
 
     # compute the nearest cluster for each point
     for n=1 to N do
-      m <- max(s[a[n]]/2, l[n])
-      if u[n] > m then                              # first bound test
-        u[n] <- d(x[n], c[a[n]])                    # tighten upper bound
-        if u[n] > m then                            # second bound test
-          a' <- a[n]                                # store current value for later
-          a[n] <- argmin_k d(x[n], c[k])            # compute index of exact closest center
-          u[n] <- d(x[n], c[a[n]])                  # upper bound is now the exact distance to closest center
-          l[n] <- min_k!=a[n] d(x[n],c[k])          # lower bound is now the exact distance to the second closest center
-          if a' != a[n] then                        # when the closest cluster index hasn't changed
-            q[a'] <- q[a'] - 1                      # update cluster size
-            q[a[n]] <- q[a[n]] + 1                  # update cluster size
-            for d=1 to D do                         # update cluster sum for each dimension
-              c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
-              c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
+      m <- s[a[n]]/2
+      if u[n] > m then
+        a' = a[n]
+        for k=1 to K do
+          if k!= a[n] && u[n] > l[n][k] && u[n] > 0.5 * i[a[n]][k] then
+            if r[n] then
+              f <- d(x[n], c[a[n]])
+              r[n] <- false
+            else
+              f <- u[n]
+
+            if f > l[n][k] || f > 0.5 * i[a[n]][k] then
+              f' <- d(x[n],c[k])
+              if f' < f then
+                a[n] = k
+                u[n] = f
+        if a' != a[n] then                            # when the closest cluster index hasn't changed
+          q[a'] <- q[a'] - 1                          # update cluster size
+          q[a[n]] <- q[a[n]] + 1                      # update cluster size
+          for d=1 to D do                             # update cluster sum for each dimension
+            c'[a'][d] <- c'[a'][d] - x[n][d]          # update cluster sum for each dimension
+            c'[a[n]][d] <- c'[a[n]][d] + x[n][d]      # update cluster sum for each dimension
 
     # assign each cluster center to the average of its points
     for k=1 to K do
