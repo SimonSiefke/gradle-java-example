@@ -11,12 +11,10 @@ import util.Util;
  * Hamerly's KMeans Strategy.
  */
 public class HamerlyKMeansStrategy extends KMeansStrategy {
-  // TODO variables in parent class
   /**
    * stores for each point how far away the second closest center is.
    */
   private double[] lowerBounds;
-
   /**
    * stores the value a new cluster center when updating the cluster centers.
    */
