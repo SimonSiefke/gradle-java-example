@@ -13,16 +13,21 @@ public final class Main {
   }
 
   public static void main(String[] args) {
-    var dataPoints = new double[][] { { 0, 0 } };
-    var initialClusterCenters = new double[][] { { 1, 1 } };
-    Cluster[] clusters = new ElkanKMeansStrategy().cluster(dataPoints, initialClusterCenters, 1,
-        new EuclideanDistanceStrategy());
-    // assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
-    // assertArrayEquals(new double[] { 5, 5 }, clusters[1].center);
+    var data = DataLoader.TEXT("../benchmark/data/A1.txt");
 
-    System.out.println(Arrays.toString(clusters[0].center));
+    // var dataPoints = new double[][] { { 1, 1 }, { 2, 2 } };
+    // var initialClusterCenters = new double[][] { { 0, 0 }, { 1, 1 } };
+
+    // Cluster[] clusters = new LloydKMeansStrategy().cluster(dataPoints,
+    // initialClusterCenters, 10,
+    // new EuclideanDistanceStrategy());
+    // // assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
+    // // assertArrayEquals(new double[] { 5, 5 }, clusters[1].center);
+
+    // System.out.println(Arrays.toString(clusters[0].center));
     // System.out.println(Arrays.toString(clusters[1].center));
-    System.out.println('\n');
+    // // System.out.println(Arrays.toString(clusters[1].center));
+    // System.out.println('\n');
 
   }
 }

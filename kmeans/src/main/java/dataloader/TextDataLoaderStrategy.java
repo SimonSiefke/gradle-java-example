@@ -13,6 +13,9 @@ import java.util.Scanner;
 class TextDataLoaderStrategy implements DataLoaderStrategy {
   @Override
   public double[][] load(@Nonnull String path) {
+    if (!path.endsWith(".txt")) {
+      throw new IllegalArgumentException("The file must end with \".txt\"");
+    }
     try {
       Scanner scanner = new Scanner(new File(path), "UTF-8");
       List<double[]> doubles = new ArrayList<>();

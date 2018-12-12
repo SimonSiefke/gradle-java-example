@@ -1,6 +1,8 @@
 package kmeans;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 
@@ -37,6 +39,17 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
     var initialClusterCenters = new double[][] { { 0, 0 } };
     Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, 1, new EuclideanSquaredDistanceStrategy());
     assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
+  }
+
+  @Test
+  public void testTwoPointsWithWrongInitialClusters() {
+    var dataPoints = new double[][] { { 1, 1 }, { 2, 2 } };
+    var initialClusterCenters = new double[][] { { 0, 0 }, { 1, 1 } };
+    var exception = assertThrows(IllegalArgumentException.class,
+        () -> instance.cluster(dataPoints, initialClusterCenters, 10, new EuclideanSquaredDistanceStrategy()));
+    assertEquals(
+        "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point",
+        exception.getMessage());
   }
 
   // TODO this is the only failing test

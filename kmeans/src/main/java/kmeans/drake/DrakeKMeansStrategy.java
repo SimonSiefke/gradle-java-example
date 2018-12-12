@@ -76,7 +76,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
           hasChanged = hasChanged || clusterCentersDistanceMoved[k] > 0;
           System.arraycopy(newClusterCenter, 0, clusterCenters[k], 0, D);
         } else {
-          throw new IllegalArgumentException("this is rare");
+          throw new IllegalArgumentException(
+              "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
         }
       }
 

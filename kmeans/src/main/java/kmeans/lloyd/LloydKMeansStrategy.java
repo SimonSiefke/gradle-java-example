@@ -60,7 +60,8 @@ public class LloydKMeansStrategy extends KMeansStrategy {
             clusterCenters[k][d] = newClusterCenterCoordinate;
           }
         } else {
-          throw new IllegalArgumentException("this is rare");
+          throw new IllegalArgumentException(
+              "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
         }
       }
 
