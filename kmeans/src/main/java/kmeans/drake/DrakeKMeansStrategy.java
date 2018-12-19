@@ -29,6 +29,11 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
    */
   private int B;
 
+  /**
+   * stores the minimal number of bounds
+   */
+  private int minB;
+
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
       DistanceStrategy distance) {
@@ -36,7 +41,9 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.D = dataPoints[0].length;
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
-    this.B = 1;
+
+    this.B = computeInitialB();
+    this.minB = computeInitialMinB();
 
     this.clusterAssignments = new int[N];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
@@ -106,6 +113,21 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
       clusters[clusterAssignments[n]].closestPoints.add(dataPoints[n]);
     }
     return clusters;
+  }
+
+  private int computeInitialB() {
+    var result = K / 4;
+    if (result < 2) {
+      result = 2;
+    }
+    if (this.K <= result) {
+      result = K - 1;
+    }
+    return result;
+  }
+
+  private int computeInitialMinB() {
+    return Math.max(K / 8, 1);
   }
 
   private void initialize() {
