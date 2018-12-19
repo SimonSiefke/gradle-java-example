@@ -22,10 +22,10 @@ public abstract class KMeansStrategy {
   protected int N;
 
   /**
-   * stores for each point (treated as index from 0 to N-1) to which cluster it is
-   * assigned.
+   * stores for each data point (treated as index from 0 to N-1) to which cluster
+   * it is assigned.
    */
-  protected int[] clusterAssignments;
+  protected int[] dataPointAssignments;
   /**
    * stores the cluster centers.
    */

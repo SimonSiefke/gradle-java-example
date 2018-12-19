@@ -34,6 +34,11 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
    */
   private int minB;
 
+  /**
+   * stores for each lower bound to which cluster center it is assigned.
+   */
+  private int[][] lowerBoundAssignments;
+
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
       DistanceStrategy distance) {
@@ -41,11 +46,10 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.D = dataPoints[0].length;
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
-
     this.B = computeInitialB();
     this.minB = computeInitialMinB();
 
-    this.clusterAssignments = new int[N];
+    this.dataPointAssignments = new int[N];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
@@ -110,7 +114,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
     final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
     for (int n = 0; n < N; n++) {
-      clusters[clusterAssignments[n]].closestPoints.add(dataPoints[n]);
+      clusters[dataPointAssignments[n]].closestPoints.add(dataPoints[n]);
     }
     return clusters;
   }
@@ -134,12 +138,17 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
   }
 
-  private void sortCenters(int n, int numberOfBounds, double[][] clusterCenters) {
+  private void sortCenters(int n) {
+    var dataPoint = dataPoints[n];
+    // sort r by increasing distance from x[i]
     Arrays.sort(clusterCenters,
-        (a, b) -> this.distance.compute(a, dataPoints[n]) > this.distance.compute(b, dataPoints[n]) ? 1 : -1);
+        (a, b) -> this.distance.compute(a, dataPoint) > this.distance.compute(b, dataPoint) ? 1 : -1);
     var first = clusterCenters[0];
-    upperBounds[n] = this.distance.compute(dataPoints[n], first);
-    for (int i = 0; i < numberOfBounds; i++) {
+    upperBounds[n] = this.distance.compute(dataPoint, first);
+    for (int b = 0; b < B; b++) {
+      // clusterAssignments[n][b] = clusterCenters[b+1];
+      // lowerBounds[n][b] = this.distance.compute(dataPoint,
+      // clusterAssignments[n][b]);
       // clusterAssignments
     }
   }
