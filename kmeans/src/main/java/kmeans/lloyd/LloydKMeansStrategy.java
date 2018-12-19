@@ -21,7 +21,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
 
-    this.dataPointAssignments = new int[N];
+    this.dataPointsAssignments = new int[N];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
@@ -47,7 +47,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
             closestClusterCenterIndex = k;
           }
         }
-        Util.assignPointToCluster(dataPointAssignments, n, closestClusterCenterIndex, clusterSizes, clusterSums, D,
+        Util.assignPointToCluster(dataPointsAssignments, n, closestClusterCenterIndex, clusterSizes, clusterSums, D,
             dataPoints);
       }
 
@@ -70,7 +70,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
 
     final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
     for (int n = 0; n < N; n++) {
-      clusters[dataPointAssignments[n]].closestPoints.add(dataPoints[n]);
+      clusters[dataPointsAssignments[n]].closestPoints.add(dataPoints[n]);
     }
     return clusters;
   }
@@ -86,8 +86,8 @@ public class LloydKMeansStrategy extends KMeansStrategy {
           closestClusterCenterIndex = k;
         }
       }
-      dataPointAssignments[n] = closestClusterCenterIndex;
-      clusterSizes[dataPointAssignments[n]]++;
+      dataPointsAssignments[n] = closestClusterCenterIndex;
+      clusterSizes[dataPointsAssignments[n]]++;
       for (int d = 0; d < D; d++) {
         clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
       }

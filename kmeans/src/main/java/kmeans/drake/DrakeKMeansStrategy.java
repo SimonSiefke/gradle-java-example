@@ -37,7 +37,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   /**
    * stores for each lower bound to which cluster center it is assigned.
    */
-  private int[][] lowerBoundAssignments;
+  private int[][] lowerBoundsAssignments;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -49,7 +49,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.B = computeInitialB();
     this.minB = computeInitialMinB();
 
-    this.dataPointAssignments = new int[N];
+    this.dataPointsAssignments = new int[N];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
@@ -114,7 +114,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
     final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
     for (int n = 0; n < N; n++) {
-      clusters[dataPointAssignments[n]].closestPoints.add(dataPoints[n]);
+      clusters[dataPointsAssignments[n]].closestPoints.add(dataPoints[n]);
     }
     return clusters;
   }
