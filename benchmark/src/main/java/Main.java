@@ -1,3 +1,7 @@
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import dataloader.DataLoader;
@@ -13,21 +17,19 @@ public final class Main {
   }
 
   public static void main(String[] args) {
-    var data = DataLoader.TEXT("../benchmark/data/A1.txt");
 
-    // var dataPoints = new double[][] { { 1, 1 }, { 2, 2 } };
-    // var initialClusterCenters = new double[][] { { 0, 0 }, { 1, 1 } };
+    var dataPoints = new double[][] { { 1, 1 }, { 2, 2 } };
+    var initialClusterCenters = new double[][] { { 2, 2 }, { 1, 1 } };
 
-    // Cluster[] clusters = new LloydKMeansStrategy().cluster(dataPoints,
-    // initialClusterCenters, 10,
-    // new EuclideanDistanceStrategy());
+    Cluster[] clusters = new LloydKMeansStrategy().cluster(dataPoints, initialClusterCenters, 10,
+        new EuclideanDistanceStrategy());
     // // assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
     // // assertArrayEquals(new double[] { 5, 5 }, clusters[1].center);
 
-    // System.out.println(Arrays.toString(clusters[0].center));
+    System.out.println(Arrays.toString(clusters[0].center));
+    System.out.println(Arrays.toString(clusters[1].center));
     // System.out.println(Arrays.toString(clusters[1].center));
-    // // System.out.println(Arrays.toString(clusters[1].center));
-    // System.out.println('\n');
+    System.out.println('\n');
 
   }
 }

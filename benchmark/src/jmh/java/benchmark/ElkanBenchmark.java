@@ -13,6 +13,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 import dataloader.DataLoader;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
@@ -21,16 +22,21 @@ import java.util.concurrent.TimeUnit;
 public class ElkanBenchmark {
   private DistanceStrategy distanceStrategy = new EuclideanDistanceStrategy();
   private int numberOfIterations = Integer.MAX_VALUE;
-  private double[][] data = DataLoader.TEXT("../benchmark/data/A1.txt");
+  private double[][] data = DataLoader.TEXT("./benchmark/build/data/A1.txt");
+  // private double[][] data = DataLoader.TEXT("./1.txt");
   private double[][] initialClusterCenters = new double[][] { { 1, 1 }, { 2, 2 } };
 
   @Benchmark
   public void lloyd() {
-    new LloydKMeansStrategy().cluster(data, initialClusterCenters, numberOfIterations, distanceStrategy);
+    // new LloydKMeansStrategy().cluster(data, initialClusterCenters,
+    // numberOfIterations, distanceStrategy);
+    // File directory = new File("./bongowarongo");
+    // System.out.println(directory.getAbsolutePath());
   }
 
   @Benchmark
   public void elkan() {
-    new ElkanKMeansStrategy().cluster(data, initialClusterCenters, numberOfIterations, distanceStrategy);
+    // new ElkanKMeansStrategy().cluster(data, initialClusterCenters,
+    // numberOfIterations, distanceStrategy);
   }
 }
