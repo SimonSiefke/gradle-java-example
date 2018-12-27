@@ -16,3 +16,12 @@ git clone https://github.com/SimonSiefke/gradle-java-example
 cd gradle-java-example
 ./gradlew build
 ```
+
+## Scripts 📃
+
+```bash
+./gradlew test  # run the tests
+./gradlew jmh   # run the benchmarks
+./gradlew run   # run the visualization
+./gradlew build # build
+```
