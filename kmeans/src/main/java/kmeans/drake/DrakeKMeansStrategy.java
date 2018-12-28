@@ -103,6 +103,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
             dataPoints);
       }
 
+      System.out.println(Arrays.toString(clusterSizes));
+
       double maxDistanceMoved = 0;
       for (int k = 0; k < K; k++) {
         if (clusterSizes[k] > 0) {

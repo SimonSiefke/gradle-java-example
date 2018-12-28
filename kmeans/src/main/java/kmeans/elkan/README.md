@@ -66,7 +66,6 @@ function elkan(x, c):
       c* <- c[k]                                    # store old center for later
       for d=1 to D do
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
-      p[k] <- d(c*,c[k])                            # store the distance that the center has moved
 ```
 
 ## Time & Space Complexity Overhead (compared to Lloyd)
