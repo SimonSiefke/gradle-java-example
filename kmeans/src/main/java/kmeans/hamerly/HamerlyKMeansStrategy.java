@@ -18,7 +18,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   /**
    * stores for each center half the distance to its next closest center.
    */
-  private double[] closestClusterDistances;
+  private double[] closestOtherClusterDistances;
   /**
    * stores for each point how far away its closest center maximally is.
    */
@@ -30,7 +30,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     this.D = dataPoints[0].length;
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
-    this.closestClusterDistances = new double[K];
+    this.closestOtherClusterDistances = new double[K];
     this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
@@ -72,23 +72,28 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
 
   @Override
   protected void loop() {
-    for (int k = 0; k < K; k++) {
-      double closestClusterDistance = Double.MAX_VALUE;
-      for (int l = 0; l < K && l != k; l++) {
-        closestClusterDistance = Math.min(closestClusterDistance,
-            distance.compute(clusterCenters[k], clusterCenters[l]));
-      }
-      closestClusterDistances[k] = closestClusterDistance;
-    }
-
+    updateClosestOtherClusterDistances();
     updateAssignments();
     moveCenters();
     updateBounds();
   }
 
+  private void updateClosestOtherClusterDistances() {
+    for (int k = 0; k < K; k++) {
+      double closestOtherClusterDistance = Double.MAX_VALUE;
+      for (int l = 0; l < K && l != k; l++) {
+        double currentDistance = distance.compute(clusterCenters[k], clusterCenters[l]);
+        if (currentDistance < closestOtherClusterDistance) {
+          closestOtherClusterDistance = currentDistance;
+        }
+      }
+      closestOtherClusterDistances[k] = closestOtherClusterDistance;
+    }
+  }
+
   protected void updateAssignments() {
     for (int n = 0; n < N; n++) {
-      double m = Math.max(closestClusterDistances[dataPointsAssignments[n]] / 2, lowerBounds[n]);
+      double m = Math.max(closestOtherClusterDistances[dataPointsAssignments[n]] / 2, lowerBounds[n]);
       if (upperBounds[n] > m) {
         upperBounds[n] = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
         if (upperBounds[n] > m) {

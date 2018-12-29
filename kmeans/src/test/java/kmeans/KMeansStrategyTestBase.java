@@ -123,21 +123,13 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
         new EuclideanDistanceStrategy());
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 
-    // assertArrayEquals(new double[] { 12294.801, 56220.885 }, clusters[0].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 31185.745, 58522.447 }, clusters[1].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 32695.143, 44269.877 }, clusters[2].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 47476.562, 47747.472 }, clusters[3].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 54481.169, 43586.819 }, clusters[4].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 56814.013, 35753.430 }, clusters[5].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 58688.164, 59607.411 }, clusters[6].center,
-    // 0.01);
-    // assertArrayEquals(new double[] { 60667.370, 49451.933 }, clusters[7].center,
-    // 0.01);
+    assertArrayEquals(new double[] { 12294.801, 56220.885 }, clusters[0].center, 0.01);
+    assertArrayEquals(new double[] { 31185.745, 58522.447 }, clusters[1].center, 0.01);
+    assertArrayEquals(new double[] { 32695.143, 44269.877 }, clusters[2].center, 0.01);
+    assertArrayEquals(new double[] { 47476.562, 47747.472 }, clusters[3].center, 0.01);
+    assertArrayEquals(new double[] { 54481.169, 43586.819 }, clusters[4].center, 0.01);
+    assertArrayEquals(new double[] { 56814.013, 35753.430 }, clusters[5].center, 0.01);
+    assertArrayEquals(new double[] { 58688.164, 59607.411 }, clusters[6].center, 0.01);
+    assertArrayEquals(new double[] { 60667.370, 49451.933 }, clusters[7].center, 0.01);
   }
 }
