@@ -103,7 +103,7 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   }
 
   @Test
-  void testFullDatasetWithEuclideanDistance() {
+  void testFullDatasetWithTwoClusters() {
     var dataPoints = DataLoader.TEXT("../benchmark/data/A1.txt");
     var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1] };
     Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, Integer.MAX_VALUE,
@@ -112,5 +112,32 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
 
     assertArrayEquals(new double[] { 21263.194, 54735.200 }, clusters[0].center, 0.001);
     assertArrayEquals(new double[] { 50126.475, 46599.611 }, clusters[1].center, 0.001);
+  }
+
+  @Test
+  void testFullDatasetWithEightClusters() {
+    var dataPoints = DataLoader.TEXT("../benchmark/data/A1.txt");
+    var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1], dataPoints[2], dataPoints[3],
+        dataPoints[4], dataPoints[5], dataPoints[6], dataPoints[7] };
+    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, Integer.MAX_VALUE,
+        new EuclideanDistanceStrategy());
+    Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
+
+    // assertArrayEquals(new double[] { 12294.801, 56220.885 }, clusters[0].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 31185.745, 58522.447 }, clusters[1].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 32695.143, 44269.877 }, clusters[2].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 47476.562, 47747.472 }, clusters[3].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 54481.169, 43586.819 }, clusters[4].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 56814.013, 35753.430 }, clusters[5].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 58688.164, 59607.411 }, clusters[6].center,
+    // 0.01);
+    // assertArrayEquals(new double[] { 60667.370, 49451.933 }, clusters[7].center,
+    // 0.01);
   }
 }
