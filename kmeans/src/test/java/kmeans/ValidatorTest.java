@@ -102,6 +102,7 @@ public class ValidatorTest {
 
   @Test
   public void testNullClusterCentersAndValidDataPoints() {
-    Validator.validateClusterDataPointsAndClusterCenters(new double[][] { { 1 } }, null);
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterDataPointsAndClusterCenters(new double[][] { { 1 } }, null));
   }
 }
