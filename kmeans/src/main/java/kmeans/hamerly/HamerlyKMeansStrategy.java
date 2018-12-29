@@ -51,10 +51,10 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   protected void initialize() {
     for (int n = 0; n < N; n++) {
       int minDistanceIndex = -1;
-      double minDistance = Double.MAX_VALUE;
-      double secondMinDistance = Double.MAX_VALUE;
+      var minDistance = Double.MAX_VALUE;
+      var secondMinDistance = Double.MAX_VALUE;
       for (int k = 0; k < K; k++) {
-        double currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
+        var currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
         if (currentDistance < minDistance) {
           secondMinDistance = minDistance;
           minDistance = currentDistance;
@@ -79,10 +79,10 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
 
   private void updateClosestOtherClusterDistances() {
     for (int k = 0; k < K; k++) {
-      double closestOtherClusterDistance = Double.MAX_VALUE;
+      var closestOtherClusterDistance = Double.MAX_VALUE;
       for (int l = 0; l < K; l++) {
         if (l != k) {
-          double currentDistance = distance.compute(clusterCenters[k], clusterCenters[l]);
+          var currentDistance = distance.compute(clusterCenters[k], clusterCenters[l]);
           if (currentDistance < closestOtherClusterDistance) {
             closestOtherClusterDistance = currentDistance;
           }
@@ -99,10 +99,10 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
         upperBounds[n] = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
         if (upperBounds[n] > m) {
           int minDistanceIndex = 0;
-          double minDistance = Double.MAX_VALUE;
-          double secondMinDistance = Double.MAX_VALUE;
+          var minDistance = Double.MAX_VALUE;
+          var secondMinDistance = Double.MAX_VALUE;
           for (int k = 0; k < K; k++) {
-            double currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
+            var currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
             if (currentDistance < minDistance) {
               secondMinDistance = minDistance;
               minDistance = currentDistance;
@@ -122,10 +122,10 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   @Override
   protected void updateBounds() {
     int mostDistanceMovedIndex = -1;
-    double mostDistanceMoved = Double.MIN_VALUE;
-    double secondMostDistanceMoved = Double.MIN_VALUE;
+    var mostDistanceMoved = Double.MIN_VALUE;
+    var secondMostDistanceMoved = Double.MIN_VALUE;
     for (int k = 0; k < K; k++) {
-      double currentDistanceMoved = clusterCenterMovements[k];
+      var currentDistanceMoved = clusterCenterMovements[k];
       if (currentDistanceMoved > mostDistanceMoved) {
         secondMostDistanceMoved = mostDistanceMoved;
         mostDistanceMoved = currentDistanceMoved;

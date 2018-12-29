@@ -20,7 +20,14 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
    * stores for each point how least far away each the cluster center is.
    */
   private double[][] lowerBounds;
-  private boolean[] r;
+  /**
+   * stores for each point whether the upper bound to its currently assigned
+   * center is accurate or not
+   */
+  private boolean[] hasAccurateUpperBound;
+  /**
+   * TODO
+   */
   private double[] s;
   /**
    * stores for each point how far away its closest center maximally is.
@@ -51,7 +58,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     this.lowerBounds = new double[N][K];
     this.maxNumberOfIterations = maxNumberOfIterations;
     this.numberOfIterations = 0;
-    this.r = new boolean[N];
+    this.hasAccurateUpperBound = new boolean[N];
     this.s = new double[K];
     this.upperBounds = new double[N];
 
@@ -60,10 +67,8 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     return result();
   }
 
-  // TODO make this easier
   @Override
   protected void initialize() {
-    // step -1: assign each point to its nearest cluster using Lemma 1
     for (int n = 0; n < N; n++) {
       double minDistance = Double.MAX_VALUE;
       int minDistanceIndex = -1;
@@ -109,10 +114,10 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
         if (k != dataPointsAssignments[n] && upperBounds[n] > lowerBounds[n][k]
             && upperBounds[n] > 0.5 * interClusterDistances[dataPointsAssignments[n]][k]) {
           // step 3a
-          if (r[n]) {
+          if (hasAccurateUpperBound[n]) {
             upperBounds[n] = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
             lowerBounds[n][dataPointsAssignments[n]] = upperBounds[n];
-            r[n] = false;
+            hasAccurateUpperBound[n] = false;
           }
 
           // step 3b
@@ -142,7 +147,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     for (int n = 0; n < N; n++) {
       upperBounds[n] += clusterCenterMovements[dataPointsAssignments[n]];
     }
-    Arrays.fill(r, true);
+    Arrays.fill(hasAccurateUpperBound, true);
   }
 
   @Override
