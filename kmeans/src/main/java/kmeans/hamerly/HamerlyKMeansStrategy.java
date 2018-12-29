@@ -64,15 +64,9 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
           secondClosestClusterCenterDistance = currentClusterCenterDistance;
         }
       }
-
-      dataPointsAssignments[n] = closestClusterCenterIndex;
       upperBounds[n] = closestClusterCenterDistance;
       lowerBounds[n] = secondClosestClusterCenterDistance;
-
-      clusterSizes[dataPointsAssignments[n]]++;
-      for (int d = 0; d < D; d++) {
-        clusterSums[dataPointsAssignments[n]][d] += dataPoints[n][d];
-      }
+      initialAssignPointToCluster(n, closestClusterCenterIndex);
     }
   }
 

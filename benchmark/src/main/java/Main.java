@@ -19,11 +19,11 @@ public final class Main {
 
   public static void main(String[] args) {
 
-    var dataPoints = DataLoader.TEXT("../benchmark/data/A1.txt");
-    var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1] };
+    var dataPoints = new double[][] { { 0, 0 } };
+    var initialClusterCenters = new double[][] { { 1, 1 } };
     //
     //
-    Cluster[] clusters = new LloydKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
+    Cluster[] clusters = new ElkanKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
         new EuclideanDistanceStrategy());
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 
@@ -32,7 +32,7 @@ public final class Main {
     //
 
     System.out.println(Arrays.toString(clusters[0].center));
-    System.out.println(Arrays.toString(clusters[1].center));
+    // System.out.println(Arrays.toString(clusters[1].center));
     System.out.println('\n');
 
   }
