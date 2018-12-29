@@ -24,17 +24,17 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   private double[] upperBounds;
 
   /**
-   * stores the number of bounds (changes over time)
+   * stores the number of bounds (changes over time).
    */
   private int B;
 
   /**
-   * stores the minimal number of bounds
+   * stores the minimal number of bounds.
    */
   private int minB;
 
   /**
-   * stores the maximal number of bounds
+   * stores the maximal number of bounds.
    */
   private int maxB;
 
@@ -44,13 +44,13 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   private int[][] lowerBoundsAssignments;
 
   /**
-   * stores the first cluster center
+   * stores the first cluster center.
    */
   private double[] firstClusterCenter;
 
   /**
    * stores the index of the center that has moved the most in the current
-   * iteration
+   * iteration.
    */
   private double maxDistanceMoved;
 
@@ -103,13 +103,11 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
       // update centers
       for (int n = 0; n < N; n++) {
-        var newDataPointAssignment = lowerBoundsAssignments[n][0];
+        // var newDataPointAssignment = lowerBoundsAssignments[n][0];
         // Util.assignPointToCluster(dataPointsAssignments, n, newDataPointAssignment,
         // clusterSizes, clusterSums, D,
         // dataPoints);
       }
-
-      System.out.println(Arrays.toString(clusterSizes));
 
       maxDistanceMoved = 0;
       for (int k = 0; k < K; k++) {
@@ -144,7 +142,6 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     return clusters;
   }
 
-  @Override
   protected void updateBounds() {
     for (int n = 0; n < N; n++) {
       upperBounds[n] += clusterCentersDistanceMoved[dataPointsAssignments[n]];
@@ -174,6 +171,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     return Math.max(K / 8, 1);
   }
 
+  @Override
   protected void initialize() {
     for (int n = 0; n < N; n++) {
       sortCenters(n, B - 1, clusterCenters);
@@ -199,6 +197,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
   @Override
   protected void loop() {
+    // TODO
   }
 
 }

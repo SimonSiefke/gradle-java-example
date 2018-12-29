@@ -13,7 +13,7 @@ import kmeans.KMeansStrategy;
  */
 public class ElkanKMeansStrategy extends KMeansStrategy {
   /**
-   * stores for each cluster the distance to every other cluster
+   * stores for each cluster the distance to every other cluster.
    */
   private double[][] interClusterDistances;
   /**
@@ -22,11 +22,11 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
   private double[][] lowerBounds;
   /**
    * stores for each point whether the upper bound to its currently assigned
-   * center is accurate or not
+   * center is accurate or not.
    */
   private boolean[] hasAccurateUpperBound;
   /**
-   * TODO
+   * TODO.
    */
   private double[] s;
   /**
@@ -134,8 +134,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     }
   }
 
-  @Override
-  protected void updateBounds() {
+  private void updateBounds() {
     // step 5
     for (var lowerBound : lowerBounds) {
       for (int k = 0; k < K; k++) {

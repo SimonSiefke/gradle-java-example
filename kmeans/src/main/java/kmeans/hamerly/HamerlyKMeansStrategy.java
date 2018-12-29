@@ -48,6 +48,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     return result();
   }
 
+  @Override
   protected void initialize() {
     for (int n = 0; n < N; n++) {
       int minDistanceIndex = -1;
@@ -119,8 +120,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     }
   }
 
-  @Override
-  protected void updateBounds() {
+  private void updateBounds() {
     int mostDistanceMovedIndex = -1;
     var mostDistanceMoved = Double.MIN_VALUE;
     var secondMostDistanceMoved = Double.MIN_VALUE;

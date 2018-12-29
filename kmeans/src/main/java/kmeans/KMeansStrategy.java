@@ -157,33 +157,18 @@ public abstract class KMeansStrategy {
 
   /**
    * The main loop of each kMeans Algorithm, loop until nothing has changed or the
-   * maximum number of iterations has been reached
+   * maximum number of iterations has been reached.
    */
   protected void main() {
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
       loop();
       numberOfIterations++;
-      System.out.println("\n");
-      System.out.println("iteration: " + numberOfIterations);
-      var clusters = result();
-      Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
-      for (var c : clusters) {
-        System.out.println(Arrays.toString(c.center));
-      }
     }
-    System.out.println("main done");
-    System.out.println("----------");
   }
 
   /**
    * This will be called in every iteration of the main loop.
    */
   protected abstract void loop();
-
-  /**
-   * Updates the bounds.
-   */
-  protected void updateBounds() {
-  }
 }

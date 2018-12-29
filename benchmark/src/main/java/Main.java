@@ -1,16 +1,9 @@
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import dataloader.DataLoader;
 import distance.EuclideanDistanceStrategy;
 import kmeans.Cluster;
-import kmeans.drake.DrakeKMeansStrategy;
-import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.hamerly.HamerlyKMeansStrategy;
-import kmeans.lloyd.LloydKMeansStrategy;
 
 public final class Main {
   private Main() {

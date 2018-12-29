@@ -50,7 +50,6 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   }
 
   @Test
-  @Disabled
   public void testTwoPointsWithWrongInitialClusters() {
     var dataPoints = new double[][] { { 1, 1 }, { 2, 2 } };
     var initialClusterCenters = new double[][] { { 0, 0 }, { 1, 1 } };
