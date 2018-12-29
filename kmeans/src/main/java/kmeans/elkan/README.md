@@ -1,6 +1,6 @@
 # Elkan's KMeans Algorithm
 
-> Lloyd's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
+> Elkan's Algorithm is a clustering algorithm that segments data points into clusters based on their distance. It uses triangle inequality to skip some distance calculation which makes it more efficient than Lloyd's Algorithm.
 
 ## Pruning techniques:
 
@@ -29,6 +29,15 @@
 
 ```
 function elkan(x, c):
+  for n=1 to N do
+    a[n] <- argmin_k d(x[n], c[k])                  # compute index of the closest center
+    u[n] <- min d(x[n], c[k])                       # compute distance to the closest center
+    for k=1 to K do
+      l[n][k] <- d(x[n],c[k])                       # compute exact distance to each center
+    q[a[n]] <- q[a[n]] + 1                          # update cluster size
+    for d=1 to D do                                 # update cluster sum for each dimension
+      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
+
   while not converged do
     # compute the nearest cluster center for each cluster center
     for k=1 to K do
