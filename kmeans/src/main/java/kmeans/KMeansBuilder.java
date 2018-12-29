@@ -4,9 +4,7 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
-import clustercenterinitialization.CLUSTER_CENTER_INITIALIZATION_STRATEGY;
 import clustercenterinitialization.ClusterCenterInitializationStrategy;
-import clustercenterinitialization.FirstKClusterCenterInitializationStrategy;
 import distance.DistanceStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
@@ -25,7 +23,7 @@ public final class KMeansBuilder {
   private int numberOfClusters;
 
   public KMeansBuilder() {
-    this.withClusterCenterInitializationStrategy(CLUSTER_CENTER_INITIALIZATION_STRATEGY.DEFAULT);
+    this.withClusterCenterInitializationStrategy(clusterCenterInitializationStrategy.DEFAULT);
     this.withDistance(DistanceStrategy.DEFAULT);
     this.withStrategy(KMeansStrategy.DEFAULT);
     this.withMaxNumberOfIterations(Integer.MAX_VALUE);
@@ -89,17 +87,8 @@ public final class KMeansBuilder {
    *                                            strategy
    */
   public KMeansBuilder withClusterCenterInitializationStrategy(
-      CLUSTER_CENTER_INITIALIZATION_STRATEGY clusterCenterInitializationStrategy) {
-    switch (clusterCenterInitializationStrategy) {
-    case DEFAULT:
-      this.clusterCenterInitializationStrategy = new FirstKClusterCenterInitializationStrategy();
-      break;
-    case FIRST_K:
-      this.clusterCenterInitializationStrategy = new FirstKClusterCenterInitializationStrategy();
-      break;
-    default:
-      break;
-    }
+      ClusterCenterInitializationStrategy clusterCenterInitializationStrategy) {
+    this.clusterCenterInitializationStrategy = clusterCenterInitializationStrategy;
     return new KMeansBuilder(this);
   }
 

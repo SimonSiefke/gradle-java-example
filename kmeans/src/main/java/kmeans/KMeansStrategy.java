@@ -9,7 +9,7 @@ import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 
 /**
- * Abstract class for K-Means Strategies.
+ * Abstract class for KMeans Strategies.
  */
 public abstract class KMeansStrategy {
   public static final KMeansStrategy DEFAULT = new LloydKMeansStrategy();

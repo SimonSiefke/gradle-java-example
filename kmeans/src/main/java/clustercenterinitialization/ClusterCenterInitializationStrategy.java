@@ -5,9 +5,12 @@ import javax.annotation.Nonnull;
 import distance.DistanceStrategy;
 
 /**
- * Interface for Cluster Center Initialization Strategies.
+ * Abstract class for Cluster Center Initialization Strategies.
  */
-public interface ClusterCenterInitializationStrategy {
+public abstract class ClusterCenterInitializationStrategy {
+  public static final ClusterCenterInitializationStrategy DEFAULT = new FirstKClusterCenterInitializationStrategy();
+  public static final ClusterCenterInitializationStrategy FIRST_K = new FirstKClusterCenterInitializationStrategy();
+
   /**
    * Computes initial centers for a k-means algorithm.
    *
@@ -16,5 +19,5 @@ public interface ClusterCenterInitializationStrategy {
    * @param distance   the distance strategy
    * @return k initial cluster centers
    */
-  double[][] initialize(@Nonnull double[][] dataPoints, int k, @Nonnull DistanceStrategy distance);
+  public abstract double[][] initialize(@Nonnull double[][] dataPoints, int k, @Nonnull DistanceStrategy distance);
 }

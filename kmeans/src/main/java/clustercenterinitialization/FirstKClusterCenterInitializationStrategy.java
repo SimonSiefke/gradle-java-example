@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 /**
  * First K Cluster Center Initialization Strategy.
  */
-public class FirstKClusterCenterInitializationStrategy implements ClusterCenterInitializationStrategy {
+public class FirstKClusterCenterInitializationStrategy extends ClusterCenterInitializationStrategy {
   @Override
   public double[][] initialize(@Nonnull double[][] dataPoints, int K, @Nonnull DistanceStrategy distance) {
     var result = new double[K][];

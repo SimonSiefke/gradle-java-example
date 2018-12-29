@@ -3,7 +3,7 @@ package distance;
 import javax.annotation.Nonnull;
 
 /**
- * Distance method interface.
+ * Abstract class for Distance Measurement Strategies.
  */
 public abstract class DistanceStrategy {
   public static final DistanceStrategy DEFAULT = new EuclideanSquaredDistanceStrategy();

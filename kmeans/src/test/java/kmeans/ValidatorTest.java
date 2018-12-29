@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import util.Validator;
 
 public class ValidatorTest {
@@ -62,7 +63,25 @@ public class ValidatorTest {
   }
 
   @Test
+  public void testWrongClusterCenters2() {
+    assertThrows(IllegalArgumentException.class,
+        () -> Validator.validateClusterDataPointsAndClusterCenters(new double[][] { null, { 1 } },
+            new double[][] { { 2 }, { 3, 4 } }));
+  }
+
+  @Test
   public void testWrongNumberOfIterations() {
     assertThrows(IllegalArgumentException.class, () -> Validator.validateNumberOfIterations(-1));
+  }
+
+  @Test
+  public void testNullKMeansStrategy() {
+    assertThrows(IllegalArgumentException.class, () -> Validator.validateKMeansStrategy(null));
+  }
+
+  @Test
+  public void testNullInitialClusterCenters() {
+    assertThrows(IllegalArgumentException.class, () -> Validator.validateInitialClusterCentersAndNumberOfClusters(null,
+        ClusterCenterInitializationStrategy.DEFAULT, 0));
   }
 }
