@@ -63,7 +63,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
     double smallestClusterCenterDistance = Double.MAX_VALUE;
 
     for (int k = 0; k < K; k++) {
-      double currentClusterCenterDistance = this.distance.compute(dataPoint, clusterCenters[k]);
+      double currentClusterCenterDistance = distance.compute(dataPoint, clusterCenters[k]);
       if (currentClusterCenterDistance < smallestClusterCenterDistance) {
         smallestClusterCenterDistance = currentClusterCenterDistance;
         closestClusterCenterIndex = k;
