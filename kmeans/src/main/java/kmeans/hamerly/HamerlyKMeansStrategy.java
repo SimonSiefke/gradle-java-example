@@ -5,7 +5,6 @@ import java.util.Arrays;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Hamerly's KMeans Strategy.
@@ -75,8 +74,6 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     updateClosestOtherClusterDistances();
     updateAssignments();
     moveCenters();
-    System.out.println(hasChanged);
-    System.out.println("iteration " + numberOfIterations);
     updateBounds();
   }
 
@@ -94,7 +91,6 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   }
 
   protected void updateAssignments() {
-    System.out.println("update");
     for (int n = 0; n < N; n++) {
       double m = Math.max(closestOtherClusterDistances[dataPointsAssignments[n]] / 2, lowerBounds[n]);
       if (upperBounds[n] > m) {

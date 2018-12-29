@@ -5,7 +5,6 @@ import java.util.Arrays;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Elkan's KMeans Strategy.
@@ -109,7 +108,8 @@ public class SimplifiedElkanKMeansStrategy extends KMeansStrategy {
             double newDistance = distance.compute(dataPoints[n], clusterCenters[k]);
             if (newDistance < minDistance) {
               upperBounds[n] = newDistance;
-              Util.assignPointToCluster(dataPointsAssignments, n, k, clusterSizes, clusterSums, D, dataPoints);
+              // Util.assignPointToCluster(dataPointsAssignments, n, k, clusterSizes,
+              // clusterSums, D, dataPoints);
             }
           }
         }

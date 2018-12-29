@@ -7,12 +7,14 @@ import java.util.List;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Elkan's KMeans Strategy.
  */
 public class ElkanKMeansStrategy extends KMeansStrategy {
+  /**
+   * stores for each cluster the distance to every other cluster
+   */
   private double[][] interClusterDistances;
   /**
    * stores for each point how least far away each the cluster center is.
@@ -44,13 +46,14 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     this.clusterSums = new double[K][D];
     this.dataPoints = dataPoints;
     this.distance = distance;
+    this.hasChanged = true;
     this.interClusterDistances = new double[K][K];
     this.lowerBounds = new double[N][K];
+    this.maxNumberOfIterations = maxNumberOfIterations;
+    this.numberOfIterations = 0;
     this.r = new boolean[N];
     this.s = new double[K];
     this.upperBounds = new double[N];
-    this.hasChanged = true;
-    this.numberOfIterations = 0;
 
     initialize();
     main();

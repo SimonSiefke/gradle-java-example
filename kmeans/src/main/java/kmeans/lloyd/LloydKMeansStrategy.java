@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Lloyd's KMeans Strategy.

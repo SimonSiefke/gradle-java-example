@@ -1,12 +1,10 @@
 package kmeans.drake;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import distance.DistanceStrategy;
 import kmeans.Cluster;
 import kmeans.KMeansStrategy;
-import util.Util;
 
 /**
  * Drake's KMeans Strategy.
@@ -106,8 +104,9 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
       // update centers
       for (int n = 0; n < N; n++) {
         var newDataPointAssignment = lowerBoundsAssignments[n][0];
-        Util.assignPointToCluster(dataPointsAssignments, n, newDataPointAssignment, clusterSizes, clusterSums, D,
-            dataPoints);
+        // Util.assignPointToCluster(dataPointsAssignments, n, newDataPointAssignment,
+        // clusterSizes, clusterSums, D,
+        // dataPoints);
       }
 
       System.out.println(Arrays.toString(clusterSizes));

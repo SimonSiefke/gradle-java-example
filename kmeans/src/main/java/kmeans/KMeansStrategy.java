@@ -166,7 +166,9 @@ public abstract class KMeansStrategy {
       hasChanged = false;
       loop();
       numberOfIterations++;
+      System.out.println("iteration: " + numberOfIterations);
     }
+    System.out.println("main done");
   }
 
   /**
