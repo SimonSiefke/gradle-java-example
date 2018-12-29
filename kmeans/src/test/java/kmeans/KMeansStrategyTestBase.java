@@ -103,7 +103,7 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   }
 
   @Test
-  void testFullDatasetWithEuclideanDifference() {
+  void testFullDatasetWithEuclideanDistance() {
     var dataPoints = DataLoader.TEXT("../benchmark/data/A1.txt");
     var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1] };
     Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, Integer.MAX_VALUE,
