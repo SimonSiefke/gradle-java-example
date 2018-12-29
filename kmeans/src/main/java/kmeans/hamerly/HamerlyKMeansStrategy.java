@@ -80,10 +80,12 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   private void updateClosestOtherClusterDistances() {
     for (int k = 0; k < K; k++) {
       double closestOtherClusterDistance = Double.MAX_VALUE;
-      for (int l = 0; l < K && l != k; l++) {
-        double currentDistance = distance.compute(clusterCenters[k], clusterCenters[l]);
-        if (currentDistance < closestOtherClusterDistance) {
-          closestOtherClusterDistance = currentDistance;
+      for (int l = 0; l < K; l++) {
+        if (l != k) {
+          double currentDistance = distance.compute(clusterCenters[k], clusterCenters[l]);
+          if (currentDistance < closestOtherClusterDistance) {
+            closestOtherClusterDistance = currentDistance;
+          }
         }
       }
       closestOtherClusterDistances[k] = closestOtherClusterDistance;
@@ -96,7 +98,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
       if (upperBounds[n] > m) {
         upperBounds[n] = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
         if (upperBounds[n] > m) {
-          int minDistanceIndex = -1;
+          int minDistanceIndex = 0;
           double minDistance = Double.MAX_VALUE;
           double secondMinDistance = Double.MAX_VALUE;
           for (int k = 0; k < K; k++) {

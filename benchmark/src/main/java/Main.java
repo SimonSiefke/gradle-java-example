@@ -25,7 +25,7 @@ public final class Main {
     //
     //
     System.out.println(Arrays.deepToString(initialClusterCenters));
-    Cluster[] clusters = new LloydKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
+    Cluster[] clusters = new HamerlyKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
         new EuclideanDistanceStrategy());
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 

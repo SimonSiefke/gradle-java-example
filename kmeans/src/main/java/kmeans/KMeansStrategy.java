@@ -100,8 +100,6 @@ public abstract class KMeansStrategy {
       }
     }
     hasChanged = clusterCenterMovements[furthestMovingCenterIndex] > 0;
-    System.out.println(clusterCenterMovements[furthestMovingCenterIndex]);
-    System.out.println(furthestMovingCenterIndex);
     return furthestMovingCenterIndex;
   }
 
@@ -166,9 +164,16 @@ public abstract class KMeansStrategy {
       hasChanged = false;
       loop();
       numberOfIterations++;
+      System.out.println("\n");
       System.out.println("iteration: " + numberOfIterations);
+      var clusters = result();
+      Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
+      for (var c : clusters) {
+        System.out.println(Arrays.toString(c.center));
+      }
     }
     System.out.println("main done");
+    System.out.println("----------");
   }
 
   /**
