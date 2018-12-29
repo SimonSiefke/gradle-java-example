@@ -46,8 +46,6 @@ public class LloydKMeansStrategy extends KMeansStrategy {
       var furthestMovingCenterIndex = moveCenters();
       hasChanged = clusterCenterMovements[furthestMovingCenterIndex] > 0;
 
-      System.out.println(Arrays.deepToString(clusterCenters));
-
       numberOfIterations++;
     }
 
