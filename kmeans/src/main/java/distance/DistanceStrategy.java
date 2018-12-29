@@ -5,7 +5,12 @@ import javax.annotation.Nonnull;
 /**
  * Distance method interface.
  */
-public interface DistanceStrategy {
+public abstract class DistanceStrategy {
+  public static final DistanceStrategy DEFAULT = new EuclideanSquaredDistanceStrategy();
+  public static final DistanceStrategy EUCLIDEAN = new EuclideanSquaredDistanceStrategy();
+  public static final DistanceStrategy EUCLIDEAN_SQUARED = new EuclideanDistanceStrategy();
+  public static final DistanceStrategy MANHATTAN = new ManhattanDistanceStrategy();
+
   /**
    * Computes a distance between the two points.
    *
@@ -13,5 +18,5 @@ public interface DistanceStrategy {
    * @param pointB the second point
    * @return the distance between the two points
    */
-  double compute(@Nonnull double[] pointA, @Nonnull double[] pointB);
+  public abstract double compute(@Nonnull double[] pointA, @Nonnull double[] pointB);
 }

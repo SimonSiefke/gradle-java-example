@@ -5,11 +5,18 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 
 import distance.DistanceStrategy;
+import kmeans.elkan.ElkanKMeansStrategy;
+import kmeans.lloyd.LloydKMeansStrategy;
 
 /**
  * Abstract class for K-Means Strategies.
  */
 public abstract class KMeansStrategy {
+  public static final KMeansStrategy DEFAULT = new LloydKMeansStrategy();
+  public static final KMeansStrategy ELKAN = new ElkanKMeansStrategy();
+  public static final KMeansStrategy HAMERLY = new ElkanKMeansStrategy();
+  public static final KMeansStrategy LLOYD = new LloydKMeansStrategy();
+
   /**
    * stores the number of dimensions.
    */

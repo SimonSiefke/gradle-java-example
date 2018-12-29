@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 /**
  * Euclidean Squared Distance Strategy.
  */
-public class EuclideanSquaredDistanceStrategy implements DistanceStrategy {
+public class EuclideanSquaredDistanceStrategy extends DistanceStrategy {
   @Override
   public double compute(@Nonnull double[] pointA, @Nonnull double[] pointB) {
     double squaredSum = 0;

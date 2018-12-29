@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 /**
  * Euclidean Distance Strategy.
  */
-public class EuclideanDistanceStrategy implements DistanceStrategy {
+public class EuclideanDistanceStrategy extends DistanceStrategy {
   private final EuclideanSquaredDistanceStrategy euclideanSquaredDistanceStrategy = new EuclideanSquaredDistanceStrategy();
 
   @Override

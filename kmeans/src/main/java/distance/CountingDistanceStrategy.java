@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
  * Counting Distance Strategy. A utility class that Keeps track of how many
  * distance calculations were made.
  */
-public class CountingDistanceStrategy implements DistanceStrategy {
+public class CountingDistanceStrategy extends DistanceStrategy {
   private final DistanceStrategy distanceStrategy;
   public int numberOfDistanceCalculations = 0;
 

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 /**
  * Manhattan Distance Strategy.
  */
-public class ManhattanDistanceStrategy implements DistanceStrategy {
+public class ManhattanDistanceStrategy extends DistanceStrategy {
   @Override
   public double compute(@Nonnull double[] pointA, @Nonnull double[] pointB) {
     double sum = 0;

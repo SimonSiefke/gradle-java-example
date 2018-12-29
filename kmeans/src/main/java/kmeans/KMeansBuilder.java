@@ -7,10 +7,7 @@ import javax.annotation.Nonnull;
 import clustercenterinitialization.CLUSTER_CENTER_INITIALIZATION_STRATEGY;
 import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import clustercenterinitialization.FirstKClusterCenterInitializationStrategy;
-import distance.DISTANCE_STRATEGY;
 import distance.DistanceStrategy;
-import distance.EuclideanDistanceStrategy;
-import distance.EuclideanSquaredDistanceStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 import util.Validator;
@@ -29,8 +26,8 @@ public final class KMeansBuilder {
 
   public KMeansBuilder() {
     this.withClusterCenterInitializationStrategy(CLUSTER_CENTER_INITIALIZATION_STRATEGY.DEFAULT);
-    this.withDistance(DISTANCE_STRATEGY.DEFAULT);
-    this.withStrategy(KMEANS_STRATEGY.DEFAULT);
+    this.withDistance(DistanceStrategy.DEFAULT);
+    this.withStrategy(KMeansStrategy.DEFAULT);
     this.withMaxNumberOfIterations(Integer.MAX_VALUE);
   }
 
@@ -76,24 +73,12 @@ public final class KMeansBuilder {
   }
 
   /**
-   * Sets the distance measurement method.
+   * Sets the distance measurement strategy.
    *
-   * @param distanceMethod the distance measurement method
+   * @param distanceStrategy the distance measurement strategy
    */
-  public KMeansBuilder withDistance(DISTANCE_STRATEGY distanceMethod) {
-    switch (distanceMethod) {
-    case DEFAULT:
-      this.distanceStrategy = new EuclideanSquaredDistanceStrategy();
-      break;
-    case EUCLIDEAN:
-      this.distanceStrategy = new EuclideanDistanceStrategy();
-      break;
-    case EUCLIDEAN_SQUARED:
-      this.distanceStrategy = new EuclideanSquaredDistanceStrategy();
-      break;
-    default:
-      break;
-    }
+  public KMeansBuilder withDistance(DistanceStrategy distanceStrategy) {
+    this.distanceStrategy = distanceStrategy;
     return new KMeansBuilder(this);
   }
 
@@ -157,18 +142,8 @@ public final class KMeansBuilder {
    *
    * @param kMeansStrategy the k-means algorithm to use
    */
-  public KMeansBuilder withStrategy(KMEANS_STRATEGY kMeansStrategy) {
-    switch (kMeansStrategy) {
-    case LLOYD:
-    case DEFAULT:
-      this.kMeansStrategy = new LloydKMeansStrategy();
-      break;
-    case ELKAN:
-      this.kMeansStrategy = new ElkanKMeansStrategy();
-      break;
-    default:
-      break;
-    }
+  public KMeansBuilder withStrategy(KMeansStrategy kMeansStrategy) {
+    this.kMeansStrategy = kMeansStrategy;
     return new KMeansBuilder(this);
   }
 
