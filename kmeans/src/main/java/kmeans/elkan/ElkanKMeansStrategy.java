@@ -14,14 +14,16 @@ import util.Util;
  */
 public class ElkanKMeansStrategy extends KMeansStrategy {
   private double[][] interClusterDistances;
+  /**
+   * stores for each point how least far away each the cluster center is.
+   */
   private double[][] lowerBounds;
   private boolean[] r;
   private double[] s;
-  private double[] upperBounds;
   /**
-   * stores for each center how far it has moved in the current iteration.
+   * stores for each point how far away its closest center maximally is.
    */
-  private double[] clusterCentersDistanceMoved;
+  private double[] upperBounds;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -36,13 +38,13 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
     this.dataPointsAssignments = new int[N];
+    this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
     this.dataPoints = dataPoints;
     this.distance = distance;
     this.interClusterDistances = new double[K][K];
-    this.clusterCentersDistanceMoved = new double[K];
     this.lowerBounds = new double[N][K];
     this.r = new boolean[N];
     this.s = new double[K];
@@ -59,34 +61,19 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
   @Override
   protected void initialize() {
     // step -1: assign each point to its nearest cluster using Lemma 1
-    final boolean[] skip = new boolean[K];
     for (int n = 0; n < N; n++) {
       double minDistance = Double.MAX_VALUE;
-      int closestClusterIndex = -1;
-      Arrays.fill(skip, false);
+      int minDistanceIndex = -1;
       for (int k = 0; k < K; k++) {
-        if (skip[k]) {
-          continue;
-        }
         var currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
         lowerBounds[n][k] = currentDistance;
         if (currentDistance < minDistance) {
           minDistance = currentDistance;
-          closestClusterIndex = k;
-          // use lemma 1 to see if some iterations can be skipped
-          for (int l = k + 1; l < K; l++) {
-            if (interClusterDistances[k][l] >= 2 * currentDistance) {
-              skip[l] = true;
-            }
-          }
+          minDistanceIndex = k;
         }
       }
-      dataPointsAssignments[n] = closestClusterIndex;
-      clusterSizes[dataPointsAssignments[n]]++;
       upperBounds[n] = minDistance;
-      for (int d = 0; d < D; d++) {
-        clusterSums[dataPointsAssignments[n]][d] += dataPoints[n][d];
-      }
+      initialAssignPointToCluster(n, minDistanceIndex);
     }
   }
 
@@ -131,7 +118,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
             lowerBounds[n][k] = distance.compute(dataPoints[n], clusterCenters[k]);
             if (lowerBounds[n][k] < upperBounds[n]) {
               upperBounds[n] = lowerBounds[n][k];
-              Util.assignPointToCluster(dataPointsAssignments, n, k, clusterSizes, clusterSums, D, dataPoints);
+              assignPointToCluster(n, k);
             }
           }
         }
@@ -144,13 +131,13 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     // step 5
     for (var lowerBound : lowerBounds) {
       for (int k = 0; k < K; k++) {
-        lowerBound[k] = Math.max(lowerBound[k] - clusterCentersDistanceMoved[k], 0);
+        lowerBound[k] = Math.max(lowerBound[k] - clusterCenterMovements[k], 0);
       }
     }
 
     // step 6
     for (int n = 0; n < N; n++) {
-      upperBounds[n] += clusterCentersDistanceMoved[dataPointsAssignments[n]];
+      upperBounds[n] += clusterCenterMovements[dataPointsAssignments[n]];
     }
     Arrays.fill(r, true);
   }

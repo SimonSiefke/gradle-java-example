@@ -100,6 +100,8 @@ public abstract class KMeansStrategy {
       }
     }
     hasChanged = clusterCenterMovements[furthestMovingCenterIndex] > 0;
+    System.out.println(clusterCenterMovements[furthestMovingCenterIndex]);
+    System.out.println(furthestMovingCenterIndex);
     return furthestMovingCenterIndex;
   }
 

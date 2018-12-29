@@ -12,7 +12,7 @@ import util.Util;
  */
 public class HamerlyKMeansStrategy extends KMeansStrategy {
   /**
-   * stores for each point how far away the second closest center is.
+   * stores for each point how least far away the second closest center is.
    */
   private double[] lowerBounds;
   /**
@@ -75,6 +75,8 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     updateClosestOtherClusterDistances();
     updateAssignments();
     moveCenters();
+    System.out.println(hasChanged);
+    System.out.println("iteration " + numberOfIterations);
     updateBounds();
   }
 
@@ -92,27 +94,28 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   }
 
   protected void updateAssignments() {
+    System.out.println("update");
     for (int n = 0; n < N; n++) {
       double m = Math.max(closestOtherClusterDistances[dataPointsAssignments[n]] / 2, lowerBounds[n]);
       if (upperBounds[n] > m) {
         upperBounds[n] = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
         if (upperBounds[n] > m) {
-          int closestClusterCenterIndex = -1;
-          double closestClusterCenterDistance = Double.MAX_VALUE;
-          double secondClosestClusterCenterDistance = Double.MAX_VALUE;
+          int minDistanceIndex = -1;
+          double minDistance = Double.MAX_VALUE;
+          double secondMinDistance = Double.MAX_VALUE;
           for (int k = 0; k < K; k++) {
-            double currentClusterCenterDistance = distance.compute(dataPoints[n], clusterCenters[k]);
-            if (currentClusterCenterDistance < closestClusterCenterDistance) {
-              secondClosestClusterCenterDistance = closestClusterCenterDistance;
-              closestClusterCenterDistance = currentClusterCenterDistance;
-              closestClusterCenterIndex = k;
-            } else if (currentClusterCenterDistance < secondClosestClusterCenterDistance) {
-              secondClosestClusterCenterDistance = currentClusterCenterDistance;
+            double currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
+            if (currentDistance < minDistance) {
+              secondMinDistance = minDistance;
+              minDistance = currentDistance;
+              minDistanceIndex = k;
+            } else if (currentDistance < secondMinDistance) {
+              secondMinDistance = currentDistance;
             }
           }
-          upperBounds[n] = closestClusterCenterDistance;
-          lowerBounds[n] = secondClosestClusterCenterDistance;
-          assignPointToCluster(n, closestClusterCenterIndex);
+          upperBounds[n] = minDistance;
+          lowerBounds[n] = secondMinDistance;
+          assignPointToCluster(n, minDistanceIndex);
         }
       }
     }

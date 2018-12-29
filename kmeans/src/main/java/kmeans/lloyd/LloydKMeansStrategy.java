@@ -49,7 +49,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
       assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
     }
     moveCenters();
-    numberOfIterations++;
+    System.out.println("iteration " + numberOfIterations);
   }
 
   /**
