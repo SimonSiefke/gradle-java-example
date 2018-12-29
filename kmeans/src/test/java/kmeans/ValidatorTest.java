@@ -80,8 +80,28 @@ public class ValidatorTest {
   }
 
   @Test
-  public void testNullInitialClusterCenters() {
+  public void testValidKMeansStrategy() {
+    Validator.validateKMeansStrategy(KMeansStrategy.DEFAULT);
+  }
+
+  @Test
+  public void testNullInitialClusterCentersAndInvalidNumberOfClusters() {
     assertThrows(IllegalArgumentException.class, () -> Validator.validateInitialClusterCentersAndNumberOfClusters(null,
         ClusterCenterInitializationStrategy.DEFAULT, 0));
+  }
+
+  @Test
+  public void testValidInitialClusterCentersAndNumberOfClusters() {
+    Validator.validateInitialClusterCentersAndNumberOfClusters(null, ClusterCenterInitializationStrategy.DEFAULT, 1);
+  }
+
+  @Test
+  public void testValidNumberOfIterations() {
+    Validator.validateNumberOfIterations(1);
+  }
+
+  @Test
+  public void testNullClusterCentersAndValidDataPoints() {
+    Validator.validateClusterDataPointsAndClusterCenters(new double[][] { { 1 } }, null);
   }
 }
