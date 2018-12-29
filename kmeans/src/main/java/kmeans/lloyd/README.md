@@ -23,6 +23,14 @@ None
 
 ```
 function lloyd(x, c):
+  for n=1 to N do
+    a' <- a[n]                                    # store current value for later
+    a[n] <- argmin_k d(x[n], c[k])                # compute index of exact closest center
+    if a' != a[n] then                            # when the closest cluster index hasn't changed
+      q[a[n]] <- q[a[n]] + 1                      # update cluster size
+      for d=1 to D do                             # update cluster sum for each dimension
+        c'[a[n]][d] <- c'[a[n]][d] + x[n][d]      # update cluster sum for each dimension
+
   while not converged do
     # compute the nearest cluster for each point
     for n=1 to N do
