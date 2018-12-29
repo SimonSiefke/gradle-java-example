@@ -19,6 +19,10 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
   private boolean[] r;
   private double[] s;
   private double[] upperBounds;
+  /**
+   * stores for each center how far it has moved in the current iteration.
+   */
+  private double[] clusterCentersDistanceMoved;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -41,6 +45,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     this.distance = distance;
 
     this.interClusterDistances = new double[K][K];
+    this.clusterCentersDistanceMoved = new double[K];
     this.lowerBounds = new double[N][K];
     this.newClusterCenters = new double[K][D];
     this.r = new boolean[N];
@@ -115,6 +120,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     }
 
     // step 2
+    // TODO check if step 2 is useful
     List<Integer> relevantIndices = new ArrayList<>();
     for (int n = 0; n < N; n++) {
       if (upperBounds[n] > s[dataPointsAssignments[n]]) {
@@ -128,23 +134,18 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
         if (k != dataPointsAssignments[n] && upperBounds[n] > lowerBounds[n][k]
             && upperBounds[n] > 0.5 * interClusterDistances[dataPointsAssignments[n]][k]) {
           // step 3a
-          double minDistance;
           if (r[n]) {
-            minDistance = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
-            // upperBounds[n] = minDistance;??
-            // lowerBounds[n][dataPointsAssignments[n]] = minDistance;??
+            upperBounds[n] = distance.compute(dataPoints[n], clusterCenters[dataPointsAssignments[n]]);
+            lowerBounds[n][dataPointsAssignments[n]] = upperBounds[n];
             r[n] = false;
-          } else {
-            minDistance = upperBounds[n];
           }
 
           // step 3b
-          if (minDistance > lowerBounds[n][k]
-              || minDistance > 0.5 * interClusterDistances[dataPointsAssignments[n]][k]) {
-            double newDistance = distance.compute(dataPoints[n], clusterCenters[k]);
-            // lowerBounds[n][k] = newDistance;??
-            if (newDistance < minDistance) {
-              upperBounds[n] = newDistance;
+          if (upperBounds[n] > lowerBounds[n][k]
+              || upperBounds[n] > 0.5 * interClusterDistances[dataPointsAssignments[n]][k]) {
+            lowerBounds[n][k] = distance.compute(dataPoints[n], clusterCenters[k]);
+            if (lowerBounds[n][k] < upperBounds[n]) {
+              upperBounds[n] = lowerBounds[n][k];
               Util.assignPointToCluster(dataPointsAssignments, n, k, clusterSizes, clusterSums, D, dataPoints);
             }
           }
@@ -162,6 +163,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
           hasChanged = hasChanged || newClusterCenterCoordinate != clusterCenters[k][d];
           newClusterCenters[k][d] = newClusterCenterCoordinate;
         }
+        clusterCentersDistanceMoved[k] = distance.compute(clusterCenters[k], newClusterCenters[k]);
       } else {
         throw new IllegalArgumentException(
             "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
@@ -171,19 +173,18 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     // step 5
     for (var lowerBound : lowerBounds) {
       for (int k = 0; k < K; k++) {
-        // TODO clustercenters distance moved instead of compute again
-        lowerBound[k] = Math.max(lowerBound[k] - distance.compute(clusterCenters[k], newClusterCenters[k]), 0);
+        lowerBound[k] = Math.max(lowerBound[k] - clusterCentersDistanceMoved[k], 0);
       }
     }
 
     // step 6
     for (int n = 0; n < N; n++) {
-      upperBounds[n] += distance.compute(newClusterCenters[dataPointsAssignments[n]],
-          clusterCenters[dataPointsAssignments[n]]);
+      upperBounds[n] += clusterCentersDistanceMoved[dataPointsAssignments[n]];
     }
     Arrays.fill(r, true);
 
     // step 7
+    // TODO deep copy
     clusterCenters = newClusterCenters;
   }
 }

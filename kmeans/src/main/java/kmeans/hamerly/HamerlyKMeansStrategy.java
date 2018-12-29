@@ -18,7 +18,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   /**
    * stores for each center how far it has moved in the current iteration.
    */
-  private double[] clusterCentersDistanceMoved;
+  private double[] centerMovements;
   /**
    * stores for each center half the distance to its next closest center.
    */
@@ -43,7 +43,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     this.dataPoints = dataPoints;
     this.distance = distance;
     this.lowerBounds = new double[N];
-    this.clusterCentersDistanceMoved = new double[K];
+    this.centerMovements = new double[K];
     this.closestClusterDistances = new double[K];
     this.upperBounds = new double[N];
 
@@ -100,8 +100,8 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
             double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
             newClusterCenter[d] = newClusterCenterCoordinate;
           }
-          clusterCentersDistanceMoved[k] = this.distance.compute(clusterCenters[k], newClusterCenter);
-          hasChanged = hasChanged || clusterCentersDistanceMoved[k] > 0;
+          centerMovements[k] = this.distance.compute(clusterCenters[k], newClusterCenter);
+          hasChanged = hasChanged || centerMovements[k] > 0;
           System.arraycopy(newClusterCenter, 0, clusterCenters[k], 0, D);
         } else {
           throw new IllegalArgumentException(
@@ -114,7 +114,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
       double mostDistanceMoved = Double.MIN_VALUE;
       double secondMostDistanceMoved = Double.MIN_VALUE;
       for (int k = 0; k < K; k++) {
-        double currentDistanceMoved = clusterCentersDistanceMoved[k];
+        double currentDistanceMoved = centerMovements[k];
         if (currentDistanceMoved > mostDistanceMoved) {
           secondMostDistanceMoved = mostDistanceMoved;
           mostDistanceMoved = currentDistanceMoved;
@@ -124,7 +124,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
         }
       }
       for (int n = 0; n < N; n++) {
-        upperBounds[n] += clusterCentersDistanceMoved[dataPointsAssignments[n]];
+        upperBounds[n] += centerMovements[dataPointsAssignments[n]];
         if (mostDistanceMovedIndex == dataPointsAssignments[n]) {
           lowerBounds[n] -= secondMostDistanceMoved;
         } else {

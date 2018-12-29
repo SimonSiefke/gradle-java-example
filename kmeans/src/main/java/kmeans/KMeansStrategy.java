@@ -1,5 +1,7 @@
 package kmeans;
 
+import java.util.Arrays;
+
 import javax.annotation.Nonnull;
 
 import distance.DistanceStrategy;
@@ -22,32 +24,35 @@ public abstract class KMeansStrategy {
   protected int N;
 
   /**
-   * stores for each data point (treated as index from 0 to N-1) to which cluster
-   * it is assigned.
+   * stores for each center how far it has moved in the current iteration.
    */
-  protected int[] dataPointsAssignments;
+  protected double[] clusterCenterMovements;
   /**
    * stores the cluster centers.
    */
   protected double[][] clusterCenters;
+  /**
+   * stores for each cluster how many points are assigned to it.
+   */
+  protected int[] clusterSizes;
   /**
    * stores for each cluster the sum of the points assigned to it (for each
    * dimension).
    */
   protected double[][] clusterSums;
   /**
-   * stores for each cluster how many points are assigned to it.
-   */
-  protected int[] clusterSizes;
-  /**
    * stores the data points.
    */
   protected double[][] dataPoints;
   /**
+   * stores for each data point (treated as index from 0 to N-1) to which cluster
+   * it is assigned.
+   */
+  protected int[] dataPointsAssignments;
+  /**
    * stores distance strategy (e.g. euclidean distance).
    */
   protected DistanceStrategy distance;
-
   /**
    * stores whether any of the centers has moved in the current iteration. If not,
    * the algorithm has converged.
@@ -69,4 +74,50 @@ public abstract class KMeansStrategy {
    */
   public abstract Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
       int maxNumberOfIterations, DistanceStrategy distanceStrategy);
+
+  protected int moveCenters() {
+    int furthestMovingCenterIndex = 0;
+    for (int k = 0; k < K; k++) {
+      if (clusterSizes[k] > 0) {
+        final double[] newClusterCenter = new double[D];
+        for (int d = 0; d < D; d++) {
+          newClusterCenter[d] = clusterSums[k][d] / clusterSizes[k];
+        }
+        clusterCenterMovements[k] = this.distance.compute(clusterCenters[k], newClusterCenter);
+        if (clusterCenterMovements[k] > clusterCenterMovements[furthestMovingCenterIndex]) {
+          furthestMovingCenterIndex = k;
+        }
+        clusterCenters[k] = newClusterCenter;
+      } else {
+        throw new IllegalArgumentException(
+            "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
+      }
+    }
+    return furthestMovingCenterIndex;
+  }
+
+  protected void assignPointToCluster(int n, int k) {
+    var oldAssignment = dataPointsAssignments[n];
+    if (oldAssignment != k) {
+      clusterSizes[dataPointsAssignments[n]]--;
+      clusterSizes[k]++;
+      for (int d = 0; d < D; d++) {
+        clusterSums[dataPointsAssignments[n]][d] -= dataPoints[n][d];
+        clusterSums[k][d] += dataPoints[n][d];
+      }
+      dataPointsAssignments[n] = k;
+    }
+  }
+
+  /**
+   * the result is an array of clusters, each cluster has a list of dataPoints
+   * assigned to it as well as a cluster center.
+   */
+  protected Cluster[] result() {
+    final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
+    for (int n = 0; n < N; n++) {
+      clusters[dataPointsAssignments[n]].closestPoints.add(dataPoints[n]);
+    }
+    return clusters;
+  }
 }
