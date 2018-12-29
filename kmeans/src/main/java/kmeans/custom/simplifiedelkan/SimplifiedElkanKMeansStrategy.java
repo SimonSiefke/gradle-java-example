@@ -142,6 +142,7 @@ public class SimplifiedElkanKMeansStrategy extends KMeansStrategy {
     Arrays.fill(r, true);
   }
 
-  protected void main() {
+  @Override
+  protected void loop() {
   }
 }

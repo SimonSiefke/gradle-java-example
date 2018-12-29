@@ -22,7 +22,6 @@ public abstract class KMeansStrategy {
    * stores the number of data points.
    */
   protected int N;
-
   /**
    * stores for each center how far it has moved in the current iteration.
    */
@@ -79,6 +78,9 @@ public abstract class KMeansStrategy {
   public abstract Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
       int maxNumberOfIterations, DistanceStrategy distanceStrategy);
 
+  /**
+   * Moves each cluster center to the average of its points.
+   */
   protected int moveCenters() {
     int furthestMovingCenterIndex = 0;
     for (int k = 0; k < K; k++) {
@@ -148,7 +150,31 @@ public abstract class KMeansStrategy {
     return clusters;
   }
 
+  /**
+   * Initializes the data point assignments as well as the helper structures.
+   */
   protected abstract void initialize();
 
-  protected abstract void main();
+  /**
+   * The main loop of each kMeans Algorithm, loop until nothing has changed or the
+   * maximum number of iterations has been reached
+   */
+  protected void main() {
+    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
+      hasChanged = false;
+      loop();
+      numberOfIterations++;
+    }
+  }
+
+  /**
+   * This will be called in every iteration of the main loop.
+   */
+  protected abstract void loop();
+
+  /**
+   * Updates the bounds.
+   */
+  protected void updateBounds() {
+  }
 }

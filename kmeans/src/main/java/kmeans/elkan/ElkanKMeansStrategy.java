@@ -188,7 +188,8 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     clusterCenters = newClusterCenters;
   }
 
-  protected void main() {
+  @Override
+  protected void loop() {
   }
 
 }

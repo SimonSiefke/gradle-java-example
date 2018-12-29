@@ -145,7 +145,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     return clusters;
   }
 
-  private void updateBounds() {
+  @Override
+  protected void updateBounds() {
     for (int n = 0; n < N; n++) {
       upperBounds[n] += clusterCentersDistanceMoved[dataPointsAssignments[n]];
       lowerBounds[n][B - 1] -= maxDistanceMoved;
@@ -197,7 +198,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     }
   }
 
-  protected void main() {
+  @Override
+  protected void loop() {
   }
 
 }

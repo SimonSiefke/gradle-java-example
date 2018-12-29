@@ -17,11 +17,9 @@ public class LloydKMeansStrategy extends KMeansStrategy {
   @Override
   public Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
       int maxNumberOfIterations, @Nonnull DistanceStrategy distance) {
-
     this.D = dataPoints[0].length;
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
-
     this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
@@ -46,17 +44,20 @@ public class LloydKMeansStrategy extends KMeansStrategy {
   }
 
   @Override
-  protected void main() {
-    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
-      hasChanged = false;
-      for (int n = 0; n < N; n++) {
-        assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
-      }
-      moveCenters();
-      numberOfIterations++;
+  protected void loop() {
+    for (int n = 0; n < N; n++) {
+      assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
     }
+    moveCenters();
+    numberOfIterations++;
   }
 
+  /**
+   * @param dataPoint - the data point for which we want to compute the closest
+   *                  cluster center index
+   * @return the index of the cluster center that is closest to the given data
+   *         point
+   */
   private int closestClusterCenterIndex(double[] dataPoint) {
     int closestClusterCenterIndex = -1;
     double smallestClusterCenterDistance = Double.MAX_VALUE;
