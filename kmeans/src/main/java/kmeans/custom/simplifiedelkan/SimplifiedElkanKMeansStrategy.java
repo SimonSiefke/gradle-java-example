@@ -58,7 +58,7 @@ public class SimplifiedElkanKMeansStrategy extends KMeansStrategy {
     return clusters;
   }
 
-  private void initialize() {
+  protected void initialize() {
     for (int n = 0; n < N; n++) {
       double minDistance = Double.MAX_VALUE;
       int closestClusterIndex = -1;
@@ -140,5 +140,8 @@ public class SimplifiedElkanKMeansStrategy extends KMeansStrategy {
       }
     }
     Arrays.fill(r, true);
+  }
+
+  protected void main() {
   }
 }

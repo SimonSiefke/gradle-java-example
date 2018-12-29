@@ -16,10 +16,6 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
    */
   private double[] lowerBounds;
   /**
-   * stores for each center how far it has moved in the current iteration.
-   */
-  private double[] centerMovements;
-  /**
    * stores for each center half the distance to its next closest center.
    */
   private double[] closestClusterDistances;
@@ -36,19 +32,18 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
 
-    this.dataPointsAssignments = new int[N];
+    this.closestClusterDistances = new double[K];
+    this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
     this.dataPoints = dataPoints;
+    this.dataPointsAssignments = new int[N];
     this.distance = distance;
-    this.lowerBounds = new double[N];
-    this.centerMovements = new double[K];
-    this.closestClusterDistances = new double[K];
-    this.upperBounds = new double[N];
-
     this.hasChanged = true;
+    this.lowerBounds = new double[N];
     this.numberOfIterations = 0;
+    this.upperBounds = new double[N];
 
     initialize();
 
@@ -92,29 +87,14 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
         }
       }
 
-      // update centers
-      for (int k = 0; k < K; k++) {
-        if (clusterSizes[k] > 0) {
-          final double[] newClusterCenter = new double[D];
-          for (int d = 0; d < D; d++) {
-            double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
-            newClusterCenter[d] = newClusterCenterCoordinate;
-          }
-          centerMovements[k] = this.distance.compute(clusterCenters[k], newClusterCenter);
-          hasChanged = hasChanged || centerMovements[k] > 0;
-          System.arraycopy(newClusterCenter, 0, clusterCenters[k], 0, D);
-        } else {
-          throw new IllegalArgumentException(
-              "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
-        }
-      }
+      moveCenters();
 
       // update bounds
       int mostDistanceMovedIndex = -1;
       double mostDistanceMoved = Double.MIN_VALUE;
       double secondMostDistanceMoved = Double.MIN_VALUE;
       for (int k = 0; k < K; k++) {
-        double currentDistanceMoved = centerMovements[k];
+        double currentDistanceMoved = clusterCenterMovements[k];
         if (currentDistanceMoved > mostDistanceMoved) {
           secondMostDistanceMoved = mostDistanceMoved;
           mostDistanceMoved = currentDistanceMoved;
@@ -124,7 +104,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
         }
       }
       for (int n = 0; n < N; n++) {
-        upperBounds[n] += centerMovements[dataPointsAssignments[n]];
+        upperBounds[n] += clusterCenterMovements[dataPointsAssignments[n]];
         if (mostDistanceMovedIndex == dataPointsAssignments[n]) {
           lowerBounds[n] -= secondMostDistanceMoved;
         } else {
@@ -142,7 +122,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
     return clusters;
   }
 
-  private void initialize() {
+  protected void initialize() {
     for (int n = 0; n < N; n++) {
       int closestClusterCenterIndex = -1;
       double closestClusterCenterDistance = Double.MAX_VALUE;
@@ -167,5 +147,8 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
         clusterSums[dataPointsAssignments[n]][d] += dataPoints[n][d];
       }
     }
+  }
+
+  protected void main() {
   }
 }

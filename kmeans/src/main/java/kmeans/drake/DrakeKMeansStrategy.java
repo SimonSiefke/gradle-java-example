@@ -174,7 +174,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     return Math.max(K / 8, 1);
   }
 
-  private void initialize() {
+  protected void initialize() {
     for (int n = 0; n < N; n++) {
       sortCenters(n, B - 1, clusterCenters);
       dataPointsAssignments[n] = lowerBoundsAssignments[n][0];
@@ -196,4 +196,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
       lowerBounds[n][b] = this.distance.compute(dataPoint, clusterCenters[lowerBoundsAssignments[n][b]]);
     }
   }
+
+  protected void main() {
+  }
+
 }

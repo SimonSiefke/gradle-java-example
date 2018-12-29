@@ -22,52 +22,38 @@ public class LloydKMeansStrategy extends KMeansStrategy {
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
 
-    this.dataPointsAssignments = new int[N];
+    this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
-    this.clusterCenterMovements = new double[K];
     this.dataPoints = dataPoints;
+    this.dataPointsAssignments = new int[N];
     this.distance = distance;
     this.hasChanged = true;
+    this.maxNumberOfIterations = maxNumberOfIterations;
     this.numberOfIterations = 0;
 
     initialize();
-
-    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
-      hasChanged = false;
-
-      // update assignments
-      for (int n = 0; n < N; n++) {
-        assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
-      }
-
-      // update centers
-      var furthestMovingCenterIndex = moveCenters();
-      hasChanged = clusterCenterMovements[furthestMovingCenterIndex] > 0;
-
-      numberOfIterations++;
-    }
-
+    main();
     return result();
   }
 
-  public void initialize() {
+  @Override
+  protected void initialize() {
     for (int n = 0; n < N; n++) {
-      int closestClusterCenterIndex = -1;
-      double closestClusterCenterDistance = Double.MAX_VALUE;
-      for (int k = 0; k < K; k++) {
-        double currentClusterCenterDistance = this.distance.compute(dataPoints[n], clusterCenters[k]);
-        if (currentClusterCenterDistance < closestClusterCenterDistance) {
-          closestClusterCenterDistance = currentClusterCenterDistance;
-          closestClusterCenterIndex = k;
-        }
+      initialAssignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
+    }
+  }
+
+  @Override
+  protected void main() {
+    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
+      hasChanged = false;
+      for (int n = 0; n < N; n++) {
+        assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
       }
-      dataPointsAssignments[n] = closestClusterCenterIndex;
-      clusterSizes[dataPointsAssignments[n]]++;
-      for (int d = 0; d < D; d++) {
-        clusterSums[closestClusterCenterIndex][d] += dataPoints[n][d];
-      }
+      moveCenters();
+      numberOfIterations++;
     }
   }
 

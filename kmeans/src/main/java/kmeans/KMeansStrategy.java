@@ -59,6 +59,10 @@ public abstract class KMeansStrategy {
    */
   protected boolean hasChanged;
   /**
+   * stores the maximum number of iterations.
+   */
+  protected int maxNumberOfIterations;
+  /**
    * stores the number of iterations.
    */
   protected int numberOfIterations;
@@ -93,20 +97,43 @@ public abstract class KMeansStrategy {
             "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
       }
     }
+    hasChanged = clusterCenterMovements[furthestMovingCenterIndex] > 0;
     return furthestMovingCenterIndex;
   }
 
+  /**
+   * Assigns a point to a different cluster and removes it from its previous
+   * assigned cluster.
+   *
+   * @param n - the index of the point
+   * @param k - the index of the cluster
+   */
   protected void assignPointToCluster(int n, int k) {
     var oldAssignment = dataPointsAssignments[n];
     if (oldAssignment != k) {
       clusterSizes[dataPointsAssignments[n]]--;
       clusterSizes[k]++;
       for (int d = 0; d < D; d++) {
-        clusterSums[dataPointsAssignments[n]][d] -= dataPoints[n][d];
+        clusterSums[oldAssignment][d] -= dataPoints[n][d];
         clusterSums[k][d] += dataPoints[n][d];
       }
       dataPointsAssignments[n] = k;
     }
+  }
+
+  /**
+   * The same as {@link #assignPointToCluster assignPointToCluster}, but when a
+   * point is assigned to a cluster it isn't removed from another cluster.
+   *
+   * @param n - the index of the point
+   * @param k - the index of the cluster
+   */
+  protected void initialAssignPointToCluster(int n, int k) {
+    clusterSizes[k]++;
+    for (int d = 0; d < D; d++) {
+      clusterSums[k][d] += dataPoints[n][d];
+    }
+    dataPointsAssignments[n] = k;
   }
 
   /**
@@ -120,4 +147,8 @@ public abstract class KMeansStrategy {
     }
     return clusters;
   }
+
+  protected abstract void initialize();
+
+  protected abstract void main();
 }

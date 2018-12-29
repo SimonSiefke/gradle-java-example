@@ -72,7 +72,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
   }
 
   // TODO make this easier
-  private void initialize() {
+  protected void initialize() {
     // step -1: assign each point to its nearest cluster using Lemma 1
     final boolean[] skip = new boolean[K];
     for (int n = 0; n < N; n++) {
@@ -187,4 +187,8 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     // TODO deep copy
     clusterCenters = newClusterCenters;
   }
+
+  protected void main() {
+  }
+
 }
