@@ -167,12 +167,12 @@ public abstract class KMeansStrategy {
    * maximum number of iterations has been reached.
    */
   protected void main() {
-    System.out.println("main");
+    // System.out.println("main");
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
       loop();
       numberOfIterations++;
-      System.out.println("number of iterations: " + numberOfIterations);
+      // System.out.println("number of iterations: " + numberOfIterations);
     }
   }
 

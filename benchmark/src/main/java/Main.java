@@ -1,10 +1,8 @@
 import java.util.Arrays;
 
-import dataloader.DataLoader;
 import distance.EuclideanDistanceStrategy;
 import kmeans.Cluster;
 import kmeans.drake.DrakeKMeansStrategy;
-import kmeans.hamerly.HamerlyKMeansStrategy;
 
 public final class Main {
   private Main() {
