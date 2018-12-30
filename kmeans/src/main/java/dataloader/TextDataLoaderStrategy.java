@@ -1,7 +1,5 @@
 package dataloader;
 
-import javax.annotation.Nonnull;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,7 @@ import java.util.Scanner;
  */
 class TextDataLoaderStrategy implements DataLoaderStrategy {
   @Override
-  public double[][] load(@Nonnull String path) {
+  public double[][] load(String path) {
     if (!path.endsWith(".txt")) {
       throw new IllegalArgumentException("The file must end with \".txt\"");
     }

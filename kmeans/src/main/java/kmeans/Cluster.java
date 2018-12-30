@@ -7,7 +7,7 @@ import java.util.List;
  * Cluster.
  */
 public class Cluster {
-  public double[] center;
+  public final double[] center;
   public final List<double[]> closestPoints = new ArrayList<>();
 
   public Cluster(double... center) {

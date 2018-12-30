@@ -2,8 +2,6 @@ package kmeans;
 
 import java.util.Arrays;
 
-import javax.annotation.Nonnull;
-
 import distance.DistanceStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
@@ -82,8 +80,8 @@ public abstract class KMeansStrategy {
    * @param distanceStrategy      the distance measurement method
    * @return an Array of clusters
    */
-  public abstract Cluster[] cluster(@Nonnull double[][] dataPoints, @Nonnull double[][] initialClusterCenters,
-      int maxNumberOfIterations, DistanceStrategy distanceStrategy);
+  public abstract Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
+      DistanceStrategy distanceStrategy);
 
   /**
    * Moves each cluster center to the average of its points.

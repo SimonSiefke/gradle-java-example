@@ -1,6 +1,6 @@
 // package clustercenterinitialization;
 
-// import javax.annotation.Nonnull;
+//
 
 // import java.util.Random;
 
@@ -12,7 +12,7 @@
 // public class KPlusPlusClusterCenterInitializationStrategy implements
 // ClusterCenterInitializationStrategy {
 // @Override
-// public double[][] initialize(@Nonnull double[][] dataPoints, int K, @Nonnull
+// public double[][] initialize( double[][] dataPoints, int K,
 // DistanceStrategy distance) {
 // int N = dataPoints.length;
 // var centroids = new double[K][N];

@@ -2,8 +2,6 @@ package kmeans;
 
 import java.util.Arrays;
 
-import javax.annotation.Nonnull;
-
 import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import distance.DistanceStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
@@ -34,7 +32,7 @@ public final class KMeansBuilder {
    *
    * @param original the original
    */
-  private KMeansBuilder(@Nonnull KMeansBuilder original) {
+  private KMeansBuilder(KMeansBuilder original) {
     // TODO test if copy is deep
     this.clusterCenterInitializationStrategy = original.clusterCenterInitializationStrategy;
     if (original.dataPoints != null) {
@@ -109,7 +107,7 @@ public final class KMeansBuilder {
    *
    * @param initialClusterCenters the initial cluster centers to set
    */
-  public KMeansBuilder withInitialClusterCenters(@Nonnull double[][] initialClusterCenters) {
+  public KMeansBuilder withInitialClusterCenters(double[][] initialClusterCenters) {
     this.initialClusterCenters = initialClusterCenters;
     return new KMeansBuilder(this);
   }

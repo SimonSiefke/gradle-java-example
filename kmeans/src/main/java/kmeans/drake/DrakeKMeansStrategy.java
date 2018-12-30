@@ -101,13 +101,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
         sortCenters(n, B - 1, clusterCenters);
       }
 
-      // update centers
-      for (int n = 0; n < N; n++) {
-        // var newDataPointAssignment = lowerBoundsAssignments[n][0];
-        // Util.assignPointToCluster(dataPointsAssignments, n, newDataPointAssignment,
-        // clusterSizes, clusterSums, D,
-        // dataPoints);
-      }
+      moveCenters();
 
       maxDistanceMoved = 0;
       for (int k = 0; k < K; k++) {

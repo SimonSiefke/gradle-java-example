@@ -1,7 +1,5 @@
 package distance;
 
-import javax.annotation.Nonnull;
-
 /**
  * Counting Distance Strategy. A utility class that Keeps track of how many
  * distance calculations were made.
@@ -15,7 +13,7 @@ public class CountingDistanceStrategy extends DistanceStrategy {
   }
 
   @Override
-  public double compute(@Nonnull double[] pointA, @Nonnull double[] pointB) {
+  public double compute(double[] pointA, double[] pointB) {
     this.numberOfDistanceCalculations++;
     return this.distanceStrategy.compute(pointA, pointB);
   }

@@ -22,9 +22,9 @@ allprojects{
     // apply plugin: "com.github.spotbugs"
     apply plugin: 'jacoco'
 
-  dependencies {
-      compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-  }
+  // dependencies {
+  //     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+  // }
 
   repositories {
       jcenter()

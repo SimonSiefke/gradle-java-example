@@ -1,7 +1,5 @@
 package distance;
 
-import javax.annotation.Nonnull;
-
 /**
  * Abstract class for Distance Measurement Strategies.
  */
@@ -18,5 +16,5 @@ public abstract class DistanceStrategy {
    * @param pointB the second point
    * @return the distance between the two points
    */
-  public abstract double compute(@Nonnull double[] pointA, @Nonnull double[] pointB);
+  public abstract double compute(double[] pointA, double[] pointB);
 }
