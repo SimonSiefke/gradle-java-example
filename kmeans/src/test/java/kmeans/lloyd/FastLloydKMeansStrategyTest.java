@@ -1,5 +1,6 @@
-package kmeans;
+package kmeans.lloyd;
 
+import kmeans.KMeansStrategyTestBase;
 import kmeans.lloyd.FastLloydKMeansStrategy;
 
 public class FastLloydKMeansStrategyTest extends KMeansStrategyTestBase<FastLloydKMeansStrategy> {

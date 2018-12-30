@@ -1,5 +1,6 @@
-package kmeans;
+package kmeans.elkan;
 
+import kmeans.KMeansStrategyTestBase;
 import kmeans.elkan.ElkanKMeansStrategy;
 
 public class ElkanKMeansStrategyTest extends KMeansStrategyTestBase<ElkanKMeansStrategy> {

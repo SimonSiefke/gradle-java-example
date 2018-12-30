@@ -15,10 +15,6 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
    */
   private double[][] lowerBounds;
   /**
-   * stores for each center how far it has moved in the current iteration.
-   */
-  private double[] clusterCentersDistanceMoved;
-  /**
    * stores for each point how far away its closest center maximally is.
    */
   private double[] upperBounds;
@@ -49,10 +45,10 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   private double[] firstClusterCenter;
 
   /**
-   * stores the index of the center that has moved the most in the current
-   * iteration.
+   * stores the furthest distance that a center that has moved the most in the
+   * current iteration.
    */
-  private double maxDistanceMoved;
+  private double furthestDistanceMoved;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -64,20 +60,20 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.B = computeInitialB();
     this.minB = computeInitialMinB();
 
-    this.dataPointsAssignments = new int[N];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
-    this.clusterCentersDistanceMoved = new double[K];
+    this.clusterCenterMovements = new double[K];
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
     this.dataPoints = dataPoints;
+    this.dataPointsAssignments = new int[N];
     this.distance = distance;
+    this.hasChanged = true;
     this.lowerBounds = new double[N][B];
     this.lowerBoundsAssignments = new int[N][B];
-    this.maxDistanceMoved = 0;
-    this.upperBounds = new double[N];
-
-    this.hasChanged = true;
+    this.furthestDistanceMoved = 0;
+    this.maxNumberOfIterations = maxNumberOfIterations;
     this.numberOfIterations = 0;
+    this.upperBounds = new double[N];
 
     initialize();
     main();
@@ -86,10 +82,10 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
   protected void updateBounds() {
     for (int n = 0; n < N; n++) {
-      upperBounds[n] += clusterCentersDistanceMoved[dataPointsAssignments[n]];
-      lowerBounds[n][B - 1] -= maxDistanceMoved;
+      upperBounds[n] += clusterCenterMovements[dataPointsAssignments[n]];
+      lowerBounds[n][B - 1] -= furthestDistanceMoved;
       for (int b = B - 2; b >= 0; b--) {
-        lowerBounds[n][B - 1] -= clusterCentersDistanceMoved[lowerBoundsAssignments[n][b]];
+        lowerBounds[n][B - 1] -= clusterCenterMovements[lowerBoundsAssignments[n][b]];
         if (lowerBounds[n][b] > lowerBounds[n][b + 1]) {
           lowerBounds[n][b] = lowerBounds[n][b + 1];
         }
@@ -117,11 +113,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   protected void initialize() {
     for (int n = 0; n < N; n++) {
       sortCenters(n, B - 1, clusterCenters);
-      dataPointsAssignments[n] = lowerBoundsAssignments[n][0];
-      clusterSizes[dataPointsAssignments[n]]++;
-      for (int d = 0; d < D; d++) {
-        clusterSums[dataPointsAssignments[n]][d] += dataPoints[n][d];
-      }
+      initialAssignPointToCluster(n, lowerBoundsAssignments[n][0]);
     }
   }
 
@@ -157,7 +149,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     }
 
     int furthestMovingIndex = moveCenters();
-    maxDistanceMoved = clusterCenterMovements[furthestMovingIndex];
+    furthestDistanceMoved = clusterCenterMovements[furthestMovingIndex];
 
     updateBounds();
 
@@ -165,5 +157,4 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
       B = Math.max(maxB, minB);
     }
   }
-
 }

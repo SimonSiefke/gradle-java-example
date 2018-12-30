@@ -1,5 +1,6 @@
-package kmeans;
+package kmeans.hamerly;
 
+import kmeans.KMeansStrategyTestBase;
 import kmeans.hamerly.HamerlyKMeansStrategy;
 
 public class HamerlyKMeansStrategyTest extends KMeansStrategyTestBase<HamerlyKMeansStrategy> {
