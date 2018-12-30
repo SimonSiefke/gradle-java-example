@@ -80,60 +80,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.numberOfIterations = 0;
 
     initialize();
-
-    while (hasChanged && numberOfIterations < maxNumberOfIterations) {
-      hasChanged = false;
-
-      maxB = 0;
-      outerLoop: for (int n = 0; n < N; n++) {
-        for (int b = 0; b < B; b++) {
-          maxB = Math.max(b, maxB);
-          if (upperBounds[n] <= lowerBounds[n][b]) {
-            var r = new double[b + 1][];
-            r[0] = firstClusterCenter;
-            for (int o = 1; o < r.length; o++) {
-              r[o] = clusterCenters[lowerBoundsAssignments[n][o]];
-            }
-            sortCenters(n, b, r);
-            continue outerLoop;
-          }
-        }
-        sortCenters(n, B - 1, clusterCenters);
-      }
-
-      moveCenters();
-
-      maxDistanceMoved = 0;
-      for (int k = 0; k < K; k++) {
-        if (clusterSizes[k] > 0) {
-          final double[] newClusterCenter = new double[D];
-          for (int d = 0; d < D; d++) {
-            double newClusterCenterCoordinate = clusterSums[k][d] / clusterSizes[k];
-            newClusterCenter[d] = newClusterCenterCoordinate;
-          }
-          clusterCentersDistanceMoved[k] = this.distance.compute(clusterCenters[k], newClusterCenter);
-          maxDistanceMoved = Math.max(maxDistanceMoved, clusterCentersDistanceMoved[k]);
-          System.arraycopy(newClusterCenter, 0, clusterCenters[k], 0, D);
-        } else {
-          throw new IllegalArgumentException(
-              "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
-        }
-      }
-      hasChanged = maxDistanceMoved == 0;
-
-      updateBounds();
-
-      if (numberOfIterations > 10 && maxB < B) {
-        B = Math.max(maxB, minB);
-      }
-      numberOfIterations++;
-    }
-
-    final Cluster[] clusters = Arrays.stream(clusterCenters).map(Cluster::new).toArray(Cluster[]::new);
-    for (int n = 0; n < N; n++) {
-      clusters[dataPointsAssignments[n]].closestPoints.add(dataPoints[n]);
-    }
-    return clusters;
+    main();
+    return result();
   }
 
   protected void updateBounds() {
@@ -191,7 +139,31 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
   @Override
   protected void loop() {
-    // TODO
+    maxB = 0;
+    outerLoop: for (int n = 0; n < N; n++) {
+      for (int b = 0; b < B; b++) {
+        maxB = Math.max(b, maxB);
+        if (upperBounds[n] <= lowerBounds[n][b]) {
+          var r = new double[b + 1][];
+          r[0] = firstClusterCenter;
+          for (int o = 1; o < r.length; o++) {
+            r[o] = clusterCenters[lowerBoundsAssignments[n][o]];
+          }
+          sortCenters(n, b, r);
+          continue outerLoop;
+        }
+      }
+      sortCenters(n, B - 1, clusterCenters);
+    }
+
+    int furthestMovingIndex = moveCenters();
+    maxDistanceMoved = clusterCenterMovements[furthestMovingIndex];
+
+    updateBounds();
+
+    if (numberOfIterations > 10 && maxB < B) {
+      B = Math.max(maxB, minB);
+    }
   }
 
 }
