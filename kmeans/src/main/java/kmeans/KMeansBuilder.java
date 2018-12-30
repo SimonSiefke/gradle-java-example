@@ -113,10 +113,9 @@ public final class KMeansBuilder {
   }
 
   /**
-   * Sets the number of clusters. The initial clusters will be calculated by
-   * aAlternatively {@link #clusterCenterInitializationStrategy}. Alternatively
-   * you can set the initial clusters directly with
-   * {@link #initialClusterCenters}.
+   * Sets the number of clusters. The initial clusters will be calculated by a
+   * {@link #clusterCenterInitializationStrategy}. Alternatively you can set the
+   * initial clusters directly with {@link #initialClusterCenters}.
    */
   public KMeansBuilder withNumberOfClusters(int numberOfClusters) {
     this.numberOfClusters = numberOfClusters;
