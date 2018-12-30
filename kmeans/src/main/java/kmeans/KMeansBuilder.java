@@ -21,7 +21,7 @@ public final class KMeansBuilder {
   private int numberOfClusters;
 
   public KMeansBuilder() {
-    this.withClusterCenterInitializationStrategy(clusterCenterInitializationStrategy.DEFAULT);
+    this.withClusterCenterInitializationStrategy(ClusterCenterInitializationStrategy.DEFAULT);
     this.withDistance(DistanceStrategy.DEFAULT);
     this.withStrategy(KMeansStrategy.DEFAULT);
     this.withMaxNumberOfIterations(Integer.MAX_VALUE);
