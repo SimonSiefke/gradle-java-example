@@ -158,7 +158,8 @@ public abstract class KMeansStrategy {
   }
 
   /**
-   * Initializes the data point assignments as well as the helper structures.
+   * Initializes the data point assignments as well as possibly necessary helper
+   * structures.
    */
   protected abstract void initialize();
 
@@ -167,17 +168,18 @@ public abstract class KMeansStrategy {
    * maximum number of iterations has been reached.
    */
   protected void main() {
-    // System.out.println("main");
+    System.out.println("main");
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
       loop();
       numberOfIterations++;
-      // System.out.println("number of iterations: " + numberOfIterations);
+      System.out.println("number of iterations: " + numberOfIterations);
     }
   }
 
   /**
-   * This will be called in every iteration of the main loop.
+   * This will be called in every iteration of the main loop until the algorithm
+   * has converged or the maximum number of iterations has been reached.
    */
   protected abstract void loop();
 }

@@ -1,6 +1,9 @@
 package kmeans.drake;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 import distance.DistanceStrategy;
 import kmeans.Cluster;
@@ -10,6 +13,10 @@ import kmeans.KMeansStrategy;
  * Drake's KMeans Strategy.
  */
 public class DrakeKMeansStrategy extends KMeansStrategy {
+  /**
+   * stores (in sorted order) for each center its index and its distance
+   */
+  private ArrayList<Map.Entry<Integer, Double>> centerOrder;
   /**
    * stores for each point how far away the second closest center is.
    */
@@ -42,13 +49,18 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   /**
    * stores the first cluster center.
    */
-  private double[] firstClusterCenter;
+  private double[] closestClusterCenter;
 
   /**
    * stores the furthest distance that a center that has moved the most in the
    * current iteration.
    */
   private double furthestDistanceMoved;
+  /**
+   * stores for each data point the indices of the b closest other cluster centers
+   * (that the point is not assigned to)
+   */
+  private int[][] closestOtherCenters;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -64,6 +76,8 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.clusterCenterMovements = new double[K];
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
+    this.closestOtherCenters = new int[N][B];
+    this.centerOrder = new ArrayList<>(K);
     this.dataPoints = dataPoints;
     this.dataPointsAssignments = new int[N];
     this.distance = distance;
@@ -76,6 +90,13 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.upperBounds = new double[N];
 
     initialize();
+
+    System.out.println("centers:");
+    for (var c : result()) {
+      System.out.println(Arrays.toString(c.center));
+    }
+    System.out.println("\nassignments:");
+    System.out.println(Arrays.toString(dataPointsAssignments));
     main();
     return result();
   }
@@ -94,15 +115,14 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   }
 
   private int computeInitialB() {
-    return 1;
-    // var result = K / 4;
-    // if (result < 2) {
-    // result = 2;
-    // }
-    // if (K <= result) {
-    // result = K - 1;
-    // }
-    // return result;
+    var result = K / 4;
+    if (result < 2) {
+      result = 2;
+    }
+    if (K <= result) {
+      result = K - 1;
+    }
+    return result;
   }
 
   private int computeInitialMinB() {
@@ -117,15 +137,30 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     }
   }
 
-  private void sortCenters(int n, int numberOfBounds, double[][] clusterCenters) {
+  /**
+   *
+   */
+  private void sortCenters(int n, int numberOfLowerBoundsRemaining, double[][] clusterCenters) {
     var dataPoint = dataPoints[n];
-    Arrays.sort(clusterCenters,
-        (a, b) -> this.distance.compute(a, dataPoint) > this.distance.compute(b, dataPoint) ? 1 : -1);
-    firstClusterCenter = clusterCenters[0];
-    upperBounds[n] = this.distance.compute(dataPoint, firstClusterCenter);
-    for (int b = 0; b < numberOfBounds; b++) {
-      lowerBoundsAssignments[n][b] = b + 1;
-      lowerBounds[n][b] = this.distance.compute(dataPoint, clusterCenters[lowerBoundsAssignments[n][b]]);
+    // sort all center by decreasing distance from the data point
+    for (int k = 0; k < K; k++) {
+      // TODO what is most efficient? this or array or object?
+      centerOrder.set(k, new AbstractMap.SimpleImmutableEntry<>(k, distance.compute(dataPoint, clusterCenters[k])));
+    }
+    // TODO partial sort
+    centerOrder.sort((a, b) -> a.getValue() > b.getValue() ? 1 : -1);
+
+    // assign point to closest center
+    assignPointToCluster(n, centerOrder.get(0).getKey());
+
+    // set upperbound to the exact distance to the closest center
+    upperBounds[n] = centerOrder.get(0).getValue();
+
+    // we know that the first [0, numberOfLowerBoundsRemaining] lower bounds are
+    // inaccurate so we need to update them
+    for (int b = 0; b < numberOfLowerBoundsRemaining; b++) {
+      closestOtherCenters[n][b] = centerOrder.get(b + 1).getKey();
+      lowerBounds[n][b] = centerOrder.get(b + 1).getValue();
     }
   }
 
@@ -137,7 +172,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
         maxB = Math.max(b, maxB);
         if (upperBounds[n] <= lowerBounds[n][b]) {
           var r = new double[b + 1][];
-          r[0] = firstClusterCenter;
+          r[0] = closestClusterCenter;
           for (int o = 1; o < r.length; o++) {
             r[o] = clusterCenters[lowerBoundsAssignments[n][o]];
           }
