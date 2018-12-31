@@ -19,6 +19,9 @@ allprojects{
     // necessary plugins
     apply plugin: 'java'
 
+    // IDE plugins
+    apply plugin: 'idea' // IntelliJ IDEA
+
     // error checking plugins
     apply plugin: 'checkstyle'
     apply plugin: 'pmd'
@@ -28,6 +31,12 @@ allprojects{
   // dependencies {
   //     compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
   // }
+
+//  dependencies {
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
+//  }
+
 
   repositories {
       jcenter()

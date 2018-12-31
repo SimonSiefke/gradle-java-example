@@ -3,7 +3,7 @@ package kmeans;
 import java.util.Arrays;
 
 import distance.DistanceStrategy;
-import kmeans.drake.DrakeKMeansStrategy;
+// import kmeans.drake.DrakeKMeansStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 
@@ -12,7 +12,7 @@ import kmeans.lloyd.LloydKMeansStrategy;
  */
 public abstract class KMeansStrategy {
   public static final KMeansStrategy DEFAULT = new LloydKMeansStrategy();
-  public static final KMeansStrategy DRAKE = new DrakeKMeansStrategy();
+  // public static final KMeansStrategy DRAKE = new DrakeKMeansStrategy();
   public static final KMeansStrategy ELKAN = new ElkanKMeansStrategy();
   public static final KMeansStrategy HAMERLY = new ElkanKMeansStrategy();
   public static final KMeansStrategy LLOYD = new LloydKMeansStrategy();
@@ -168,12 +168,12 @@ public abstract class KMeansStrategy {
    * maximum number of iterations has been reached.
    */
   protected void main() {
-    System.out.println("main");
+    // System.out.println("main");
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
       loop();
       numberOfIterations++;
-      System.out.println("number of iterations: " + numberOfIterations);
+      // System.out.println("number of iterations: " + numberOfIterations);
     }
   }
 

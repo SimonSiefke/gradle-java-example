@@ -9,6 +9,5 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="kmeans_main" />
-    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" level="project" />
   </component>
 </module>

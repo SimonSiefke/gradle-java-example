@@ -9,7 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="kmeans_main" />
-    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-params:5.2.0" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.2.0" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.platform:junit-platform-commons:1.2.0" level="project" />
