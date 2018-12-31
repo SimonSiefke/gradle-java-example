@@ -34,3 +34,5 @@ cd gradle-java-example
 1. Should should now see a panel named `Gradle tasks`
 
 ## Usage with IntelliJ IDE
+
+1. `File -> New -> Project from existing sources -> Select the build.gradle file inside the gradle-java-example folder -> Ok -> Ok`
