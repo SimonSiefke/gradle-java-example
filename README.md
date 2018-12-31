@@ -25,3 +25,12 @@ cd gradle-java-example
 ./gradlew run   # run the visualization
 ./gradlew build # build
 ```
+
+## Usage with Eclipse IDE
+
+1. Make sure you have the latest eclipse version (2018-12 or newer) installed
+1. Install Buildship Gradle Integration 3.0 from the marketplace
+1. `File -> Import -> Gradle -> Existing Gradle Project -> Next -> Next -> Finish`
+1. Should should now see a panel named `Gradle tasks`
+
+## Usage with IntelliJ IDE
