@@ -13,7 +13,10 @@ plugins {
 }
 
 allprojects{
-   // necessary plugins
+    sourceCompatibility = 1.11
+    targetCompatibility = 1.11
+
+    // necessary plugins
     apply plugin: 'java'
 
     // error checking plugins
@@ -63,4 +66,8 @@ allprojects{
   //         html.enabled = true
   //     }
   // }
+}
+
+wrapper {
+	gradleVersion = '5.0'
 }
