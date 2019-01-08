@@ -21,4 +21,10 @@ public abstract class DistanceStrategyTestBase<T extends DistanceStrategy> {
     var distance = instance.compute(new double[] { 1, 1 }, new double[] { 1, 1 });
     assertEquals(0, distance);
   }
+
+  @Test
+  public void testSamePointZero() {
+    var distance = instance.compute(new double[] { 0 }, new double[] { 0 });
+    assertEquals(0, distance);
+  }
 }
