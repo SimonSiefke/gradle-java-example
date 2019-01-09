@@ -7,92 +7,141 @@ import kmeans.Cluster;
 import kmeans.KMeansStrategy;
 
 public class JanisDrakeKMeansStrategy extends KMeansStrategy {
+  /**
+   * stores (in sorted order) for each center its index and its distance.
+   */
+  private OrderedClusterCenter[] centerOrder;
+  /**
+   * stores for each point how far away the second closest center is.
+   */
+  private double[][] lowerBounds;
+  /**
+   * stores for each point how far away its closest center maximally is.
+   */
+  private double[] upperBounds;
+
+  /**
+   * stores the number of bounds (changes over time).
+   */
+  private int B;
+
+  /**
+   * stores the minimal number of bounds.
+   */
+  private int minB;
+
+  /**
+   * stores the maximal number of bounds.
+   */
+  private int maxB;
+
+  /**
+   * stores for each lower bound to which cluster center it is assigned.
+   */
+  private int[][] lowerBoundsAssignments;
+
+  /**
+   * stores the first cluster center.
+   */
+  private double[] closestClusterCenter;
+
+  /**
+   * stores the furthest distance that a center that has moved the most in the
+   * current iteration.
+   */
+  private double furthestDistanceMoved;
+  /**
+   * stores for each data point the indices of the b closest other cluster centers
+   * (that the point is not assigned to).
+   */
+  private int[][] closestOtherCenters;
+
+  private CenterTuple[] centerTuples;
+
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
       DistanceStrategy distance) {
     this.K = initialClusterCenters.length;
-    final int N2 = dataPoints.length;
+    final int N = dataPoints.length;
+    // this.N = N2;
 
     this.D = dataPoints[0].length;
 
     this.distance = distance;
+    this.hasChanged = true;
 
     int B = Math.max(K >> 2, 1);
-    if (B < 2)
+    if (B < 2) {
       B = 2;
-    if (K <= B)
+    }
+    if (K <= B) {
       B = K - 1;
+    }
 
     final int minB = Math.max(K >> 3, 1);
 
-    final double[][] centers = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
-    // TODO change to input.hasPresetCenters to avoid the deep copy here
+    this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
 
-    final int[] assignments = new int[N2];
-    Arrays.fill(assignments, -1);
-    final double[] upperBounds = new double[N2];
-    final CenterTuple[][] lowerBounds = new CenterTuple[N2][B];
-    final CenterTuple[] centerTuples = new CenterTuple[K];
+    this.dataPointsAssignments = new int[N];
+    Arrays.fill(dataPointsAssignments, -1);
+    this.upperBounds = new double[N];
+    final CenterTuple[][] lowerBounds = new CenterTuple[N][B];
+    this.centerTuples = new CenterTuple[K];
     for (int c = 0; c < K; c++) {
       centerTuples[c] = new CenterTuple(0, c);
     }
 
-    final double[][] centerSum = new double[K][D];
-    final int[] centerSize = new int[K];
+    this.clusterSums = new double[K][D];
+    this.clusterSizes = new int[K];
+    this.clusterCenterMovements = new double[K];
 
-    long distanceCalcs = 0;
-
-    for (int n = 0; n < N2; n++) {
-      sortCenters(n, dataPoints[n], B, centerTuples, centers, assignments, upperBounds, lowerBounds[n], centerSum,
-          centerSize);
-      distanceCalcs += K;
+    for (int n = 0; n < N; n++) {
+      sortCenters(n, dataPoints[n], B, centerTuples, clusterCenters, dataPointsAssignments, upperBounds, lowerBounds[n],
+          clusterSums, clusterSizes);
     }
 
     int iterations = 0;
     while (true) {
       int maxB = 0;
-      outer: for (int n = 0; n < N2; n++) {
+      outer: for (int n = 0; n < N; n++) {
         for (int b = 0; b < B; b++) {
           maxB = b > maxB ? b : maxB;
           if (upperBounds[n] < lowerBounds[n][b].distance) {
-            if (b == 0)
+            if (b == 0) {
               continue outer;
-            reorderBounds(n, dataPoints[n], b, centers, assignments, upperBounds, lowerBounds[n], centerSum,
-                centerSize);
-            distanceCalcs += b;
+            }
+            reorderBounds(n, dataPoints[n], b, clusterCenters, dataPointsAssignments, upperBounds, lowerBounds[n],
+                clusterSums, clusterSizes);
             continue outer;
           }
         }
-        sortCenters(n, dataPoints[n], B, centerTuples, centers, assignments, upperBounds, lowerBounds[n], centerSum,
-            centerSize);
-        distanceCalcs += K;
+        sortCenters(n, dataPoints[n], B, centerTuples, clusterCenters, dataPointsAssignments, upperBounds,
+            lowerBounds[n], clusterSums, clusterSizes);
       }
 
-      final double[] centerMoves = new double[K];
-      double maxMoved = Double.NEGATIVE_INFINITY;
+      double furthestDistanceMoved = Double.NEGATIVE_INFINITY;
       // update centers
       for (int c = 0; c < K; c++) {
         final double[] newCenter = new double[D];
-        for (int d = 0; d < centerSum[c].length; d++) {
-          newCenter[d] = centerSum[c][d] / centerSize[c];
+        for (int d = 0; d < clusterSums[c].length; d++) {
+          newCenter[d] = clusterSums[c][d] / clusterSizes[c];
         }
 
-        final double dist = distance.compute(newCenter, centers[c]);
+        final double dist = distance.compute(newCenter, clusterCenters[c]);
 
-        maxMoved = dist > maxMoved ? dist : maxMoved;
+        furthestDistanceMoved = dist > furthestDistanceMoved ? dist : furthestDistanceMoved;
 
-        centerMoves[c] = dist;
-        centers[c] = newCenter;
+        clusterCenterMovements[c] = dist;
+        clusterCenters[c] = newCenter;
       }
-      distanceCalcs += K;
 
       // update bounds
-      for (int n = 0; n < N2; n++) {
-        upperBounds[n] += centerMoves[assignments[n]];
+      for (int n = 0; n < N; n++) {
+        upperBounds[n] += clusterCenterMovements[dataPointsAssignments[n]];
 
-        lowerBounds[n][B - 1].distance -= maxMoved;
+        lowerBounds[n][B - 1].distance -= furthestDistanceMoved;
         for (int i = B - 2; i >= 0; i--) {
-          lowerBounds[n][i].distance -= centerMoves[lowerBounds[n][i].index];
+          lowerBounds[n][i].distance -= clusterCenterMovements[lowerBounds[n][i].index];
 
           if (lowerBounds[n][i].distance > lowerBounds[n][i + 1].distance) {
             lowerBounds[n][i].distance = lowerBounds[n][i + 1].distance;
@@ -105,9 +154,7 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
       }
 
       iterations++;
-      if (maxMoved == 0) {
-        this.clusterCenters = centers;
-        this.dataPointsAssignments = assignments;
+      if (furthestDistanceMoved == 0) {
         return result();
       }
     }
@@ -159,18 +206,11 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     }
   }
 
-  void sortCenters(int i, double[] x, int b, CenterTuple[] centerTuples, double[][] centers, int[] assignments,
-      double[] upperB, CenterTuple[] lowerB, double[][] centerSum, int[] centerSize) {
+  void sortCenters(int i, double[] x, int b, CenterTuple[] centerTuples, double[][] centers,
+      int[] dataPointsAssignments, double[] upperB, CenterTuple[] lowerB, double[][] centerSum, int[] centerSize) {
     final CenterTuple[] sortedTup = new CenterTuple[centers.length];
     for (int j = 0; j < centers.length; j++) {
-      System.out.println(Arrays.toString(x));
-      System.out.println(Arrays.toString(centers[j]));
-      System.out.println("ok before");
-      System.out.println(distance);
-      System.out.println(distance.compute(new double[] { 0.0 }, new double[] { 0.0 }));
-      System.out.println("ok middle");
       double dist = distance.compute(x, centers[j]);
-      System.out.println("ok after");
 
       CenterTuple tup = centerTuples[j];
       tup.distance = dist;
@@ -180,11 +220,11 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     }
 
     CenterTuple closest = sortedTup[0];
-    if (assignments[i] != closest.index) {
-      if (assignments[i] != -1)
-        removeFromCenter(x, assignments[i], centerSum, centerSize);
+    if (dataPointsAssignments[i] != closest.index) {
+      if (dataPointsAssignments[i] != -1)
+        removeFromCenter(x, dataPointsAssignments[i], centerSum, centerSize);
 
-      assignments[i] = closest.index;
+      dataPointsAssignments[i] = closest.index;
 
       addToCenter(x, closest.index, centerSum, centerSize);
     }
