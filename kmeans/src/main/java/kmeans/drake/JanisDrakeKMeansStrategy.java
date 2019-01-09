@@ -8,11 +8,12 @@ import kmeans.KMeansStrategy;
 
 public class JanisDrakeKMeansStrategy extends KMeansStrategy {
   @Override
-  public Cluster[] cluster(double[][] data, double[][] initialClusterCenters, int maxNumberOfIterations,
+  public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
       DistanceStrategy distance) {
-    final int K = initialClusterCenters.length;
-    final int N = data.length;
-    final int D = data[0].length;
+    this.K = initialClusterCenters.length;
+    final int N2 = dataPoints.length;
+
+    this.D = dataPoints[0].length;
 
     this.distance = distance;
 
@@ -27,10 +28,10 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     final double[][] centers = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     // TODO change to input.hasPresetCenters to avoid the deep copy here
 
-    final int[] assignments = new int[N];
+    final int[] assignments = new int[N2];
     Arrays.fill(assignments, -1);
-    final double[] upperBounds = new double[N];
-    final CenterTuple[][] lowerBounds = new CenterTuple[N][B];
+    final double[] upperBounds = new double[N2];
+    final CenterTuple[][] lowerBounds = new CenterTuple[N2][B];
     final CenterTuple[] centerTuples = new CenterTuple[K];
     for (int c = 0; c < K; c++) {
       centerTuples[c] = new CenterTuple(0, c);
@@ -41,8 +42,8 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
 
     long distanceCalcs = 0;
 
-    for (int n = 0; n < N; n++) {
-      sortCenters(n, data[n], B, centerTuples, centers, assignments, upperBounds, lowerBounds[n], centerSum,
+    for (int n = 0; n < N2; n++) {
+      sortCenters(n, dataPoints[n], B, centerTuples, centers, assignments, upperBounds, lowerBounds[n], centerSum,
           centerSize);
       distanceCalcs += K;
     }
@@ -50,18 +51,19 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     int iterations = 0;
     while (true) {
       int maxB = 0;
-      outer: for (int n = 0; n < N; n++) {
+      outer: for (int n = 0; n < N2; n++) {
         for (int b = 0; b < B; b++) {
           maxB = b > maxB ? b : maxB;
           if (upperBounds[n] < lowerBounds[n][b].distance) {
             if (b == 0)
               continue outer;
-            reorderBounds(n, data[n], b, centers, assignments, upperBounds, lowerBounds[n], centerSum, centerSize);
+            reorderBounds(n, dataPoints[n], b, centers, assignments, upperBounds, lowerBounds[n], centerSum,
+                centerSize);
             distanceCalcs += b;
             continue outer;
           }
         }
-        sortCenters(n, data[n], B, centerTuples, centers, assignments, upperBounds, lowerBounds[n], centerSum,
+        sortCenters(n, dataPoints[n], B, centerTuples, centers, assignments, upperBounds, lowerBounds[n], centerSum,
             centerSize);
         distanceCalcs += K;
       }
@@ -85,7 +87,7 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
       distanceCalcs += K;
 
       // update bounds
-      for (int n = 0; n < N; n++) {
+      for (int n = 0; n < N2; n++) {
         upperBounds[n] += centerMoves[assignments[n]];
 
         lowerBounds[n][B - 1].distance -= maxMoved;
