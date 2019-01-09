@@ -121,6 +121,7 @@ public class HamerlyKMeansStrategy extends KMeansStrategy {
   }
 
   private void updateBounds() {
+    // TODO combine with move centers to make it more efficient
     int mostDistanceMovedIndex = -1;
     var mostDistanceMoved = Double.MIN_VALUE;
     var secondMostDistanceMoved = Double.MIN_VALUE;

@@ -1,8 +1,10 @@
 import java.util.Arrays;
 
+import dataloader.DataLoader;
 import distance.EuclideanDistanceStrategy;
 import kmeans.Cluster;
-// import kmeans.drake.DrakeKMeansStrategy;
+import kmeans.drake.DrakeKMeansStrategy;
+import kmeans.drake.JanisDrakeKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 
 public final class Main {
@@ -12,11 +14,11 @@ public final class Main {
 
   public static void main(String[] args) {
 
-    var dataPoints = new double[][] { { 0, 0 }, { 2, 2 }, { 4, 4 }, { 6, 6 } };
-    var initialClusterCenters = new double[][] { { 0, 0 }, { 4, 4 } };
+    var dataPoints = new double[][] { { 0 } };
+    var initialClusterCenters = new double[][] { dataPoints[0] };
     //
     //
-    Cluster[] clusters = new LloydKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
+    Cluster[] clusters = new JanisDrakeKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
         new EuclideanDistanceStrategy());
     Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
 
