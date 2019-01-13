@@ -1,7 +1,7 @@
 package kmeans.drake;
 
 /**
- * Ordered CLuster Center
+ * Ordered CLuster Center.
  */
 public class OrderedClusterCenter implements Comparable<OrderedClusterCenter> {
   public double distance;

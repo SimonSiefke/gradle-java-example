@@ -3,9 +3,7 @@ import java.util.Arrays;
 import dataloader.DataLoader;
 import distance.EuclideanDistanceStrategy;
 import kmeans.Cluster;
-import kmeans.drake.DrakeKMeansStrategy;
 import kmeans.drake.JanisDrakeKMeansStrategy;
-import kmeans.lloyd.LloydKMeansStrategy;
 
 public final class Main {
   private Main() {

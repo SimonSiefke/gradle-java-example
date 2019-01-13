@@ -1,6 +1,5 @@
 package kmeans.drake;
 
-import kmeans.drake.DrakeKMeansStrategy;
 import kmeans.janis.JanisDrakeKMeansStrategyTestBase;
 
 public class DrakeKMeansStrategyTest extends JanisDrakeKMeansStrategyTestBase<DrakeKMeansStrategy> {

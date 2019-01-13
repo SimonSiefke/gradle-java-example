@@ -8,10 +8,6 @@ import kmeans.KMeansStrategy;
 
 public class JanisDrakeKMeansStrategy extends KMeansStrategy {
   /**
-   * stores (in sorted order) for each center its index and its distance.
-   */
-  private OrderedClusterCenter[] centerOrder;
-  /**
    * stores for each point how far away the second closest center is.
    */
   private CenterTuple[][] lowerBounds;
@@ -30,32 +26,6 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
    */
   private int minB;
 
-  /**
-   * stores the maximal number of bounds.
-   */
-  private int maxB;
-
-  /**
-   * stores for each lower bound to which cluster center it is assigned.
-   */
-  private int[][] lowerBoundsAssignments;
-
-  /**
-   * stores the first cluster center.
-   */
-  private double[] closestClusterCenter;
-
-  /**
-   * stores the furthest distance that a center that has moved the most in the
-   * current iteration.
-   */
-  private double furthestDistanceMoved;
-  /**
-   * stores for each data point the indices of the b closest other cluster centers
-   * (that the point is not assigned to).
-   */
-  private int[][] closestOtherCenters;
-
   private CenterTuple[] centerTuples;
 
   @Override
@@ -65,7 +35,7 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
     this.B = computeInitialB();
-    this.minB = computeInitialB();
+    this.minB = computeInitialMinB();
     this.centerTuples = new CenterTuple[K];
     this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
@@ -111,8 +81,9 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
         // shift all others forward
         CenterTuple prev = arr[i];
         for (int j = i; j >= 1; j--) {
-          if (arr[j] == null)
+          if (arr[j] == null) {
             break;
+          }
           CenterTuple tmp = prev;
           prev = arr[j - 1];
           arr[j - 1] = tmp;
@@ -160,10 +131,10 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
 
     CenterTuple closest = sortedTup[0];
     if (dataPointsAssignments[i] != closest.index) {
-      if (dataPointsAssignments[i] != -1) {
-        assignPointToCluster(i, closest.index);
-      } else {
+      if (dataPointsAssignments[i] == -1) {
         initialAssignPointToCluster(i, closest.index);
+      } else {
+        assignPointToCluster(i, closest.index);
       }
     }
     upperB[i] = closest.distance;

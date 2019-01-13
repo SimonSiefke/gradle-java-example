@@ -1,9 +1,6 @@
 package kmeans.drake;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 
 import distance.DistanceStrategy;
 import kmeans.Cluster;
@@ -47,20 +44,16 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   private int[][] lowerBoundsAssignments;
 
   /**
-   * stores the first cluster center.
-   */
-  private double[] closestClusterCenter;
-
-  /**
    * stores the furthest distance that a center that has moved the most in the
    * current iteration.
    */
   private double furthestDistanceMoved;
+
   /**
    * stores for each data point the indices of the b closest other cluster centers
    * (that the point is not assigned to).
    */
-  private int[][] closestOtherCenters;
+  // private int[][] closestOtherCenters;
 
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
@@ -76,7 +69,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.clusterCenterMovements = new double[K];
     this.clusterSizes = new int[K];
     this.clusterSums = new double[K][D];
-    this.closestOtherCenters = new int[N][B];
+    // this.closestOtherCenters = new int[N][B];
     this.centerOrder = new OrderedClusterCenter[K];
     this.dataPoints = dataPoints;
     this.dataPointsAssignments = new int[N];
@@ -160,7 +153,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     // we know that the first numberOfLowerBoundsRemaining lower bounds are
     // inaccurate so we need to update them
     for (int b = 0; b < numberOfLowerBoundsRemaining; b++) {
-      closestOtherCenters[n][b] = centerOrder[b + 1].index;
+      // closestOtherCenters[n][b] = centerOrder[b + 1].index;
       lowerBounds[n][b] = centerOrder[b + 1].distance;
     }
   }
