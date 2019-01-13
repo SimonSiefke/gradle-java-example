@@ -14,8 +14,8 @@ public final class Main {
 
   public static void main(String[] args) {
 
-    var dataPoints = new double[][] { { 0 } };
-    var initialClusterCenters = new double[][] { dataPoints[0] };
+    var dataPoints = new double[][] { { 3, 4 }, { 0, 6 }, { 0, 0 } };
+    var initialClusterCenters = new double[][] { { 3, 4 }, { 0, 6 } };
     //
     //
     Cluster[] clusters = new JanisDrakeKMeansStrategy().cluster(dataPoints, initialClusterCenters, 100,
