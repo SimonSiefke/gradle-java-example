@@ -46,6 +46,7 @@ public class ElkanKMeansStrategy extends KMeansStrategy {
     this.D = dataPoints[0].length;
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
+
     this.dataPointsAssignments = new int[N];
     this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);

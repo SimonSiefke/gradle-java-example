@@ -1,11 +1,11 @@
-// package kmeans;
+package kmeans.drake;
 
-// import kmeans.drake.DrakeKMeansStrategy;
+import kmeans.drake.DrakeKMeansStrategy;
+import kmeans.janis.JanisDrakeKMeansStrategyTestBase;
 
-// public class DrakeKMeansStrategyTest extends
-// KMeansStrategyTestBase<DrakeKMeansStrategy> {
-// @Override
-// protected DrakeKMeansStrategy createInstance() {
-// return new DrakeKMeansStrategy();
-// }
-// }
+public class DrakeKMeansStrategyTest extends JanisDrakeKMeansStrategyTestBase<DrakeKMeansStrategy> {
+  @Override
+  protected DrakeKMeansStrategy createInstance() {
+    return new DrakeKMeansStrategy();
+  }
+}

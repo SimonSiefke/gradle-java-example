@@ -89,21 +89,7 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     this.numberOfIterations = 0;
     this.upperBounds = new double[N];
 
-    // System.out.println(B);
-    // System.out.println("K is" + K);
-
     initialize();
-
-    System.out.println("\ncluster centers - initial:");
-    System.out.println(Arrays.deepToString(clusterCenters));
-    System.out.println('\n');
-
-    // System.out.println("centers:");
-    // for (var c : result()) {
-    // System.out.println(Arrays.toString(c.center));
-    // }
-    // System.out.println("\nassignments:");
-    // System.out.println(Arrays.toString(dataPointsAssignments));
     main();
     return result();
   }
@@ -139,8 +125,17 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
   @Override
   protected void initialize() {
     for (int n = 0; n < N; n++) {
-      sortCenters(n, B - 1, clusterCenters);
-      initialAssignPointToCluster(n, lowerBoundsAssignments[n][0]);
+      int minDistanceIndex = -1;
+      var minDistance = Double.MAX_VALUE;
+      for (int k = 0; k < K; k++) {
+        var currentDistance = distance.compute(dataPoints[n], clusterCenters[k]);
+        if (currentDistance < minDistance) {
+          minDistance = currentDistance;
+          minDistanceIndex = k;
+        }
+      }
+      upperBounds[n] = minDistance;
+      initialAssignPointToCluster(n, minDistanceIndex);
     }
   }
 
@@ -151,12 +146,6 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
     var dataPoint = dataPoints[n];
     // sort all center by decreasing distance from the data point
     for (int k = 0; k < K; k++) {
-      // TODO what is most efficient? this or array or object?
-      // System.out.println(dataPoint);
-      System.out.println("cluster centers:");
-      System.out.println(Arrays.deepToString(clusterCenters));
-      System.out.println('\n');
-      // System.out.println(clusterCenters[k] == null);
       centerOrder[k] = new OrderedClusterCenter(distance.compute(dataPoint, clusterCenters[k]), k);
     }
     // TODO partial sort
@@ -164,9 +153,6 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
     // assign point to closest center
     assignPointToCluster(n, centerOrder[0].index);
-    System.out.println("cluster assignments");
-    System.out.println(Arrays.toString(dataPointsAssignments));
-    System.out.println('\n');
 
     // set upperbound to the exact distance to the closest center
     upperBounds[n] = centerOrder[0].distance;
@@ -181,7 +167,6 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
 
   @Override
   protected void loop() {
-    // System.out.println("loop");
     maxB = 0;
     outerLoop: for (int n = 0; n < N; n++) {
       for (int b = 0; b < B; b++) {
@@ -194,27 +179,13 @@ public class DrakeKMeansStrategy extends KMeansStrategy {
           r[0] = clusterCenters[0];
           for (int s = 1; s < r.length; s++) {
             r[s] = clusterCenters[lowerBoundsAssignments[n][s]];
-            // System.out.println("cluster centers after assignment");
-            // System.out.println(Arrays.deepToString(clusterCenters));
           }
-          // System.out.println("b is" + b);
-          // System.out.println(Arrays.deepToString(r));
           sortCenters(n, b, r);
           continue outerLoop;
         }
       }
       sortCenters(n, B - 1, clusterCenters);
     }
-
-    System.out.println("cluster assignments");
-    System.out.println(Arrays.toString(dataPointsAssignments));
-    System.out.println('\n');
-    System.out.println("cluster sizes");
-    System.out.println(Arrays.toString(clusterSizes));
-    System.out.println('\n');
-    System.out.println("cluster suns");
-    System.out.println(Arrays.deepToString(clusterSums));
-    System.out.println('\n');
 
     int furthestMovingIndex = moveCenters();
     furthestDistanceMoved = clusterCenterMovements[furthestMovingIndex];

@@ -16,6 +16,7 @@ public class FastLloydKMeansStrategy extends KMeansStrategy {
     this.D = dataPoints[0].length;
     this.K = initialClusterCenters.length;
     this.N = dataPoints.length;
+
     this.clusterCenterMovements = new double[K];
     this.clusterCenters = Arrays.stream(initialClusterCenters).map(double[]::clone).toArray(double[][]::new);
     this.clusterSizes = new int[K];

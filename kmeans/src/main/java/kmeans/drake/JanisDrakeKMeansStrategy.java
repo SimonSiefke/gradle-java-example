@@ -123,13 +123,13 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     }
   }
 
-  void reorderBounds(int i, int b, double[][] centers, double[] upperBounds, double[][] centerSum, int[] centerSize) {
-    var lowerBound = lowerBounds[i];
-    var x = dataPoints[i];
+  void reorderBounds(int n, int b, double[][] centers) {
+    var lowerBound = lowerBounds[n];
+    var x = dataPoints[n];
     final CenterTuple[] relevantTuples = new CenterTuple[b + 1];
 
-    relevantTuples[b] = new CenterTuple(distance.compute(x, centers[dataPointsAssignments[i]]),
-        dataPointsAssignments[i]);
+    relevantTuples[b] = new CenterTuple(distance.compute(x, centers[dataPointsAssignments[n]]),
+        dataPointsAssignments[n]);
     for (int j = 0; j < b; j++) {
       CenterTuple tup = new CenterTuple(distance.compute(x, centers[lowerBound[j].index]), lowerBound[j].index);
 
@@ -137,8 +137,8 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
     }
 
     CenterTuple closest = relevantTuples[0];
-    assignPointToCluster(i, closest.index);
-    upperBounds[i] = closest.distance;
+    assignPointToCluster(n, closest.index);
+    upperBounds[n] = closest.distance;
     for (int j = 0; j < b; j++) {
       lowerBound[j] = relevantTuples[j + 1].copy();
     }
@@ -194,7 +194,7 @@ public class JanisDrakeKMeansStrategy extends KMeansStrategy {
           if (b == 0) {
             continue outer;
           }
-          reorderBounds(n, b, clusterCenters, upperBounds, clusterSums, clusterSizes);
+          reorderBounds(n, b, clusterCenters);
           continue outer;
         }
       }
