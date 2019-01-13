@@ -94,6 +94,15 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   }
 
   @Test
+  public void testAnotherFourPoints() {
+    var dataPoints = new double[][] { { 0, 0 }, { 2, 2 }, { 6, 6 }, { 8, 8 } };
+    var initialClusterCenters = new double[][] { { 0, 0 }, { 6, 6 } };
+    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, 1, new EuclideanSquaredDistanceStrategy());
+    assertArrayEquals(new double[] { 1, 1 }, clusters[0].center);
+    assertArrayEquals(new double[] { 7, 7 }, clusters[1].center);
+  }
+
+  @Test
   public void testFivePoints() {
     var dataPoints = new double[][] { { 2 }, { 4 }, { 3 }, { 0 }, { 1 } };
     var initialClusterCenters = new double[][] { { 2 }, { 4 } };

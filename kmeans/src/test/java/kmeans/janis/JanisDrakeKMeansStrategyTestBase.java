@@ -38,13 +38,6 @@ public abstract class JanisDrakeKMeansStrategyTestBase<T extends KMeansStrategy>
   @Override
   @Test
   @Disabled
-  public void testAnotherThreePoints() {
-
-  }
-
-  @Override
-  @Test
-  @Disabled
   public void testFourPoints() {
 
   }
