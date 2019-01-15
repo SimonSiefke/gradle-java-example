@@ -3,3 +3,4 @@
 1. more javadoc with links and html
 1. builder pattern instead of static methods? https://stackoverflow.com/questions/997482/does-java-support-default-parameter-values
 1. sort alphabetically
+1. update readme for each kmeans
