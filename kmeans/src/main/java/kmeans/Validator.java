@@ -1,4 +1,4 @@
-package util;
+package kmeans;
 
 import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import kmeans.KMeansStrategy;
@@ -7,8 +7,6 @@ import kmeans.KMeansStrategy;
  * Validator for validating all kinds of stuff.
  */
 public final class Validator {
-  // TODO sort aplhabetically and add more tests
-
   public static void validateClusterDataPointsAndClusterCenters(double[][] dataPoints, double[][] clusterCenters) {
     Validator.validateDataPoints(dataPoints);
     Validator.validateClusterCenters(clusterCenters);
