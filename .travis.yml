@@ -4,6 +4,11 @@ install: true
 
 jdk:
   - oraclejdk11
+  - openjdk-ea
+
+matrix:
+  allow_failures:
+    - jdk: openjdk-ea
 
 script:
   - ./gradlew build check
