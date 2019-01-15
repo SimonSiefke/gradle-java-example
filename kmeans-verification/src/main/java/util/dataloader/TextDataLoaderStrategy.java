@@ -1,6 +1,5 @@
 package util.dataloader;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,14 +15,13 @@ class TextDataLoaderStrategy implements DataLoaderStrategy {
     }
     try {
 
-      InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
-      Scanner scanner = new Scanner(is, "UTF-8");
-      List<double[]> doubles = new ArrayList<>();
+      var inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+      var scanner = new Scanner(inputStream, "UTF-8");
+      var doubles = new ArrayList<>();
       while (scanner.hasNextLine()) {
         var line = scanner.nextLine().trim().replaceAll("\\s+", " ");
         var rawNumbers = line.split(" ");
-
-        double[] numbersInLine = new double[rawNumbers.length];
+        var numbersInLine = new double[rawNumbers.length];
         for (var i = 0; i < rawNumbers.length; i++) {
           numbersInLine[i] = Double.parseDouble(rawNumbers[i]);
         }
