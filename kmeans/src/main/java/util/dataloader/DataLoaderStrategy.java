@@ -1,4 +1,4 @@
-package dataloader;
+package util.dataloader;
 
 /**
  * Interface for Distance Strategies.

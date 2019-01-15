@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-import dataloader.DataLoader;
+import util.dataloader.DataLoader;
 import distance.EuclideanDistanceStrategy;
 import kmeans.Cluster;
 import kmeans.drake.JanisDrakeKMeansStrategy;
