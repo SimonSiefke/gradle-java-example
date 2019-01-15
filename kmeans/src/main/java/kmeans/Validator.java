@@ -1,7 +1,6 @@
 package kmeans;
 
 import clustercenterinitialization.ClusterCenterInitializationStrategy;
-import kmeans.KMeansStrategy;
 
 /**
  * Validator for validating all kinds of stuff.

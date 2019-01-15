@@ -1,6 +1,5 @@
 package util.dataloader;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,8 @@ class TextDataLoaderStrategy implements DataLoaderStrategy {
       throw new IllegalArgumentException("The file must end with \".txt\"");
     }
     try {
-      InputStream is = getClass().getClassLoader().getResourceAsStream(path);
+
+      InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
       Scanner scanner = new Scanner(is, "UTF-8");
       List<double[]> doubles = new ArrayList<>();
       while (scanner.hasNextLine()) {
