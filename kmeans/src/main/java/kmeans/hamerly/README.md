@@ -33,17 +33,17 @@
 ```
 function hamerly(x, c):
   for n=1 to N do
-    a[n] <- argmin_k d(x[n], c[k])                # compute index of closest center
-    u[n] <- min_k d(x[n], c[k])                   # compute exact distance to closest center
+    a[n] <- argmin_k d(x[n], c[k])                  # compute index of closest center
+    u[n] <- min_k d(x[n], c[k])                     # compute exact distance to closest center
     l[n] <- argmin_(k!=a[n]) d(x[n], c[k])          # compute index of second closest center
-    q[a[n]] <- q[a[n]] + 1                        # update cluster size
-    for d=1 to D do                               # update cluster sum for each dimension
-      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]        # update cluster sum for each dimension
+    q[a[n]] <- q[a[n]] + 1                          # update cluster size
+    for d=1 to D do                                 # update cluster sum for each dimension
+      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
 
   while not converged do
-    # compute the nearest cluster center for each cluster center
+
     for k=1 to K do
-      s[k] <- min_(k'!=k) d(c[k], c[k'])
+      s[k] <- min_(k'!=k) d(c[k], c[k'])            # compute the nearest cluster center for each cluster center
 
     # compute the nearest cluster for each point
     for n=1 to N do
