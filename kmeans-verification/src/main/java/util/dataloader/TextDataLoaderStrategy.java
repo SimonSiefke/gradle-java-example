@@ -13,7 +13,6 @@ class TextDataLoaderStrategy implements DataLoaderStrategy {
       throw new IllegalArgumentException("The file must end with \".txt\"");
     }
     try {
-
       var inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
       var scanner = new Scanner(inputStream, "UTF-8");
       var doubles = new ArrayList<>();
