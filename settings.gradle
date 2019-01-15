@@ -9,4 +9,4 @@
 
 rootProject.name = 'data-analytics'
 
-include 'benchmark', 'kmeans'
+include 'kmeans-verification', 'kmeans'

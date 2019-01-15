@@ -1,4 +1,4 @@
-package kmeans.util.dataloader;
+package src.test.java.kmeans.util.dataloader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,19 +10,18 @@ public class TextLoaderStrategyTest {
 
   @Test
   public void testFile() {
-    DataLoader.TEXT("../kmeans/src/test/data/test_data_loader.txt");
+    DataLoader.TEXT("test_data/test_data_loader.txt");
   }
 
   @Test
   public void testWithoutExtension() {
-    var exception = assertThrows(IllegalArgumentException.class,
-        () -> DataLoader.TEXT("../kmeans/src/test/data/test_data_loader"));
+    var exception = assertThrows(IllegalArgumentException.class, () -> DataLoader.TEXT("test_data/test_data_loader"));
     assertEquals("The file must end with \".txt\"", exception.getMessage());
   }
 
   @Test
   public void testFileWithOtherFormat() {
-    DataLoader.TEXT("../kmeans/src/test/data/test_data_loader_with_other_format.txt");
+    DataLoader.TEXT("test_data/test_data_loader_with_other_format.txt");
   }
 
   @Test
