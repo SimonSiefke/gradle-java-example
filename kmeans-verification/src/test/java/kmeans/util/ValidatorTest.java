@@ -2,11 +2,11 @@ package kmeans.util;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import kmeans.Validator;
 import org.junit.jupiter.api.Test;
 
 import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import kmeans.KMeansStrategy;
-import util.Validator;
 
 public class ValidatorTest {
 

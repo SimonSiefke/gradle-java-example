@@ -6,7 +6,6 @@ import clustercenterinitialization.ClusterCenterInitializationStrategy;
 import distance.DistanceStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
-import util.Validator;
 
 /**
  * Builder for all the KMeans Strategies that are available.
