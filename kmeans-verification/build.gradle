@@ -1,16 +1,18 @@
 plugins {
-    // benchmark plugins
-    id "me.champeau.gradle.jmh" version "0.4.7"
-    id "io.morethan.jmhreport" version "0.9.0"
+    // application plugin (for Visualization)
     id "application"
 
     // test plugins
     id 'jacoco'
 
+    // benchmark plugins
+    id "me.champeau.gradle.jmh" version "0.4.8"
+    id "io.morethan.jmhreport" version "0.9.0"
 }
 
 dependencies {
     compile project(':kmeans')
+
     // test dependencies
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
@@ -45,12 +47,6 @@ test {
     }
 }
 
-// task copyTestResources(type: Copy) {
-//     from "${projectDir}/src/test/resources"
-//     into "${buildDir}/classes/test"
-// }
-// processTestResources.dependsOn copyTestResources
-
 jacocoTestReport {
     reports {
         xml.enabled true
@@ -82,15 +78,13 @@ jacoco {
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
 check.dependsOn jacocoTestCoverageVerification
 
+
 /***************************/
 /* Benchmark Configuration */
 /***************************/
 
-
-apply plugin: 'me.champeau.gradle.jmh'
-
 jmh {
-  include = 'benchmark\\.Bench.*'
+  include = 'benchmark\\.KMeansBenchmark.*'
     warmupIterations = 1
     iterations = 1
     resultFormat = 'JSON'

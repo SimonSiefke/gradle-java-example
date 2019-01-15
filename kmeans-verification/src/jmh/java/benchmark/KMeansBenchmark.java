@@ -2,7 +2,7 @@ package benchmark;
 
 import org.openjdk.jmh.annotations.Benchmark;
 
-public class Bench {
+public class KMeansBenchmark {
 
   @Benchmark
   public void foo() {
