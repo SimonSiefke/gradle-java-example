@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import distance.DistanceStrategy;
 // import kmeans.drake.DrakeKMeansStrategy;
+import kmeans.drake.DrakeKMeansStrategy;
 import kmeans.elkan.ElkanKMeansStrategy;
 import kmeans.lloyd.LloydKMeansStrategy;
 
@@ -12,7 +13,7 @@ import kmeans.lloyd.LloydKMeansStrategy;
  */
 public abstract class KMeansStrategy {
   public static final KMeansStrategy DEFAULT = new LloydKMeansStrategy();
-  // public static final KMeansStrategy DRAKE = new DrakeKMeansStrategy();
+  public static final KMeansStrategy DRAKE = new DrakeKMeansStrategy();
   public static final KMeansStrategy ELKAN = new ElkanKMeansStrategy();
   public static final KMeansStrategy HAMERLY = new ElkanKMeansStrategy();
   public static final KMeansStrategy LLOYD = new LloydKMeansStrategy();
@@ -96,14 +97,15 @@ public abstract class KMeansStrategy {
         for (int d = 0; d < D; d++) {
           newClusterCenter[d] = clusterSums[k][d] / clusterSizes[k];
         }
-        clusterCenterMovements[k] = this.distance.compute(clusterCenters[k], newClusterCenter);
+        clusterCenterMovements[k] = distance.compute(clusterCenters[k], newClusterCenter);
         if (clusterCenterMovements[k] > clusterCenterMovements[furthestMovingCenterIndex]) {
           furthestMovingCenterIndex = k;
         }
         clusterCenters[k] = newClusterCenter;
       } else {
-        throw new IllegalArgumentException(
-            "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
+        // throw new IllegalArgumentException(
+        // "Please provide different initial cluster centers, one or more of your
+        // initial clusters are too far away from any data point");
       }
     }
     hasChanged = clusterCenterMovements[furthestMovingCenterIndex] > 0;
@@ -168,12 +170,10 @@ public abstract class KMeansStrategy {
    * maximum number of iterations has been reached.
    */
   protected void main() {
-    // System.out.println("main");
     while (hasChanged && numberOfIterations < maxNumberOfIterations) {
       hasChanged = false;
       loop();
       numberOfIterations++;
-      // System.out.println("number of iterations: " + numberOfIterations);
     }
   }
 
