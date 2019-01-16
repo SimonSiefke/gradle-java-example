@@ -1,26 +1,35 @@
 language: java
-sudo: false # faster builds
-install: true
+
+# Remove lock files before caching
+before_cache:
+  - rm -f  $HOME/.gradle/caches/*/*.lock
+
+# Cache only relevant directories
+cache:
+  directories:
+    - $HOME/.gradle/caches/modules-2
+    - $HOME/.gradle/wrapper/dists
+
+install:
+  - ./gradlew --version # Display Gradle, Groovy, JVM and other versions
 
 jdk:
-  - oraclejdk11
+  - openjdk11
   - openjdk-ea
 
+os:
+  - linux
+  - osx
+
 matrix:
+  exclude:
+    - os: osx
+      jdk: openjdk-ea
   allow_failures:
     - jdk: openjdk-ea
 
 script:
-  - ./gradlew build check
-
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+  - ./gradlew --warning-mode=all build check
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
