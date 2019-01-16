@@ -4,104 +4,88 @@
 
 ## Pruning techniques:
 
+Using triangle equality and hyperplane distance and distance to second closest center
+
 <!-- TODO: -->
 
 ## Variables:
 
-| Type           | Name | Purpose                                                                                                   |
-| -------------- | ---- | --------------------------------------------------------------------------------------------------------- |
-| `int`          | `D`  | number of dimensions                                                                                      |
-| `int`          | `K`  | number of clusters (and cluster centers)                                                                  |
-| `int`          | `N`  | number of data points                                                                                     |
-| `int[N]`       | `a`  | for each data point the index of the cluster it is assigned to                                            |
-| `double[K][D]` | `c`  | cluster centers                                                                                           |
-| `double[K][D]` | `c'` | for each cluster the vector sum of all its points                                                         |
-| `double[K][K]` | `i'` | for each cluster the distance to all the other clusters                                                   |
-| `double[N][K]` | `l`  | for each data point and each cluster a lower bound on the distance between the data point and the cluster |
-| `int[K]`       | `q`  | for each cluster the number of its points                                                                 |
-| `double[K]`    | `s`  | for each cluster center the distance to its closest other center                                          |
-| `double[N]`    | `u`  | for each point an upper bound on the distance to its closest center                                       |
-| `double[N][D]` | `x`  | data points                                                                                               |
+| Type           | Memory | Name | Purpose                                                                                                   |
+| -------------- | ------ | ---- | --------------------------------------------------------------------------------------------------------- |
+| `int`          |        | `D`  | number of dimensions                                                                                      |
+| `int`          |        | `K`  | number of clusters (and cluster centers)                                                                  |
+| `int`          |        | `N`  | number of data points                                                                                     |
+| `int[N]`       | `N`    | `a`  | for each data point the index of the cluster it is assigned to                                            |
+| `double[K][D]` | `KD`   | `c`  | cluster centers                                                                                           |
+| `double[K][D]` | `KD`   | `c'` | for each cluster the vector sum of all its points                                                         |
+| `double[K][K]` | `K^2`  | `i'` | for each cluster the distance to all the other clusters                                                   |
+| `double[N][K]` | `NK`   | `l`  | for each data point and each cluster a lower bound on the distance between the data point and the cluster |
+| `int[K]`       | `K`    | `q`  | for each cluster the number of its points                                                                 |
+| `double[K]`    | `K`    | `s`  | for each cluster center the distance to its closest other center                                          |
+| `double[N]`    | `N`    | `u`  | for each point an upper bound on the distance to its closest center                                       |
+| `double[N][D]` | `ND`   | `x`  | data points                                                                                               |
+
+Total Additional Memory: `2N + NK + K^2 + 2K + KD`
 
 ## Pseudo-code:
-
-<!-- TODO: adjust for elkan -->
 
 ```
 function elkan(x, c):
   for n=1 to N do
-    a[n] <- argmin_k d(x[n], c[k])                  # compute index of the closest center
-    u[n] <- min d(x[n], c[k])                       # compute distance to the closest center
+    a[n] <- argmin_k d(x[n], c[k])                          # compute index of the closest center
+    u[n] <- min d(x[n], c[k])                               # compute distance to the closest center
     for k=1 to K do
-      l[n][k] <- d(x[n],c[k])                       # compute exact distance to each center
-    q[a[n]] <- q[a[n]] + 1                          # update cluster size
-    for d=1 to D do                                 # update cluster sum for each dimension
-      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
+      l[n][k] <- d(x[n],c[k])                               # compute exact distance to each center
+    q[a[n]] <- q[a[n]] + 1                                  # update cluster size
+    for d=1 to D do                                         # update cluster sum for each dimension
+      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]                  # update cluster sum for each dimension
 
   while not converged do
-    # compute the nearest cluster center for each cluster center
     for k=1 to K do
-      s[k] <- 0.5 * min_(k'!=k) d(c[k], c[k'])
+      s[k] <- 0.5 * min_(k'!=k) d(c[k], c[k'])              # compute the nearest cluster center for each cluster center
       for k'=1 to K do
-        i[k'][k] <- d(c[k'], c[k])
+        i[k'][k] <- d(c[k'], c[k])                          # compute the distance to every cluster center for each cluster center
 
-    # compute the nearest cluster for each point
-    for n=1 to N do
+    for n=1 to N do                                         # compute the nearest cluster for each point
       m <- s[a[n]]/2
       if u[n] > m then
         a' = a[n]
         for k=1 to K do
           if k!= a[n] && u[n] > l[n][k] && u[n] > 0.5 * i[a[n]][k] then
-            if r[n] then
-              f <- d(x[n], c[a[n]])
-              r[n] <- false
+            if r[n] then                                    # if the upper bound is inaccurate
+              f <- d(x[n], c[a[n]])                         # compute the exact distance to nearest center
+              u[n] = f                                      # assign upper bound the exact distance
+              r[n] <- false                                 # upper bound is no longer inaccurate
             else
-              f <- u[n]
+              f <- u[n]                                     # upper bound is the exact distance to nearest center
+            if f > l[n][k] || f > 0.5 * i[a[n]][k] then     # try to prune with hyperplane distance and the lower bound
+              f' <- d(x[n],c[k])                            # compute distance to new candidate
+              if f' < f then	                              # if candidate is closer
+                a[n] = k	                                  # assign point to new candidate
+                u[n] = f'                                   # update bound
+        if a' != a[n] then                                  # when the closest cluster index hasn't changed
+          q[a'] <- q[a'] - 1                                # update cluster size
+          q[a[n]] <- q[a[n]] + 1                            # update cluster size
+          for d=1 to D do                                   # update cluster sum for each dimension
+            c'[a'][d] <- c'[a'][d] - x[n][d]                # update cluster sum for each dimension
+            c'[a[n]][d] <- c'[a[n]][d] + x[n][d]            # update cluster sum for each dimension
 
-            if f > l[n][k] || f > 0.5 * i[a[n]][k] then
-              f' <- d(x[n],c[k])
-              if f' < f then
-                a[n] = k
-                u[n] = f
-        if a' != a[n] then                            # when the closest cluster index hasn't changed
-          q[a'] <- q[a'] - 1                          # update cluster size
-          q[a[n]] <- q[a[n]] + 1                      # update cluster size
-          for d=1 to D do                             # update cluster sum for each dimension
-            c'[a'][d] <- c'[a'][d] - x[n][d]          # update cluster sum for each dimension
-            c'[a[n]][d] <- c'[a[n]][d] + x[n][d]      # update cluster sum for each dimension
-
-    # assign each cluster center to the average of its points
-    for k=1 to K do
-      c* <- c[k]                                    # store old center for later
+    for k=1 to K do                                         # assign each cluster center to the average of its points
+      c* <- c[k]                                            # store old center for later
       for d=1 to D do
-        c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
+        c[k][d] <- c'[k][d]/q[k]                            # cluster sum divided by cluster size
 ```
 
-## Time & Space Complexity Overhead (compared to Lloyd)
+## Time Complexity
 
-| Initialization time | Time per iteration | Memory   |
-| ------------------- | ------------------ | -------- |
-| NDK + DK^2          | DK^2               | NK + K^2 |
+| Initialization Time | Why                                                   |
+| ------------------- | ----------------------------------------------------- |
+| `NKD`               | loop that computes the nearest cluster for each point |
 
-## Exact Time & Space Complexity
+| Time Per Iteration | Why                                                         |
+| ------------------ | ----------------------------------------------------------- |
+| `K^2`              | loop that computes distance between every cluster           |
+| `NKD`              | loop that computes the nearest cluster for each point       |
+| `KD`               | loop that assigns each cluster to the average of its points |
 
-### Initialization Time
-
-### Time per Iteration
-
-### Memory
-
-| Memory | Name | Overhead (compared to Lloyd) |
-| ------ | ---- | ---------------------------- |
-| `N`    | `a`  | ❌                           |
-| `KD`   | `c`  | ❌                           |
-| `KD`   | `c'` | ❌                           |
-| `K^2`  | `i'` | ✅                           |
-| `NK`   | `l`  | ✅                           |
-| `K`    | `q`  | ❌                           |
-| `K`    | `s`  | ✅                           |
-| `N`    | `u`  | ✅                           |
-| `ND`   | `x`  | ❌                           |
-
-Total Memory: `2N + NK + ND + K^2 + 2KD + 2K = O(NK)`\
-Total Memory Overhead: `N + NK + K^2 + K`
+Total Time Per Iteration: `NKD + K^2 + KD`
