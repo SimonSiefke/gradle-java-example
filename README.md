@@ -26,7 +26,7 @@ cd gradle-java-example
 ./gradlew build # build
 ```
 
-## Usage with VSCode
+## Open with VSCode
 
 1. Just open the folder
 
@@ -37,6 +37,6 @@ cd gradle-java-example
 1. `File -> Import -> Gradle -> Existing Gradle Project -> Next -> Next -> Finish`
 1. Should should now see a panel named `Gradle tasks` -->
 
-## Usage with IntelliJ IDE
+## Open with IntelliJ
 
 1. `File -> New -> Project from existing sources -> Select the build.gradle file inside the gradle-java-example folder -> Ok -> Ok`
