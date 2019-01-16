@@ -3,10 +3,19 @@ package benchmark;
 import kmeans.Cluster;
 import kmeans.KMeansBuilder;
 import kmeans.KMeansStrategy;
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.State;
+import org.openjdk.jmh.annotations.Fork;
+import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.BenchmarkMode;
+import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.Param;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.Benchmark;
 import util.dataloader.DataLoader;
 
-import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,13 +54,11 @@ public class KMeansBenchmark {
 
   public KMeansBuilder kmeans;
 
-
   // Refractor to inner state class with @State
   @Setup
-  public void loadData() throws FileNotFoundException {
+  public void loadData() {
     data = DataLoader.TEXT("data/" + dataSet);
     kmeans = new KMeansBuilder().withDataPoints(data).withNumberOfClusters(numberOfClusters);
-
 
     /*
      * Ignored for now to test how algorithms compare with increasing k switch
@@ -74,5 +81,4 @@ public class KMeansBenchmark {
   public Cluster[] elkan() {
     return kmeans.withStrategy(KMeansStrategy.ELKAN).cluster();
   }
-
 }

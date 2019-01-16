@@ -103,6 +103,7 @@ public abstract class KMeansStrategy {
         }
         clusterCenters[k] = newClusterCenter;
       } else {
+        clusterCenterMovements[k] = 0;
         // throw new IllegalArgumentException(
         // "Please provide different initial cluster centers, one or more of your
         // initial clusters are too far away from any data point");

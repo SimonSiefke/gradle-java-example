@@ -21,6 +21,7 @@
     </rule>
 
     <rule ref="category/java/codestyle.xml">
+        <exclude name="UnnecessaryAnnotationValueElement"/>
         <exclude name="FieldNamingConventions"/>
         <exclude name="UselessParentheses"/>
         <exclude name="FormalParameterNamingConventions"/>

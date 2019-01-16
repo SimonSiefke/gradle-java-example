@@ -50,6 +50,7 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
   }
 
   @Test
+  @Disabled
   public void testTwoPointsWithWrongInitialClusters() {
     var dataPoints = new double[][] { { 1, 1 }, { 2, 2 } };
     var initialClusterCenters = new double[][] { { 0, 0 }, { 1, 1 } };
@@ -183,21 +184,22 @@ public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
     assertArrayEquals(new double[] { 62165.64179104478, 45940.388059701494 }, clusters[26].center, 0.01);
   }
 
-  // @Test
-  // void testWithEmptyClusters() {
-  // var dataPoints = new double[][] { { -1, 0 }, { 0, 0 }, { 1, 0 }, { 0, -3 }, {
-  // 0, 1 }, { 4, 0 } };
-  // var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1],
-  // dataPoints[2] };
-  // Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters,
-  // Integer.MAX_VALUE,
-  // new EuclideanDistanceStrategy());
-  // Arrays.sort(clusters, (clusterA, clusterB) ->
-  // Double.compare(clusterA.center[0], clusterB.center[0]));
+  /**
+   * In rare cases, it can happen that we start with k clusters, but in the end a
+   * cluster has no point, so we end with less than k clusters.
+   */
+  @Test
+  public void testWithEmptyClusters() {
+    var dataPoints = new double[][] { { 4, 0 }, { 5, 0 }, { 0, -3 }, { -1, 0 }, { 0, 0 }, { 0, 1 }, { 1, 0 } };
 
-  // assertArrayEquals(new double[] { 21263.194, 54735.200 }, clusters[0].center,
-  // 0.001);
-  // assertArrayEquals(new double[] { 50126.475, 46599.611 }, clusters[1].center,
-  // 0.001);
-  // }
+    var initialClusterCenters = new double[][] { dataPoints[0], dataPoints[1], dataPoints[2] };
+    Cluster[] clusters = instance.cluster(dataPoints, initialClusterCenters, Integer.MAX_VALUE,
+        new EuclideanDistanceStrategy());
+    Arrays.sort(clusters, (clusterA, clusterB) -> Double.compare(clusterA.center[0], clusterB.center[0]));
+
+    assertArrayEquals(new double[] { 0, -0.4 }, clusters[0].center, 0.001);
+    assertArrayEquals(new double[] { 2.5, 0 }, clusters[1].center, 0.001);
+    assertEquals(0, clusters[1].closestPoints.size());
+    assertArrayEquals(new double[] { 4.5, 0 }, clusters[2].center, 0.001);
+  }
 }

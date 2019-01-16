@@ -42,6 +42,7 @@ public class LloydKMeansStrategy extends KMeansStrategy {
 
   @Override
   protected void loop() {
+
     for (int n = 0; n < N; n++) {
       assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
     }

@@ -57,8 +57,7 @@ public class FastLloydKMeansStrategy extends KMeansStrategy {
         }
         clusterCenters[k] = newClusterCenter;
       } else {
-        throw new IllegalArgumentException(
-            "Please provide different initial cluster centers, one or more of your initial clusters are too far away from any data point");
+        clusterCenterMovements[k] = 0;
       }
     }
   }
