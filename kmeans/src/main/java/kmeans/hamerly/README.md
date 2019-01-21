@@ -1,34 +1,30 @@
-# Hamerly's KMeans Algorithm
+# Hamerly's K-Means Algorithm
 
-> Hamerly's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
+Hamerly's Algorithm tries to optimize Lloyd's Algorithm by using pruning techniques to skip distance calculations and increase performance, while yielding the same results as Lloyd's Algorithm in the end and also after each iteration. It also needs the same number of iterations to converge.
 
-## Pruning techniques:
-
-<!-- TODO: svg -->
-
-- skip the assignment loop when the upper bound (maximal distance to assigned center) from the last or the current iteration is smaller than the lower bound (minimal distance to second closest center), which means that the currently assigned center stays the same.
-- skip the assignment loop when the upper bound (maximal distance to assigned center) from the last or the current iteration is smaller than half of the distance between the assigned center and its nearest neighbor.
+1. The first pruning technique uses N upper bounds and N lower bounds (1 for each data point). For each point is the upper bound the distance that the currently assigned center is maximally away. The lower bound is the distance that the second closest center is minimally away. If the second closest center (lower bound) is minimally further away than the closest center is maximally away (upper bound) we know that the point keeps its assigned center and we don't need to compute the distance to any other center.
+2. The second pruning technique uses the hyperplane distance between 2 cluster centers: Let x be a data point, c its assigned center and u the upper bound from x to c. If the distance from c to every other cluster center is at least two times u then we know that every other cluster center cannot be closer to x than c. Thus, the point keeps its assigned center and we don't need to compute the distance to any other center.
 
 ## Variables:
 
-| Type           | Name | Purpose                                                                        |
-| -------------- | ---- | ------------------------------------------------------------------------------ |
-| `int`          | `D`  | number of dimensions                                                           |
-| `int`          | `K`  | number of clusters (and cluster centers)                                       |
-| `int`          | `N`  | number of data points                                                          |
-| `int[N]`       | `a`  | for each data point the index of the cluster it is assigned to                 |
-| `double[K][D]` | `c`  | cluster centers                                                                |
-| `double[K][D]` | `c'` | for each cluster the vector sum of all its points                              |
-| `double[N]`    | `l`  | for each data point a lower bound on the distance to its second closest center |
-| `int[K]`       | `q`  | for each cluster the number of its points                                      |
-| `double[K]`    | `p`  | for each cluster center the distance that it last moved                        |
-| `double[K]`    | `s`  | for each cluster center the distance to its closest other center               |
-| `double[N]`    | `u`  | for each point an upper bound on the distance to its closest center            |
-| `double[N][D]` | `x`  | data points                                                                    |
+| Type           | Memory | Name | Purpose                                                                        |
+| -------------- | ------ | ---- | ------------------------------------------------------------------------------ |
+| `int`          |        | `D`  | number of dimensions                                                           |
+| `int`          |        | `K`  | number of clusters (and cluster centers)                                       |
+| `int`          |        | `N`  | number of data points                                                          |
+| `int[N]`       |        | `a`  | for each data point the index of the cluster it is assigned to                 |
+| `double[K][D]` | `KD`   | `c`  | cluster centers                                                                |
+| `double[K][D]` | `KD`   | `c'` | for each cluster the vector sum of all its points                              |
+| `double[N]`    | `N`    | `l`  | for each data point a lower bound on the distance to its second closest center |
+| `int[K]`       | `K`    | `q`  | for each cluster the number of its points                                      |
+| `double[K]`    | `K`    | `p`  | for each cluster center the distance that it last moved                        |
+| `double[K]`    | `K`    | `s`  | for each cluster center the distance to its closest other center               |
+| `double[N]`    | `N`    | `u`  | for each point an upper bound on the distance to its closest center            |
+| `double[N][D]` | `ND`   | `x`  | data points                                                                    |
+
+Total Additional Memory: `2N + KD + 3K`
 
 ## Pseudo-code:
-
-<!-- TODO: update bounds code -->
 
 ```
 function hamerly(x, c):
@@ -41,15 +37,13 @@ function hamerly(x, c):
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
 
   while not converged do
-
     for k=1 to K do
       s[k] <- min_(k'!=k) d(c[k], c[k'])            # compute the nearest cluster center for each cluster center
 
-    # compute the nearest cluster for each point
-    for n=1 to N do
+    for n=1 to N do                                 # compute the nearest cluster for each point
       m <- max(s[a[n]]/2, l[n])
       if u[n] > m then                              # first bound test
-        u[n] <- d(x[n], c[a[n]])                    # tighten upper bound
+        u[n] <- d(x[n], c[a[n]])                    # tighten upper bound to see if we can prune with the exact distance to closest center
         if u[n] > m then                            # second bound test
           a' <- a[n]                                # store current value for later
           a[n] <- argmin_k d(x[n], c[k])            # compute index of exact closest center
@@ -62,37 +56,20 @@ function hamerly(x, c):
               c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
 
-    # assign each cluster center to the average of its points
-    for k=1 to K do
+    for k=1 to K do                                 # assign each cluster center to the average of its points
       c* <- c[k]                                    # store old center for later
       for d=1 to D do
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
       p[k] <- d(c*,c[k])                            # store the distance that the center has moved
+
+                                                    # update bounds
+    r  <- argmax_k p                                # index of the center that has moved the most
+    r' <- argmax_k!=r p                             # index of the center that has moved the second most
+    for n=1 to N do
+      u[n] <- u[n] + p[a[n]]                        # increase upper bound by the distance that the assigned center has moved
+      if r=a[i] then
+        l[n] <- l[n] - p[r']                        # decrease by the second most distance moved
+      else
+        l[n] <- l[n] - p[r]                         # decrease by the most distance moved
+
 ```
-
-## Time & Space Complexity
-
-| Initialization time | Time per iteration | Memory   |
-| ------------------- | ------------------ | -------- |
-| NDK + K^2           | DK^2               | NK + K^2 |
-
-## Exact Time & Space Complexity
-
-### Initialization Time
-
-### Memory
-
-| Memory | Name | Overhead (compared to Lloyd) |
-| ------ | ---- | ---------------------------- |
-| `N`    | `a`  | ❌                           |
-| `KD`   | `c`  | ❌                           |
-| `KD`   | `c'` | ❌                           |
-| `N`    | `l`  | ✅                           |
-| `K`    | `q`  | ❌                           |
-| `K`    | `p`  | ✅                           |
-| `K`    | `s`  | ✅                           |
-| `N`    | `u`  | ✅                           |
-| `ND`   | `x`  | ❌                           |
-
-Total Memory: `3N + ND + 3K + 2KD = O(ND)`\
-Total Memory Overhead: `2N + 2K`

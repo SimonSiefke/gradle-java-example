@@ -27,7 +27,7 @@
 <!-- TODO: update bounds code -->
 
 ```
-function hamerly(x, c):
+function drake(x, c):
 
   while not converged do
 
