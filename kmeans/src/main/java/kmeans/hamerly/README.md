@@ -12,7 +12,7 @@ Hamerly's Algorithm tries to optimize Lloyd's Algorithm by using pruning techniq
 | `int`          |        | `D`  | number of dimensions                                                           |
 | `int`          |        | `K`  | number of clusters (and cluster centers)                                       |
 | `int`          |        | `N`  | number of data points                                                          |
-| `int[N]`       |        | `a`  | for each data point the index of the cluster it is assigned to                 |
+| `int[N]`       | `N`    | `a`  | for each data point the index of the cluster it is assigned to                 |
 | `double[K][D]` | `KD`   | `c`  | cluster centers                                                                |
 | `double[K][D]` | `KD`   | `c'` | for each cluster the vector sum of all its points                              |
 | `double[N]`    | `N`    | `l`  | for each data point a lower bound on the distance to its second closest center |
@@ -22,7 +22,7 @@ Hamerly's Algorithm tries to optimize Lloyd's Algorithm by using pruning techniq
 | `double[N]`    | `N`    | `u`  | for each point an upper bound on the distance to its closest center            |
 | `double[N][D]` | `ND`   | `x`  | data points                                                                    |
 
-Total Additional Memory: `2N + KD + 3K`
+Total Additional Memory: `3N + KD + 3K`
 
 ## Pseudo-code:
 
