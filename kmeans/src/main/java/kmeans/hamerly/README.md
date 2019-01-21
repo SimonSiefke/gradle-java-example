@@ -2,7 +2,7 @@
 
 Hamerly's Algorithm tries to optimize Lloyd's Algorithm by using pruning techniques to skip distance calculations and increase performance, while yielding the same results as Lloyd's Algorithm in the end and also after each iteration. It also needs the same number of iterations to converge.
 
-1. The first pruning technique uses N upper bounds and N lower bounds (1 for each data point). For each point is the upper bound the distance that the currently assigned center is maximally away. The lower bound is the distance that the second closest center is minimally away. If the second closest center (lower bound) is minimally further away than the closest center is maximally away (upper bound) we know that the point keeps its assigned center and we don't need to compute the distance to any other center.
+1. The first pruning technique uses N upper bounds (1 for each data point) and N lower bounds (1 for each data point). For each point is the upper bound the distance that the currently assigned center is maximally away. The lower bound is the distance that the second closest center is minimally away. If the second closest center for a point (lower bound) is minimally further away than the closest center is maximally away (upper bound) we know that the point keeps its assigned center and we don't need to compute the distance to any other center.
 2. The second pruning technique uses the hyperplane distance between 2 cluster centers: Let x be a data point, c its assigned center and u the upper bound from x to c. If the distance from c to every other cluster center is at least two times u then we know that every other cluster center cannot be closer to x than c. Thus, the point keeps its assigned center and we don't need to compute the distance to any other center.
 
 ## Variables:
@@ -28,19 +28,19 @@ Total Additional Memory: `2N + KD + 3K`
 
 ```
 function hamerly(x, c):
-  for n=1 to N do
+  for n=0 to N-1 do
     a[n] <- argmin_k d(x[n], c[k])                  # compute index of closest center
     u[n] <- min_k d(x[n], c[k])                     # compute exact distance to closest center
     l[n] <- argmin_(k!=a[n]) d(x[n], c[k])          # compute index of second closest center
     q[a[n]] <- q[a[n]] + 1                          # update cluster size
-    for d=1 to D do                                 # update cluster sum for each dimension
+    for d=0 to D-1 do                               # update cluster sum for each dimension
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
 
   while not converged do
-    for k=1 to K do
+    for k=0 to K-1 do
       s[k] <- min_(k'!=k) d(c[k], c[k'])            # compute the nearest cluster center for each cluster center
 
-    for n=1 to N do                                 # compute the nearest cluster for each point
+    for n=0 to N-1 do                               # compute the nearest cluster for each point
       m <- max(s[a[n]]/2, l[n])
       if u[n] > m then                              # first bound test
         u[n] <- d(x[n], c[a[n]])                    # tighten upper bound to see if we can prune with the exact distance to closest center
@@ -52,24 +52,23 @@ function hamerly(x, c):
           if a' != a[n] then                        # when the closest cluster index hasn't changed
             q[a'] <- q[a'] - 1                      # update cluster size
             q[a[n]] <- q[a[n]] + 1                  # update cluster size
-            for d=1 to D do                         # update cluster sum for each dimension
+            for d=0 to D-1 do                         # update cluster sum for each dimension
               c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
 
-    for k=1 to K do                                 # assign each cluster center to the average of its points
+    for k=0 to K-1 do                               # assign each cluster center to the average of its points
       c* <- c[k]                                    # store old center for later
-      for d=1 to D do
+      for d=0 to D-1 do
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
       p[k] <- d(c*,c[k])                            # store the distance that the center has moved
 
                                                     # update bounds
     r  <- argmax_k p                                # index of the center that has moved the most
     r' <- argmax_k!=r p                             # index of the center that has moved the second most
-    for n=1 to N do
+    for n=0 to N-1 do
       u[n] <- u[n] + p[a[n]]                        # increase upper bound by the distance that the assigned center has moved
       if r=a[i] then
         l[n] <- l[n] - p[r']                        # decrease by the second most distance moved
       else
         l[n] <- l[n] - p[r]                         # decrease by the most distance moved
-
 ```

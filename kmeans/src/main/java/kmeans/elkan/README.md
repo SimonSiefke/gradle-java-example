@@ -31,26 +31,26 @@ Total Additional Memory: `2N + NK + K^2 + 2K + KD`
 
 ```
 function elkan(x, c):
-  for n=1 to N do
+  for n=0 to N-1 do
     a[n] <- argmin_k d(x[n], c[k])                          # compute index of the closest center
     u[n] <- min d(x[n], c[k])                               # compute distance to the closest center
-    for k=1 to K do
+    for k=0 to K-1 do
       l[n][k] <- d(x[n],c[k])                               # compute exact distance to each center
     q[a[n]] <- q[a[n]] + 1                                  # update cluster size
-    for d=1 to D do                                         # update cluster sum for each dimension
+    for d=0 to D-1 do                                       # update cluster sum for each dimension
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]                  # update cluster sum for each dimension
 
   while not converged do
-    for k=1 to K do
+    for k=0 to K-1 do
       s[k] <- 0.5 * min_(k'!=k) d(c[k], c[k'])              # compute the nearest cluster center for each cluster center
       for k'=1 to K do
         i[k'][k] <- d(c[k'], c[k])                          # compute the distance to every cluster center for each cluster center
 
-    for n=1 to N do                                         # compute the nearest cluster for each point
+    for n=0 to N-1 do                                       # compute the nearest cluster for each point
       m <- s[a[n]]/2
       if u[n] > m then
         a' = a[n]
-        for k=1 to K do
+        for k=0 to K-1 do
           if k!= a[n] && u[n] > l[n][k] && u[n] > 0.5 * i[a[n]][k] then
             if r[n] then                                    # if the upper bound is inaccurate
               f <- d(x[n], c[a[n]])                         # compute the exact distance to nearest center
@@ -66,13 +66,13 @@ function elkan(x, c):
         if a' != a[n] then                                  # when the closest cluster index hasn't changed
           q[a'] <- q[a'] - 1                                # update cluster size
           q[a[n]] <- q[a[n]] + 1                            # update cluster size
-          for d=1 to D do                                   # update cluster sum for each dimension
+          for d=0 to D-1 do                                 # update cluster sum for each dimension
             c'[a'][d] <- c'[a'][d] - x[n][d]                # update cluster sum for each dimension
             c'[a[n]][d] <- c'[a[n]][d] + x[n][d]            # update cluster sum for each dimension
 
-    for k=1 to K do                                         # assign each cluster center to the average of its points
+    for k=0 to K-1 do                                       # assign each cluster center to the average of its points
       c* <- c[k]                                            # store old center for later
-      for d=1 to D do
+      for d=0 to D-1 do
         c[k][d] <- c'[k][d]/q[k]                            # cluster sum divided by cluster size
 ```
 

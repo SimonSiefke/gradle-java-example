@@ -21,25 +21,25 @@ Total Additional Memory: `N + KD + K`
 
 ```
 function lloyd(x, c):
-  for n=1 to N do
+  for n=0 to N-1 do
     a[n] <- argmin_k d(x[n], c[k])                  # compute index of the closest center
     q[a[n]] <- q[a[n]] + 1                          # update cluster size
-    for d=1 to D do                                 # update cluster sum for each dimension
+    for d=0 to D-1 do                               # update cluster sum for each dimension
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
 
   while not converged do
-    for n=1 to N do                                 # compute the nearest cluster for each point
+    for n=0 to N-1 do                               # compute the nearest cluster for each point
       a' <- a[n]                                    # store current value for later
       a[n] <- argmin_k d(x[n], c[k])                # compute index of exact closest center
       if a' != a[n] then                            # when the closest cluster index hasn't changed
         q[a'] <- q[a'] - 1                          # update cluster size
         q[a[n]] <- q[a[n]] + 1                      # update cluster size
-        for d=1 to D do                             # update cluster sum for each dimension
+        for d=0 to D-1 do                           # update cluster sum for each dimension
           c'[a'][d] <- c'[a'][d] - x[n][d]          # update cluster sum for each dimension
           c'[a[n]][d] <- c'[a[n]][d] + x[n][d]      # update cluster sum for each dimension
 
-    for k=1 to K do                                 # assign each cluster center to the average of its points
-      for d=1 to D do
+    for k=0 to K-1 do                               # assign each cluster center to the average of its points
+      for d=0 to D-1 do
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
 ```
 
