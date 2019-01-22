@@ -74,8 +74,8 @@ function drake(x, c):
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
       u[n]<- o[0]                                   # exact distance to assigned center
       for b=0 to B do
-        co[n][b] <- o[b + 1].second                  # update closest other centers
-        l[n][b] <- o[b + 1].first                    # update lower bounds (they start with second closest center, therefore b+1)
+        co[n][b] <- o[b + 1].second                 # update closest other centers
+        l[n][b] <- o[b + 1].first                   # update lower bounds (they start with second closest center, therefore b+1)
 
     for k=0 to K-1 do                               # assign each cluster center to the average of its points
       c* <- c[k]                                    # store old center for later
@@ -88,8 +88,8 @@ function drake(x, c):
     for n=0 to N-1 do
       u[n] <- u[n] + p[a[n]]                        # increase upper bound by the distance that the assigned center has moved
       for b=0 to B-2 do                             # Update all lower bounds but the lower bound for the rest
-        l[n][b] <- l[n][b] - closestOtherCenters[i][j] # Shrink the lower bound by the distance its center has moved
-      l[n][B-1] <- l[n][B-1] -  p[r];               # decrease lower bound for the rest by the maximum distance moved
+        l[n][b] <- l[n][b] - co[n][b]               # Shrink the lower bound by the distance its center has moved
+      l[n][B-1] <- l[n][B-1] - p[r]                 # decrease lower bound for the rest by the maximum distance moved
       for b=B-2 to 0 do                             # reorder lower bounds
         if l[n][b+1] < l[n][b] then
           l[n][b] <- l[n][b+1]
