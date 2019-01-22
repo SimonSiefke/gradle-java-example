@@ -43,13 +43,28 @@ function drake(x, c):
     for n=0 to N-1 do                               # compute the nearest cluster for each point
       for b=0 to B-1 do
         if u[n]<=l[n][b] then                       # bound test
-          r <- somthing
-          TODO:
-          sort center
+          o[0].first <- d(x[n], a[n])
+          o[0].second <- a[n]
+          for b'=0 to b do                          # update the centers that got out of order
+            o[b'+1].second <- co[n][b']
+            o[b'+1].first <- d(x[n], o[b' + 1].second)
+          sort(o)                                   # reorder the centers that got out of order
+
+          if a[n] != o[0].second then               # when the closest cluster index hasn't changed
+            q[a'] <- q[a'] - 1                      # update cluster size
+            q[a[n]] <- q[a[n]] + 1                  # update cluster size
+            for d=0 to D-1 do                       # update cluster sum for each dimension
+              c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
+              c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
+
+          u[n] <- o[0].first
+          for b'=0 to b do
+            co[n][b'] <- o[b'+1].second             # update closest other centers
+            l[n][b'] <- o[b'+1].first               # update lower bound
           skip to next iteration of for n loop
       for k=0 to K do
-        o[k].first = d(x[n], c[k])                  # compute distance to every center for this point
-        o[k].second = k                             # also store index so that we can sort
+        o[k].first <- d(x[n], c[k])                 # compute distance to every center for this point
+        o[k].second <- k                            # also store index so that we can sort
       sort(o)                                       # sort order by increasing distance from x
       if a[n] != o[0].second then                   # when the closest cluster index hasn't changed
             q[a'] <- q[a'] - 1                      # update cluster size
@@ -57,10 +72,10 @@ function drake(x, c):
             for d=0 to D-1 do                       # update cluster sum for each dimension
               c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
-      u[n] = o[0]                                   # exact distance to assigned center
+      u[n]<- o[0]                                   # exact distance to assigned center
       for b=0 to B do
-        co[n][b] = o[b + 1].second                  # update closest other centers
-        l[n][b] = o[b + 1].first                    # update lower bounds (they start with second closest center, therefore b+1)
+        co[n][b] <- o[b + 1].second                  # update closest other centers
+        l[n][b] <- o[b + 1].first                    # update lower bounds (they start with second closest center, therefore b+1)
 
     for k=0 to K-1 do                               # assign each cluster center to the average of its points
       c* <- c[k]                                    # store old center for later
