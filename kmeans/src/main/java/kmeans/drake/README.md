@@ -14,17 +14,17 @@ Drake's Algorithm (also known as Adaptive KMeans) tries to optimize Lloyd's Algo
 | `int`                  |        | `N`  | number of data points                                                                                                  |
 | `int[N]`               | `N`    | `a`  | for each data point the index of the cluster it is assigned to                                                         |
 | `double[K][D]`         | `KD`   | `c`  | cluster centers                                                                                                        |
-| `int[N][K]`            | `NK`   | `co` | for each data point the indices of its B closest other cluster centers                                                 |
+| `int[N][B]`            | `NB`   | `co` | for each data point the indices of its B closest other cluster centers                                                 |
 | `double[K][D]`         | `KD`   | `c'` | for each cluster the vector sum of all its points                                                                      |
 | `double[N]`            | `NB`   | `l`  | for each data point B lower bounds on the distance to its second closest center, third closest center ... and the rest |
 | `int[K]`               | `K`    | `q`  | for each cluster the number of its points                                                                              |
 | `double[K]`            | `K`    | `p`  | for each cluster center the distance that it last moved                                                                |
-| `Tuple<double,int>[K]` | `K`    | `o`  | the order of the cluster centers (used to sort centers for a point)                                                    |
+| `Tuple<double,int>[K]` | `2K`   | `o`  | the order of the cluster centers (used to sort centers for a point)                                                    |
 | `double[K]`            | `K`    | `s`  | for each cluster center the distance to its closest other center                                                       |
 | `double[N]`            | `N`    | `u`  | for each point an upper bound on the distance to its closest center                                                    |
 | `double[N][D]`         | `ND`   | `x`  | data points                                                                                                            |
 
-Total Additional Memory: `NB + 2N + KD + 3K`
+Total Additional Memory: `2NB + 2N + KD + 5K`
 
 ## Pseudo-code:
 
