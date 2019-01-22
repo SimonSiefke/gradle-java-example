@@ -1,4 +1,4 @@
-# Drake's KMeans Algorithm
+# Drake's K-Means Algorithm
 
 Drake's Algorithm (also known as Adaptive KMeans) tries to optimize Lloyd's Algorithm by using pruning techniques to skip distance calculations and increase performance, while yielding the same results as Lloyd's Algorithm in the end and also after each iteration. It also needs the same number of iterations to converge.
 
