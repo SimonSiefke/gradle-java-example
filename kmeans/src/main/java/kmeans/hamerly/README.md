@@ -52,7 +52,7 @@ function hamerly(x, c):
           if a' != a[n] then                        # when the closest cluster index hasn't changed
             q[a'] <- q[a'] - 1                      # update cluster size
             q[a[n]] <- q[a[n]] + 1                  # update cluster size
-            for d=0 to D-1 do                         # update cluster sum for each dimension
+            for d=0 to D-1 do                       # update cluster sum for each dimension
               c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
 

@@ -7,20 +7,22 @@ Drake's Algorithm (also known as Adaptive KMeans) tries to optimize Lloyd's Algo
 
 ## Variables:
 
-| Type           | Memory | Name | Purpose                                                                                                                |
-| -------------- | ------ | ---- | ---------------------------------------------------------------------------------------------------------------------- |
-| `int`          |        | `D`  | number of dimensions                                                                                                   |
-| `int`          |        | `K`  | number of clusters (and cluster centers)                                                                               |
-| `int`          |        | `N`  | number of data points                                                                                                  |
-| `int[N]`       | `N`    | `a`  | for each data point the index of the cluster it is assigned to                                                         |
-| `double[K][D]` | `KD`   | `c`  | cluster centers                                                                                                        |
-| `double[K][D]` | `KD`   | `c'` | for each cluster the vector sum of all its points                                                                      |
-| `double[N]`    | `NB`   | `l`  | for each data point B lower bounds on the distance to its second closest center, third closest center ... and the rest |
-| `int[K]`       | `K`    | `q`  | for each cluster the number of its points                                                                              |
-| `double[K]`    | `K`    | `p`  | for each cluster center the distance that it last moved                                                                |
-| `double[K]`    | `K`    | `s`  | for each cluster center the distance to its closest other center                                                       |
-| `double[N]`    | `N`    | `u`  | for each point an upper bound on the distance to its closest center                                                    |
-| `double[N][D]` | `ND`   | `x`  | data points                                                                                                            |
+| Type                   | Memory | Name | Purpose                                                                                                                |
+| ---------------------- | ------ | ---- | ---------------------------------------------------------------------------------------------------------------------- |
+| `int`                  |        | `D`  | number of dimensions                                                                                                   |
+| `int`                  |        | `K`  | number of clusters (and cluster centers)                                                                               |
+| `int`                  |        | `N`  | number of data points                                                                                                  |
+| `int[N]`               | `N`    | `a`  | for each data point the index of the cluster it is assigned to                                                         |
+| `double[K][D]`         | `KD`   | `c`  | cluster centers                                                                                                        |
+| `int[N][K]`            | `NK`   | `co` | for each data point the indices of its B closest other cluster centers                                                 |
+| `double[K][D]`         | `KD`   | `c'` | for each cluster the vector sum of all its points                                                                      |
+| `double[N]`            | `NB`   | `l`  | for each data point B lower bounds on the distance to its second closest center, third closest center ... and the rest |
+| `int[K]`               | `K`    | `q`  | for each cluster the number of its points                                                                              |
+| `double[K]`            | `K`    | `p`  | for each cluster center the distance that it last moved                                                                |
+| `Tuple<double,int>[K]` | `K`    | `o`  | the order of the cluster centers (used to sort centers for a point)                                                    |
+| `double[K]`            | `K`    | `s`  | for each cluster center the distance to its closest other center                                                       |
+| `double[N]`            | `N`    | `u`  | for each point an upper bound on the distance to its closest center                                                    |
+| `double[N][D]`         | `ND`   | `x`  | data points                                                                                                            |
 
 Total Additional Memory: `NB + 2N + KD + 3K`
 
@@ -45,7 +47,20 @@ function drake(x, c):
           TODO:
           sort center
           skip to next iteration of for n loop
-      sort centers
+      for k=0 to K do
+        o[k].first = d(x[n], c[k])                  # compute distance to every center for this point
+        o[k].second = k                             # also store index so that we can sort
+      sort(o)                                       # sort order by increasing distance from x
+      if a[n] != o[0].second then                   # when the closest cluster index hasn't changed
+            q[a'] <- q[a'] - 1                      # update cluster size
+            q[a[n]] <- q[a[n]] + 1                  # update cluster size
+            for d=0 to D-1 do                       # update cluster sum for each dimension
+              c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
+              c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
+      u[n] = o[0]                                   # exact distance to assigned center
+      for b=0 to B do
+        co[n][b] = o[b + 1].second                  # update closest other centers
+        l[n][b] = o[b + 1].first                    # update lower bounds (they start with second closest center, therefore b+1)
 
     for k=0 to K-1 do                               # assign each cluster center to the average of its points
       c* <- c[k]                                    # store old center for later
