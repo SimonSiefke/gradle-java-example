@@ -74,7 +74,7 @@ function drake(x, c):
             for d=0 to D-1 do                       # update cluster sum for each dimension
               c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
-      u[n]<- o[0]                                   # exact distance to assigned center
+      u[n]<- o[0].first=                            # exact distance to assigned center
       for b=0 to B do
         co[n][b] <- o[b + 1].second                 # update closest other centers
         l[n][b] <- o[b + 1].first                   # update lower bounds (they start with second closest center, therefore b+1)
