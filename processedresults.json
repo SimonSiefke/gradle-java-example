@@ -1,0 +1,182 @@
+[
+  {
+    "dataset": "A2.txt",
+    "numberofclusters": "16",
+    "lloyd": 13.733510644881001,
+    "elkan": 4.007646848469501
+  },
+  {
+    "dataset": "A2.txt",
+    "numberofclusters": "32",
+    "lloyd": 26.874966002523838,
+    "elkan": 8.836122942243854
+  },
+  {
+    "dataset": "A2.txt",
+    "numberofclusters": "64",
+    "lloyd": 98.88793344703278,
+    "elkan": 22.684297036494588
+  },
+  {
+    "dataset": "A2.txt",
+    "numberofclusters": "128",
+    "lloyd": 112.65305531176769,
+    "elkan": 44.25172458514782
+  },
+  {
+    "dataset": "A2.txt",
+    "numberofclusters": "256",
+    "lloyd": 238.6123354411924,
+    "elkan": 96.98371300590502
+  },
+  {
+    "dataset": "dim2.txt",
+    "numberofclusters": "16",
+    "lloyd": 1.9207639072159113,
+    "elkan": 0.7615933920745731
+  },
+  {
+    "dataset": "dim2.txt",
+    "numberofclusters": "32",
+    "lloyd": 3.0205155477648287,
+    "elkan": 1.7457107167915193
+  },
+  {
+    "dataset": "dim2.txt",
+    "numberofclusters": "64",
+    "lloyd": 7.778171045674397,
+    "elkan": 3.8879380387906166
+  },
+  {
+    "dataset": "dim2.txt",
+    "numberofclusters": "128",
+    "lloyd": 7.313236636034574,
+    "elkan": 6.684846255492109
+  },
+  {
+    "dataset": "dim2.txt",
+    "numberofclusters": "256",
+    "lloyd": 9.62495652867908,
+    "elkan": 13.2128818156557
+  },
+  {
+    "dataset": "dim32.txt",
+    "numberofclusters": "16",
+    "lloyd": 2.378876482941196,
+    "elkan": 1.4844963527903057
+  },
+  {
+    "dataset": "dim32.txt",
+    "numberofclusters": "32",
+    "lloyd": 4.406212162919345,
+    "elkan": 3.256394599587798
+  },
+  {
+    "dataset": "dim32.txt",
+    "numberofclusters": "64",
+    "lloyd": 8.733412469556344,
+    "elkan": 4.937956763670777
+  },
+  {
+    "dataset": "dim32.txt",
+    "numberofclusters": "128",
+    "lloyd": 18.141392584474136,
+    "elkan": 10.09050093001227
+  },
+  {
+    "dataset": "dim32.txt",
+    "numberofclusters": "256",
+    "lloyd": 36.395603598093864,
+    "elkan": 23.72643365968898
+  },
+  {
+    "dataset": "dim128.txt",
+    "numberofclusters": "16",
+    "lloyd": 10.520264427278855,
+    "elkan": 3.8753197398574497
+  },
+  {
+    "dataset": "dim128.txt",
+    "numberofclusters": "32",
+    "lloyd": 17.3722449688557,
+    "elkan": 6.8643527597684075
+  },
+  {
+    "dataset": "dim128.txt",
+    "numberofclusters": "64",
+    "lloyd": 40.69595537897347,
+    "elkan": 15.118663993622057
+  },
+  {
+    "dataset": "dim128.txt",
+    "numberofclusters": "128",
+    "lloyd": 81.17985716049223,
+    "elkan": 31.46673194556958
+  },
+  {
+    "dataset": "dim128.txt",
+    "numberofclusters": "256",
+    "lloyd": 161.86062745597292,
+    "elkan": 76.7380430240216
+  },
+  {
+    "dataset": "dim512.txt",
+    "numberofclusters": "16",
+    "lloyd": 37.69818913992606,
+    "elkan": 15.821117878832288
+  },
+  {
+    "dataset": "dim512.txt",
+    "numberofclusters": "32",
+    "lloyd": 104.2457360138173,
+    "elkan": 28.943836542613187
+  },
+  {
+    "dataset": "dim512.txt",
+    "numberofclusters": "64",
+    "lloyd": 204.0177617707483,
+    "elkan": 57.25761319550992
+  },
+  {
+    "dataset": "dim512.txt",
+    "numberofclusters": "128",
+    "lloyd": 338.5970044,
+    "elkan": 127.99140471666668
+  },
+  {
+    "dataset": "dim512.txt",
+    "numberofclusters": "256",
+    "lloyd": 812.119000076923,
+    "elkan": 350.3043819623656
+  },
+  {
+    "dataset": "dim1024.txt",
+    "numberofclusters": "16",
+    "lloyd": 76.88479918978767,
+    "elkan": 30.336692634473923
+  },
+  {
+    "dataset": "dim1024.txt",
+    "numberofclusters": "32",
+    "lloyd": 179.7375100238095,
+    "elkan": 53.014219685558864
+  },
+  {
+    "dataset": "dim1024.txt",
+    "numberofclusters": "64",
+    "lloyd": 357.44084848809524,
+    "elkan": 103.9137983298969
+  },
+  {
+    "dataset": "dim1024.txt",
+    "numberofclusters": "128",
+    "lloyd": 846.5523173055557,
+    "elkan": 249.564661775813
+  },
+  {
+    "dataset": "dim1024.txt",
+    "numberofclusters": "256",
+    "lloyd": 1438.8998347261904,
+    "elkan": 585.5600945925926
+  }
+]
