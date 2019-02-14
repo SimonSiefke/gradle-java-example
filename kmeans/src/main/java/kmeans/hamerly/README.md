@@ -24,7 +24,44 @@ Hamerly's Algorithm tries to optimize Lloyd's Algorithm by using pruning techniq
 
 Total Additional Memory: `3N + KD + 3K`
 
-## Pseudo-code:
+## Pseudo-code (simple):
+
+```
+function hamerly(x, c):
+  for n=0 to N-1 do
+    u[n] <- min_k d(x[n], c[k])                              # compute exact distance to closest center
+    l[n] <- argmin_(k!=a[n]) d(x[n], c[k])                   # compute index of second closest center
+    initialAssignPointToCluster(n, argmin_k d(x[n], c[k]))   # assign to index of exact closest center
+
+  moveCenters()
+
+  while not converged do
+    for k=0 to K-1 do
+      s[k] <- min_(k'!=k) d(c[k], c[k'])                     # compute the nearest cluster center for each cluster center
+
+    for n=0 to N-1 do                                        # compute the nearest cluster for each point
+      m <- max(s[a[n]]/2, l[n])
+      if u[n] > m then                                       # first bound test
+        u[n] <- d(x[n], c[a[n]])                             # tighten upper bound to see if we can prune with the exact distance to closest center
+        if u[n] > m then                                     # second bound test
+          a[n] <- argmin_k d(x[n], c[k])
+          u[n] <- d(x[n], c[a[n]])                           # upper bound is now the exact distance to closest center
+          l[n] <- min_k!=a[n] d(x[n],c[k])                   # lower bound is now the exact distance to the second closest center
+          assignPointToCluster(n, argmin_k d(x[n], c[k]))    # assign to index of exact closest center
+
+    moveCenters()
+
+    r  <- argmax_k p                                         # index of the center that has moved the most
+    r' <- argmax_k!=r p                                      # index of the center that has moved the second most
+    for n=0 to N-1 do
+      u[n] <- u[n] + p[a[n]]                                 # increase upper bound by the distance that the assigned center has moved
+      if r=a[n] then                                         # when its the center that has moved the most
+        l[n] <- l[n] - p[r']                                 # decrease by the second most distance moved
+      else                                                   # when its not the center that has moved the most
+        l[n] <- l[n] - p[r]                                  # decrease by the most distance moved
+```
+
+## Pseudo-code (extended):
 
 ```
 function hamerly(x, c):

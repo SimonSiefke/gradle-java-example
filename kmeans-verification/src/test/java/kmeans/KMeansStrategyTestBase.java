@@ -16,7 +16,7 @@ import distance.EuclideanSquaredDistanceStrategy;
 
 public abstract class KMeansStrategyTestBase<T extends KMeansStrategy> {
 
-  private T instance;
+  protected T instance;
 
   protected abstract T createInstance();
 

@@ -1,6 +1,6 @@
 # Lloyd's KMeans Algorithm
 
-> Lloyd's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
+Lloyd's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
 
 ## Variables & Memory:
 
@@ -17,41 +17,43 @@
 
 Total Additional Memory: `N + KD + K`
 
-## Pseudo-code:
+## Pseudo-code (simple):
 
 ```
 function lloyd(x, c):
   for n=0 to N-1 do
-    a[n] <- argmin_k d(x[n], c[k])                  # compute index of the closest center
-    q[a[n]] <- q[a[n]] + 1                          # update cluster size
-    for d=0 to D-1 do                               # update cluster sum for each dimension
-      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
+    initialAssignPointToCluster(n, argmin_k d(x[n], c[k]))   # assign to index of exact closest center
+
+  moveCenters()
 
   while not converged do
-    for n=0 to N-1 do                               # compute the nearest cluster for each point
-      a' <- a[n]                                    # store current value for later
-      a[n] <- argmin_k d(x[n], c[k])                # compute index of exact closest center
-      if a' != a[n] then                            # when the closest cluster index hasn't changed
-        q[a'] <- q[a'] - 1                          # update cluster size
-        q[a[n]] <- q[a[n]] + 1                      # update cluster size
-        for d=0 to D-1 do                           # update cluster sum for each dimension
-          c'[a'][d] <- c'[a'][d] - x[n][d]          # update cluster sum for each dimension
-          c'[a[n]][d] <- c'[a[n]][d] + x[n][d]      # update cluster sum for each dimension
-
-    for k=0 to K-1 do                               # assign each cluster center to the average of its points
-      for d=0 to D-1 do
-        c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
+    for n=0 to N-1 do
+      assignPointToCluster(n, argmin_k d(x[n], c[k]))        # assign to index of exact closest center
+      moveCenters()
 ```
 
-## Time Complexity
+## Pseudo-code (extended):
 
-| Initialization Time | Why                                                   |
-| ------------------- | ----------------------------------------------------- |
-| `NKD`               | loop that computes the nearest cluster for each point |
+```
+function lloyd(x, c):
+  for n=0 to N-1 do
+    a[n] <- argmin_k d(x[n], c[k])                           # compute index of the closest center
+    q[a[n]] <- q[a[n]] + 1                                   # update cluster size
+    for d=0 to D-1 do                                        # update cluster sum for each dimension
+      c'[a[n]][d] <- c'[a[n]][d] + x[n][d]                   # update cluster sum for each dimension
 
-| Time Per Iteration | Why                                                         |
-| ------------------ | ----------------------------------------------------------- |
-| `NKD`              | loop that computes the nearest cluster for each point       |
-| `KD`               | loop that assigns each cluster to the average of its points |
+  while not converged do
+    for n=0 to N-1 do                                        # compute the nearest cluster for each point
+      a' <- a[n]                                             # store current value for later
+      a[n] <- argmin_k d(x[n], c[k])                         # compute index of exact closest center
+      if a' != a[n] then                                     # when the closest cluster index hasn't changed
+        q[a'] <- q[a'] - 1                                   # update cluster size
+        q[a[n]] <- q[a[n]] + 1                               # update cluster size
+        for d=0 to D-1 do                                    # update cluster sum for each dimension
+          c'[a'][d] <- c'[a'][d] - x[n][d]                   # update cluster sum for each dimension
+          c'[a[n]][d] <- c'[a[n]][d] + x[n][d]               # update cluster sum for each dimension
 
-Total Time Per Iteration: `NKD + KD`
+    for k=0 to K-1 do                                        # assign each cluster center to the average of its points
+      for d=0 to D-1 do
+        c[k][d] <- c'[k][d]/q[k]                             # cluster sum divided by cluster size
+```

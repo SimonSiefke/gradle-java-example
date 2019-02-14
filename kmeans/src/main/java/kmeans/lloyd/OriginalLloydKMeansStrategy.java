@@ -7,9 +7,9 @@ import kmeans.Cluster;
 import kmeans.KMeansStrategy;
 
 /**
- * Faster implementation of Lloyd's KMeans Strategy.
+ * Lloyd's KMeans Strategy.
  */
-public class FastLloydKMeansStrategy extends KMeansStrategy {
+public class OriginalLloydKMeansStrategy extends KMeansStrategy {
   @Override
   public Cluster[] cluster(double[][] dataPoints, double[][] initialClusterCenters, int maxNumberOfIterations,
       DistanceStrategy distance) {
@@ -28,39 +28,28 @@ public class FastLloydKMeansStrategy extends KMeansStrategy {
     this.maxNumberOfIterations = maxNumberOfIterations;
     this.numberOfIterations = 0;
 
-    initialize();
-    moveCenters();
     main();
     return result();
   }
 
   @Override
   protected void initialize() {
-    for (int n = 0; n < N; n++) {
-      initialAssignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
-    }
+
   }
 
   @Override
   protected void loop() {
-    for (int n = 0; n < N; n++) {
-      assignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
-    }
-    // move centers
     for (int k = 0; k < K; k++) {
-      if (clusterSizes[k] > 0) {
-        final double[] newClusterCenter = new double[D];
-        for (int d = 0; d < D; d++) {
-          newClusterCenter[d] = clusterSums[k][d] / clusterSizes[k];
-          if (!hasChanged) {
-            hasChanged = newClusterCenter[d] != clusterCenters[k][d];
-          }
-        }
-        clusterCenters[k] = newClusterCenter;
-      } else {
-        clusterCenterMovements[k] = 0;
+      clusterSizes[k] = 0;
+      for (int d = 0; d < D; d++) {
+        clusterSums[k][d] = 0;
       }
     }
+
+    for (int n = 0; n < N; n++) {
+      initialAssignPointToCluster(n, closestClusterCenterIndex(dataPoints[n]));
+    }
+    moveCenters();
   }
 
   /**
@@ -70,16 +59,17 @@ public class FastLloydKMeansStrategy extends KMeansStrategy {
    *         point
    */
   private int closestClusterCenterIndex(double[] dataPoint) {
-    int closestClusterCenterIndex = -1;
-    double smallestClusterCenterDistance = Double.MAX_VALUE;
+    int smallestDistanceIndex = -1;
+    double smallestDistance = Double.MAX_VALUE;
 
     for (int k = 0; k < K; k++) {
-      double currentClusterCenterDistance = distance.compute(dataPoint, clusterCenters[k]);
-      if (currentClusterCenterDistance < smallestClusterCenterDistance) {
-        smallestClusterCenterDistance = currentClusterCenterDistance;
-        closestClusterCenterIndex = k;
+      double currentDistance = distance.compute(dataPoint, clusterCenters[k]);
+      if (currentDistance < smallestDistance) {
+        smallestDistance = currentDistance;
+        smallestDistanceIndex = k;
       }
     }
-    return closestClusterCenterIndex;
+    return smallestDistanceIndex;
   }
+
 }
