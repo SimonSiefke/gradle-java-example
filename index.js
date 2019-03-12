@@ -2,16 +2,24 @@ const results = require('./results.json')
 const path = require('path')
 const fs = require('fs')
 
-const elkanResults = resultsByName('elkan')
-const lloydResults = resultsByName('lloyd')
+const algorithms = ['lloyd', 'elkan']
+const algorithmsResults = algorithms.map(resultsByName)
+// const elkanResults = resultsByName('elkan')
+// const lloydResults = resultsByName('lloyd')
 
 let mergedResults = []
-for (let i = 0; i < elkanResults.length; i++) {
+for (let i = 0; i < algorithmsResults[0].length; i++) {
+  const algResults = algorithms.reduce(
+    (total, current, index) => ({
+      ...total,
+      [current]: algorithmsResults[index][i].score,
+    }),
+    {}
+  ) //?
   mergedResults.push({
-    dataset: elkanResults[i].dataset,
-    numberofclusters: elkanResults[i].numberofclusters,
-    lloyd: lloydResults[i].score,
-    elkan: elkanResults[i].score,
+    dataset: algorithmsResults[0][i].dataset,
+    numberofclusters: algorithmsResults[0][i].numberofclusters,
+    ...algResults,
   })
 }
 fs.writeFileSync(
