@@ -1,4 +1,4 @@
-package util.dataloader;
+package test_utils.dataloader;
 
 import java.util.ArrayList;
 import java.util.Scanner;

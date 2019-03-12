@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import util.dataloader.DataLoader;
+import test_utils.dataloader.DataLoader;
 
 public class TextLoaderStrategyTest {
 
