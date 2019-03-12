@@ -1,4 +1,4 @@
-# Lloyd's KMeans Algorithm
+# Lloyd's K-Means Algorithm
 
 Lloyd's Algorithm is a clustering algorithm that segments data points into clusters based on their distance.
 
