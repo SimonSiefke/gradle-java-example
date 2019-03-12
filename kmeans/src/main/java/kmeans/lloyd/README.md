@@ -24,12 +24,12 @@ function lloyd(x, c):
   for n=0 to N-1 do
     initialAssignPointToCluster(n, argmin_k d(x[n], c[k]))   # assign to index of exact closest center
 
-  moveCenters()
+  moveCenters()                                              # assign each cluster center to the average of its points
 
   while not converged do
     for n=0 to N-1 do
       assignPointToCluster(n, argmin_k d(x[n], c[k]))        # assign to index of exact closest center
-      moveCenters()
+      moveCenters()                                          # assign each cluster center to the average of its points
 ```
 
 ## Pseudo-code (extended):
@@ -41,6 +41,10 @@ function lloyd(x, c):
     q[a[n]] <- q[a[n]] + 1                                   # update cluster size
     for d=0 to D-1 do                                        # update cluster sum for each dimension
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]                   # update cluster sum for each dimension
+
+  for k=0 to K-1 do                                          # assign each cluster center to the average of its points
+        for d=0 to D-1 do
+          c[k][d] <- c'[k][d]/q[k]                           # cluster sum divided by cluster size
 
   while not converged do
     for n=0 to N-1 do                                        # compute the nearest cluster for each point
