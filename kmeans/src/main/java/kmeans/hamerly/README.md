@@ -76,7 +76,7 @@ function hamerly(x, c):
     for k=0 to K-1 do
       s[k] <- min_(k'!=k) d(c[k], c[k'])            # compute the nearest cluster center for each cluster center
     for n=0 to N-1 do                               # compute the nearest cluster for each point
-      m <- max(s[a[n]]/2, l[n])
+      m <- max(s[a[n]]/2, l[n])                     # this is what we are trying to prune with
       if u[n] > m then                              # first bound test
         u[n] <- d(x[n], c[a[n]])                    # tighten upper bound to see if we can prune with the exact distance to closest center
         if u[n] > m then                            # second bound test
