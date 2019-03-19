@@ -32,13 +32,10 @@ function hamerly(x, c):
     u[n] <- min_k d(x[n], c[k])                              # compute exact distance to closest center
     l[n] <- argmin_(k!=a[n]) d(x[n], c[k])                   # compute index of second closest center
     initialAssignPointToCluster(n, argmin_k d(x[n], c[k]))   # assign to index of exact closest center
-
   moveCenters()
-
   while not converged do
     for k=0 to K-1 do
       s[k] <- min_(k'!=k) d(c[k], c[k'])                     # compute the nearest cluster center for each cluster center
-
     for n=0 to N-1 do                                        # compute the nearest cluster for each point
       m <- max(s[a[n]]/2, l[n])
       if u[n] > m then                                       # first bound test
@@ -48,9 +45,7 @@ function hamerly(x, c):
           u[n] <- d(x[n], c[a[n]])                           # upper bound is now the exact distance to closest center
           l[n] <- min_k!=a[n] d(x[n],c[k])                   # lower bound is now the exact distance to the second closest center
           assignPointToCluster(n, argmin_k d(x[n], c[k]))    # assign to index of exact closest center
-
     moveCenters()
-
     r  <- argmax_k p                                         # index of the center that has moved the most
     r' <- argmax_k!=r p                                      # index of the center that has moved the second most
     for n=0 to N-1 do
@@ -72,11 +67,9 @@ function hamerly(x, c):
     q[a[n]] <- q[a[n]] + 1                          # update cluster size
     for d=0 to D-1 do                               # update cluster sum for each dimension
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
-
   while not converged do
     for k=0 to K-1 do
       s[k] <- min_(k'!=k) d(c[k], c[k'])            # compute the nearest cluster center for each cluster center
-
     for n=0 to N-1 do                               # compute the nearest cluster for each point
       m <- max(s[a[n]]/2, l[n])
       if u[n] > m then                              # first bound test
@@ -92,14 +85,11 @@ function hamerly(x, c):
             for d=0 to D-1 do                       # update cluster sum for each dimension
               c'[a'][d] <- c'[a'][d] - x[n][d]      # update cluster sum for each dimension
               c'[a[n]][d] <- c'[a[n]][d] + x[n][d]  # update cluster sum for each dimension
-
     for k=0 to K-1 do                               # assign each cluster center to the average of its points
       c* <- c[k]                                    # store old center for later
       for d=0 to D-1 do
         c[k][d] <- c'[k][d]/q[k]                    # cluster sum divided by cluster size
       p[k] <- d(c*,c[k])                            # store the distance that the center has moved
-
-                                                    # update bounds
     r  <- argmax_k p                                # index of the center that has moved the most
     r' <- argmax_k!=r p                             # index of the center that has moved the second most
     for n=0 to N-1 do
