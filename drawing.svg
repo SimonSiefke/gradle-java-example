@@ -183,9 +183,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="1087.2176"
-     inkscape:cy="136.76671"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="633.86432"
+     inkscape:cy="830.1279"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -227,7 +227,8 @@
        id="circle823"
        style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.16749145;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     <g
-       id="g2041">
+       id="g2041"
+       transform="matrix(0.41143132,0,0,0.41143132,1.2623385,32.44369)">
       <circle
          style="opacity:1;fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="circle825"
@@ -394,7 +395,8 @@
          style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.16749145;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     </g>
     <g
-       id="g2650">
+       id="g2650"
+       transform="matrix(0.41143132,0,0,0.41143132,1.2623385,32.44369)">
       <circle
          r="1.984375"
          cy="127.95163"
@@ -480,7 +482,7 @@
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cc" />
       <circle
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0000;stroke-width:0.3;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ff0000;stroke-width:0.30000001;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="circle2071"
          cx="237.45764"
          cy="125.54852"
@@ -559,7 +561,7 @@
            style="stroke-width:0.10140323"
            id="tspan2907">upperbound by computing the exact_distance to the <tspan
    id="tspan2615"
-   style="fill:#00ff00;fill-opacity:1"></tspan></tspan><tspan
+   style="fill:#00ff00;fill-opacity:1" /></tspan><tspan
            sodipodi:role="line"
            x="171.78357"
            y="203.67395"
@@ -580,7 +582,8 @@
          r="0.66473168" />
     </g>
     <g
-       id="g7414">
+       id="g7414"
+       transform="matrix(0.41143132,0,0,0.41143132,1.2623385,32.44369)">
       <g
          transform="translate(176.1369,-3.0238095)"
          id="g2880">
@@ -783,28 +786,29 @@
     </g>
     <text
        id="text2884"
-       y="65.238655"
-       x="16.302687"
-       style="font-style:normal;font-weight:normal;font-size:13.31413651px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33285341"
+       y="59.284916"
+       x="7.9697742"
+       style="font-style:normal;font-weight:normal;font-size:5.47785282px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13694632"
        xml:space="preserve"><tspan
-         style="stroke-width:0.33285341"
-         y="65.238655"
-         x="16.302687"
+         style="stroke-width:0.13694632"
+         y="59.284916"
+         x="7.9697742"
          id="tspan2882"
          sodipodi:role="line">Elkan lowerbounds</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:13.31413651px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.33285341"
-       x="7.2155285"
-       y="271.57074"
+       style="font-style:normal;font-weight:normal;font-size:5.47785282px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.13694632"
+       x="4.2310328"
+       y="144.17639"
        id="text2888"><tspan
          sodipodi:role="line"
          id="tspan2886"
-         x="7.2155285"
-         y="271.57074"
-         style="stroke-width:0.33285341">Hamerly lowerbounds</tspan></text>
+         x="4.2310328"
+         y="144.17639"
+         style="stroke-width:0.13694632">Hamerly lowerbounds</tspan></text>
     <g
-       id="g7478">
+       id="g7478"
+       transform="matrix(0.41143132,0,0,0.41143132,1.2623385,32.44369)">
       <g
          transform="translate(-1.6036176,223.97187)"
          id="g6885">
@@ -963,7 +967,8 @@
       </g>
     </g>
     <g
-       id="g7448">
+       id="g7448"
+       transform="matrix(0.41143132,0,0,0.41143132,1.2623385,32.44369)">
       <circle
          style="opacity:1;fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="circle6942"
@@ -1116,7 +1121,7 @@
            x="168.90193"
            sodipodi:role="line">upperbound by computing the exact_distance to the <tspan
    style="fill:#00ff00;fill-opacity:1"
-   id="tspan6996"></tspan></tspan><tspan
+   id="tspan6996" /></tspan><tspan
            id="tspan7002"
            style="stroke-width:0.10140323"
            y="402.72488"
@@ -1137,7 +1142,8 @@
          style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.16749145;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
     </g>
     <g
-       id="g7374">
+       id="g7374"
+       transform="matrix(0.41143132,0,0,0.41143132,1.2623385,32.44369)">
       <circle
          r="1.984375"
          cy="344.90964"
@@ -1324,14 +1330,14 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:28.4186039px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.71046507"
-       x="7.8712664"
-       y="41.522228"
+       style="font-style:normal;font-weight:normal;font-size:23.1713829px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.57928455"
+       x="8.3862524"
+       y="37.535572"
        id="text7482"><tspan
          sodipodi:role="line"
          id="tspan7480"
-         x="7.8712664"
-         y="41.522228"
-         style="stroke-width:0.71046507">Pruning Criteria</tspan></text>
+         x="8.3862524"
+         y="37.535572"
+         style="stroke-width:0.57928455">Pruning Criteria</tspan></text>
   </g>
 </svg>
