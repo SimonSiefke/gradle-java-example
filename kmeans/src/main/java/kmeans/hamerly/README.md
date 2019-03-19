@@ -2,8 +2,8 @@
 
 Hamerly's Algorithm tries to optimize Lloyd's Algorithm by using pruning techniques to skip distance calculations and increase performance, while yielding the same results as Lloyd's Algorithm in the end and also after each iteration. It also needs the same number of iterations to converge.
 
-1. The first pruning technique uses N upper bounds (one for each data point) and N lower bounds (one for each data point). For each point the upper bound is the maximal distance between itself and its currently assigned center. The lower bound is the minimal distance between the data point and its second nearest center. If the distance between a data point and its second closest cluster (lower bound) is less than the distance between the data point and its assigned center (upper bound) we know that the point keeps its assigned center and we don't need to compute the distance to any other center.
-2. The second pruning technique uses the hyperplane distance between two cluster centers: Let x be a data point, c its assigned center and u the upper bound from x to c. If the distance between c and each of the other cluster centers is at least two times u then we know that none of the other cluster centers can possibly be closer to x than c. Thus, the point keeps its assigned center and we don't need to compute the distance to any other center.
+1. The first pruning technique uses `N` upper bounds (one for each data point) and `N` lower bounds (one for each data point). For each point the upper bound is the maximal distance between itself and its currently assigned center. The lower bound is the minimal distance between the data point and its second nearest center. If the distance between a data point and its second closest cluster (lower bound) is less than the distance between the data point and its assigned center (upper bound) we know that the point keeps its assigned center and we don't need to compute the distance to any other center.
+2. The second pruning technique uses the hyperplane distance between two cluster centers: Let `x` be a data point, `c` its assigned center and `u` the upper bound from `x` to `c`. If the distance between `c` and each of the other cluster centers is at least two times `u` then we know that none of the other cluster centers can possibly be closer to `x` than `c`. Thus, the point keeps its assigned center and we don't need to compute the distance to any other center.
 
 ## Variables:
 
@@ -67,6 +67,11 @@ function hamerly(x, c):
     q[a[n]] <- q[a[n]] + 1                          # update cluster size
     for d=0 to D-1 do                               # update cluster sum for each dimension
       c'[a[n]][d] <- c'[a[n]][d] + x[n][d]          # update cluster sum for each dimension
+  for k=0 to K-1 do                                 # assign each cluster center to the average of its points
+    c* <- c[k]                                      # store old center for later
+    for d=0 to D-1 do
+      c[k][d] <- c'[k][d]/q[k]                      # cluster sum divided by cluster size
+    p[k] <- d(c*,c[k])                              # store the distance that the center has moved
   while not converged do
     for k=0 to K-1 do
       s[k] <- min_(k'!=k) d(c[k], c[k'])            # compute the nearest cluster center for each cluster center
