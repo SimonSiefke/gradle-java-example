@@ -1,5 +1,6 @@
 .gradle
 **/build/
+o.js
 
 # editor settings
 .vscode
